@@ -31,7 +31,11 @@ const siteConfig = {
 
   gaTrackingId: 'UA-43032717-4',
   gaGtag: true,
-  
+
+  algolia: {
+    apiKey: 'cc5871df6979b737c77b6c2670ac2392',
+    indexName: 'grandstack'
+  },
 
   // Used for publishing and more
   projectName: 'grandstack.io',
@@ -42,11 +46,12 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {search: true},
-    {doc: 'links', label: 'Docs'},
+    
+    {doc: 'getting-started', label: 'Docs'},
     //{doc: 'doc4', label: 'API'},
     {href: 'https://blog.grandstack.io', label: 'Blog'},
     //{blog: true, label: 'Blog'},
+    {search: true},
   ],
 
   // If you have users set above, you add it here:
