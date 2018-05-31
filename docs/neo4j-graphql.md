@@ -11,7 +11,7 @@ Neo4j-GraphQL is an integration that translates GraphQL to Cypher and allows for
 
 ## Overview
 
-The primary goal of the Neo4j-GraphQL integrations are to make it easy to build powerful GraphQL APIs that leverage the Neo4j graph database. By using the 
+The primary goal of the Neo4j-GraphQL integrations are to make it easy to build powerful GraphQL APIs that leverage the Neo4j graph database.
 
 ### Goals
 * Improve developer productivity for building GraphQL APIs
