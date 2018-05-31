@@ -46,8 +46,7 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    
-    {doc: 'links', label: 'Docs'},
+    { doc: "getting-started", label: "Docs" },
     //{doc: 'doc4', label: 'API'},
     { href: "https://blog.grandstack.io", label: "Blog" },
     //{blog: true, label: 'Blog'},
@@ -88,7 +87,6 @@ const siteConfig = {
     // Highlight.js theme to use for syntax highlighting in code blocks
     theme: "darcula",
     hljs: function(hljs) {
-
       // from https://github.com/isagalaev/highlight.js/pull/1543
       hljs.registerLanguage("graphql", function(hljs) {
         return {

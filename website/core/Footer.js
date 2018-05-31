@@ -10,7 +10,10 @@ const React = require('react');
 class Footer extends React.Component {
   docUrl(doc, language) {
     const baseUrl = this.props.config.baseUrl;
-    return baseUrl + 'docs/' + (language ? language + '/' : '') + doc;
+    
+    // don't use language 
+    //return baseUrl + 'docs/' + (language ? language + '/' : '') + doc;
+    return baseUrl + 'docs/' + doc;
   }
 
   pageUrl(doc, language) {
@@ -35,15 +38,15 @@ class Footer extends React.Component {
           </a>
           <div>
             <h5>Docs</h5>
-            <a href={this.docUrl('links.html', this.props.language)}>
+            <a href={this.docUrl('getting-started.html', this.props.language)}>
               Getting Started
             </a>
-            {/* <a href={this.docUrl('doc2.html', this.props.language)}>
-              Guides (or other categories)
+            <a href={this.docUrl('neo4j-graphql.html', this.props.language)}>
+              Neo4j-GraphQL
             </a>
-            <a href={this.docUrl('doc3.html', this.props.language)}>
-              API Reference (or other categories)
-            </a> */}
+            <a href={this.docUrl('links.html', this.props.language)}>
+              Resources
+            </a>
           </div>
           <div>
             {/* <h5>Community</h5>

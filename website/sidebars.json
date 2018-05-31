@@ -1,5 +1,8 @@
 {
   "docs": {
+    "Getting Started": ["getting-started"],
+    "Neo4j-GraphQL": ["neo4j-graphql", "neo4j-graphql-plugin", "neo4j-graphql-js"],
     "Resources": ["links"]
+
   }
 }
