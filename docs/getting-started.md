@@ -8,7 +8,7 @@ sidebar_label: What is GRANDstack
 
 ## Installation
 
-The easiest way to get started with GRANDstack is to clone the [GRANDstack starter](https://github.com/grand-stack/grand-stack-movies-workshop) from GitHub.
+The easiest way to get started with GRANDstack is to clone the [GRANDstack starter](https://github.com/grand-stack/grand-stack-starter) from GitHub.
 
 ## What is GRANDstack?
 
