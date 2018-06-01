@@ -1,6 +1,6 @@
 {
   "docs": {
-    "Getting Started": ["getting-started"],
+    "Getting Started": ["getting-started", "getting-started-grand-stack-starter"],
     "Neo4j-GraphQL": ["neo4j-graphql", "neo4j-graphql-plugin", "neo4j-graphql-js"],
     "Resources": ["links"]
 
