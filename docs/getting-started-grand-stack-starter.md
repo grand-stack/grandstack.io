@@ -14,7 +14,7 @@ Clone the Github repo [here](https://github.com/grand-stack/grand-stack-starter)
 git clone https://github.com/grand-stack/grand-stack-starter.git
 ```
 
-or download the latest release [here](https://github.com/grand-stack/grand-stack-starter/releases/download/v0.0.2/grand-stack-starter-v0.0.2.zip).
+or download the latest release [here](https://github.com/grand-stack/grand-stack-starter/releases/download/v0.0.2.1/grand-stack-starter-v0.0.2.zip).
 
 ## Usage
 
