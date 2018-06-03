@@ -6,6 +6,8 @@ sidebar_label: GRANDstack Starter
 
 The easiest way to get started with GRANDstack is by using the [GRANDstack starter](https://github.com/grand-stack/grand-stack-starter). This is template project with a React app that uses Apollo Client to query a GraphQL API backed by Neo4j. 
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rPC71lUhK_I" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 ## Download
 
 Clone the Github repo [here](https://github.com/grand-stack/grand-stack-starter):
