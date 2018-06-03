@@ -18,6 +18,7 @@ Resources for getting started with GRANDstack.
 
 ## Tutorials / Examples
 
+* **[GRANDstack starter project](https://github.com/grand-stack/grand-stack-starter)** - simple template project for GRANDstack. Includes a GraphQL service that uses neo4j-graphql-js to resolve data from Neo4j and a React app that queries the GraphQL service with Apollo Client.
 * **[GRANDstack movies workshop](https://github.com/grand-stack/grand-stack-movies-workshop)** - build a simple movie recommendation web app using GRANDstack
 * **[neo4j-graphql-js Apollo Launchpad](https://launchpad.graphql.com/7kp8l0p4j)** - An Apollo Launchpad GraphQL API example using neo4j-graphql-js
 * **[Apollo Launchpad neo4j-graphql-js example](https://launchpad.graphql.com/7kp8l0p4j)** - A GraphQL server demo that uses neo4-graphql-js to translate GraphQL queries to Cypher, serving a simple movie recommendation GraphQL service
