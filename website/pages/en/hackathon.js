@@ -30,7 +30,7 @@ class Hackathon extends React.Component {
       },
       {
         title: "Win fun prizes and get featured",
-        content: `We'll send a [BRIK lego style laptop cover](https://www.brik.co/) to the top 20 submissions as well as feature top projects during the GraphQL Europe closing keynote and a followup blog post.`,
+        content: `We'll send a [BRIK lego style laptop cover](https://www.brik.co/) to the top 20 submissions with enough briks to build either the GraphQL, React, Apollo, or Neo4j logo (your choice!), or equivalent value Amazon gift card (50€) as well as feature top projects during the GraphQL Europe closing keynote and a followup blog post.`,
         image: imgUrl("hackathon/prize.jpeg"),
         imageAlign: "top"
       }
