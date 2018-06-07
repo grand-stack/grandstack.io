@@ -46,6 +46,11 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
+    {
+      href:
+        "https://blog.grandstack.io/announcing-the-grandstack-online-hackathon-for-graphql-europe-2018-7d256ebf68e1",
+      label: "GRANDstack Online Hackathon"
+    },
     { doc: "getting-started", label: "Docs" },
     //{doc: 'doc4', label: 'API'},
     { href: "https://blog.grandstack.io", label: "Blog" },
