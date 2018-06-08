@@ -5,20 +5,20 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const React = require('react');
+const React = require("react");
 
 class Footer extends React.Component {
   docUrl(doc, language) {
     const baseUrl = this.props.config.baseUrl;
-    
-    // don't use language 
+
+    // don't use language
     //return baseUrl + 'docs/' + (language ? language + '/' : '') + doc;
-    return baseUrl + 'docs/' + doc;
+    return baseUrl + "docs/" + doc;
   }
 
   pageUrl(doc, language) {
     const baseUrl = this.props.config.baseUrl;
-    return baseUrl + (language ? language + '/' : '') + doc;
+    return baseUrl + (language ? language + "/" : "") + doc;
   }
 
   render() {
@@ -38,13 +38,13 @@ class Footer extends React.Component {
           </a>
           <div>
             <h5>Docs</h5>
-            <a href={this.docUrl('getting-started.html', this.props.language)}>
+            <a href={this.docUrl("getting-started.html", this.props.language)}>
               Getting Started
             </a>
-            <a href={this.docUrl('neo4j-graphql.html', this.props.language)}>
+            <a href={this.docUrl("neo4j-graphql.html", this.props.language)}>
               Neo4j-GraphQL
             </a>
-            <a href={this.docUrl('links.html', this.props.language)}>
+            <a href={this.docUrl("links.html", this.props.language)}>
               Resources
             </a>
           </div>
@@ -88,15 +88,30 @@ class Footer extends React.Component {
           href="https://grandstack.io/"
           target="_blank"
           rel="noreferrer noopener"
-          className="fbOpenSource">
+          className="fbOpenSource"
+        >
           <img
-            src={this.props.config.baseUrl + 'img/GrandStack-Logo-1Color_White.png'}
+            src={
+              this.props.config.baseUrl + "img/GrandStack-Logo-1Color_White.png"
+            }
             alt="GRANDstack"
             width="170"
             height="45"
           />
         </a>
-        <section className="copyright">{this.props.config.copyright}</section>
+        <section className="copyright">
+          <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+            <img
+              alt="Creative Commons License"
+              style={{borderWidth:0}}
+              src="https://i.creativecommons.org/l/by/4.0/88x31.png"
+            />
+          </a>
+          <br />This work is licensed under a {" "}
+          <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+            Creative Commons Attribution 4.0 International License
+          </a>.
+        </section>
       </footer>
     );
   }
