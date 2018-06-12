@@ -101,34 +101,36 @@ const Block = props => (
 );
 
 const Features = props => (
-  <Block layout="fourColumn">
-    {[
-      {
-        content: "",
-        image: imgUrl("logo/graphql.svg"),
-        imageAlign: "top",
-        title: "GraphQL"
-      },
-      {
-        content: "",
-        image: imgUrl("logo/react.svg"),
-        imageAlign: "top",
-        title: "React"
-      },
-      {
-        content: "",
-        image: imgUrl("logo/apollo.svg"),
-        imageAlign: "top",
-        title: "Apollo"
-      },
-      {
-        content: "",
-        image: imgUrl("logo/neo4j.svg"),
-        imageAlign: "top",
-        title: "Neo4j Database"
-      }
-    ]}
-  </Block>
+  <div className="featureImageBlock">
+    <Block layout="fourColumn">
+      {[
+        {
+          content: "",
+          image: imgUrl("logo/graphql.svg"),
+          imageAlign: "top",
+          title: "GraphQL"
+        },
+        {
+          content: "",
+          image: imgUrl("logo/react.svg"),
+          imageAlign: "top",
+          title: "React"
+        },
+        {
+          content: "",
+          image: imgUrl("logo/apollo.svg"),
+          imageAlign: "top",
+          title: "Apollo"
+        },
+        {
+          content: "",
+          image: imgUrl("logo/neo4j.svg"),
+          imageAlign: "top",
+          title: "Neo4j Database"
+        }
+      ]}
+    </Block>
+  </div>
 );
 
 const FeatureCallout = props => (
