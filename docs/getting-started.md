@@ -17,7 +17,7 @@ GRANDstack is a combination of technologies that work together to enable develop
 * [**GraphQL**](https://graphql.org/) - A new paradigm for building APIs, GraphQL is a way of describing data and enabling clients to query it.
 * [**React**](https://reactjs.org/) - A JavaScript library for building component based reusable user interfaces.
 * [**Apollo**](https://www.apollographql.com/) - A suite of tools that work together to create great GraphQL workflows.
-* [**Neo4j Database**](https://neo4j.com/developer/) - The native graph database that allows your to model, store, and query your data the same way you think about it: as a graph.
+* [**Neo4j Database**](https://neo4j.com/developer/) - The native graph database that allows you to model, store, and query your data the same way you think about it: as a graph.
 
 Here's how it all fits together in the context of a movie search app: 
 
