@@ -28,6 +28,19 @@ const resolvers = {
 };
 ```
 
+## Test
+
+We use the `ava` test runner.
+
+```
+npm install
+npm build
+npm test
+```
+
+The `npm test` script will run unit tests that check GraphQL -> Cypher translation and the schema augmentation features and can be easily run locally without a test environment. Full integration tests can be found in `/test` and are [run on CircleCI](https://circleci.com/gh/neo4j-graphql/neo4j-graphql-js) as part of the CI process. 
+
+
 ## What is `neo4j-graphql-js`
 
 A package to make it easier to use GraphQL and [Neo4j](https://neo4j.com/) together. `neo4j-graphql-js` translates GraphQL queries to a single [Cypher](https://neo4j.com/developer/cypher/) query, eliminating the need to write queries in GraphQL resolvers and for batching queries. It also exposes the Cypher query language through GraphQL via the `@cypher` schema directive.
@@ -244,6 +257,48 @@ server.use(
 * Send a single query to the database
 * No need to write queries for each resolver
 * Exposes the power of the Cypher query language through GraphQL
+
+## Middleware
+
+Middleware is often useful for features such as authentication / authorization. You can use middleware with neo4j-graphql-js by injecting the request object after middleware has been applied into the context. For example:
+
+```
+const server = new ApolloServer({
+  schema: augmentedSchema,
+  // inject the request object into the context to support middleware
+  // inject the Neo4j driver instance to handle database call
+  context: ({ req }) => {
+    return {
+      driver,
+      req
+    };
+  }
+});
+```
+
+This request object will then be available inside your GraphQL resolver function. You can inspect the context/request object in your resolver to verify auth before calling `neo4jgraphql`. Also, `neo4jgraphql` will check for the existence of:
+
+- `context.req.error`
+- `context.error`
+
+and will throw an error if any of the above are defined.
+
+See [movies-middleware.js](https://github.com/neo4j-graphql/neo4j-graphql-js/tree/master/example/apollo-server/movies-middleware.js) for an example using a middleware function that checks for an `x-error` header.
+
+## Features
+
+- [x] translate basic GraphQL queries to Cypher
+- [x] `first` and `offset` arguments for pagination
+- [x] `@cypher` schema directive for exposing Cypher through GraphQL
+- [x] Handle enumeration types
+- [x] Handle fragments
+- [ ] Handle interface types
+- [ ] Handle inline fragments
+- [ ] Ordering
+
+## Examples
+
+See [/examples](https://github.com/neo4j-graphql/neo4j-graphql-js/tree/master/example/apollo-server)
 
 ## Resources
 
