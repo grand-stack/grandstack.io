@@ -1,7 +1,7 @@
 ---
 id: neo4j-graphql
 title: Neo4j-GraphQL
-sidebar_label: Overview
+sidebar_label: Neo4j-GraphQL Overview
 ---
 
 

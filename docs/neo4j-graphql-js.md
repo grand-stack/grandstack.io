@@ -1,7 +1,7 @@
 ---
 id: neo4j-graphql-js
 title: neo4j-graphql-js
-sidebar_label: neo4j-graphql-js
+sidebar_label: Getting Started
 ---
 
 A GraphQL to Cypher query execution layer for Neo4j and JavaScript GraphQL implementations.
@@ -10,11 +10,61 @@ A GraphQL to Cypher query execution layer for Neo4j and JavaScript GraphQL imple
 
 ### Install
 
-```
+```shell
 npm install --save neo4j-graphql-js
 ```
 
-Then call `neo4jgraphql()` in your GraphQL resolver. Your GraphQL query will be translated to Cypher and the query passed to Neo4j.
+### Usage
+
+Start with GraphQL type definitions:
+
+```javascript
+const typeDefs = `
+type Movie {
+    title: String
+    year: Int
+    imdbRating: Float
+    genres: [Genre] @relation(name: "IN_GENRE", direction: "OUT")
+}
+type Genre {
+    name: String
+    movies: [Movie] @relation(name: "IN_GENRE", direction: "IN")
+}
+`;
+```
+
+Create an executable GraphQL schema with auto-generated resolvers for Query and Mutation types, ordering, pagination, and support for computed fields defined using the `@cypher` GraphQL schema directive:
+
+```
+import { makeAugmentedSchema } from 'neo4j-graphql-js';
+
+const schema = makeAugmentedSchema({ typeDefs });
+```
+
+Create a neo4j-javascript-driver instance:
+
+```
+import { v1 as neo4j } from 'neo4j-driver';
+
+const driver = neo4j.driver(
+  'bolt://localhost:7687',
+  neo4j.auth.basic('neo4j', 'letmein')
+);
+```
+
+Use your favorite JavaScript GraphQL server implementation to serve your GraphQL schema, injecting the Neo4j driver instance into the context so your data can be resolved in Neo4j:
+
+```
+import { ApolloServer } from 'apollo-server';
+
+const server = new ApolloServer({ schema, context: { driver } });
+
+server.listen(3003, '0.0.0.0').then(({ url }) => {
+  console.log(`GraphQL API ready at ${url}`);
+});
+```
+
+If you don't want auto-generated resolvers, you can also call `neo4jgraphql()` in your GraphQL resolver. Your GraphQL query will be translated to Cypher and the query passed to Neo4j.
 
 ```js
 import { neo4jgraphql } from 'neo4j-graphql-js';
@@ -222,6 +272,8 @@ RETURN movie { .title , .year , .imdbRating,
 SKIP 0
 ```
 
+> This means that the entire GraphQL request is still resolved with a single Cypher query, and thus a single round trip to the database.
+
 ### Query Neo4j
 
 Inject a Neo4j driver instance in the context of each GraphQL request and `neo4j-graphql-js` will query the Neo4j database and return the results to resolve the GraphQL query.
@@ -252,17 +304,161 @@ server.use(
 );
 ```
 
-## Benefits
+## Schema Augmentation
 
-* Send a single query to the database
-* No need to write queries for each resolver
-* Exposes the power of the Cypher query language through GraphQL
+Similarly to the [Neo4j-GraphQL database plug-in](neo4j-graphql-plugin.md), `neo4j-graphql-js` can augment the provided GraphQL schema to add 
+
+* auto-generated mutations and queries
+* ordering and pagination fields
+
+> NOTE: neo4j-graphql-js does not currently support the `filter` parameter, as currently implemented in the Neo4j-GraphQL database plugin.
+
+To add these augmentations to the schema use either the [`augmentSchema`](neo4j-graphql-js-api.md#augmentschemaschema-graphqlschema) or [`makeAugmentedSchema`](neo4j-graphql-js-api.md#makeaugmentedschemaoptions-graphqlschema) functions exported from `neo4j-graphql-js`.
+
+**`augmentSchema`** - *when you already have a GraphQL schema object*
+
+```javascript
+import { augmentSchema } from 'neo4j-graphql-js';
+import { makeExecutableSchema } from 'apollo-server';  
+import { typeDefs, resolvers } from './movies-schema';
+
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers
+});
+
+const augmentedSchema = augmentSchema(schema);
+
+```
+
+**`makeAugmentedSchema`** - *generate executable schema from GraphQL type definitions only*
+
+```javascript
+import { makeAugmentedSchema } from 'neo4j-graphql-js';
+
+const typeDefs = `
+type Movie {
+    title: String
+    year: Int
+    imdbRating: Float
+    genres: [Genre] @relation(name: "IN_GENRE", direction: "OUT")
+    similar: [Movie] @cypher(
+        statement: """MATCH (this)<-[:RATED]-(:User)-[:RATED]->(s:Movie) 
+                      WITH s, COUNT(*) AS score 
+                      RETURN s ORDER BY score DESC LIMIT {first}""")
+}
+
+type Genre {
+    name: String
+    movies: [Movie] @relation(name: "IN_GENRE", direction: "IN")
+}`;
+
+const schema = makeAugmentedSchema({ typeDefs });
+```
+
+### Generated Queries
+
+Based on the type definitions provided, fields are added to the Query type for each type defined. For example, the following queries are added based on the type definitions above:
+
+```graphql
+Movie(
+  title: String
+  year: Int
+  imdbRating: Float
+  _id: Int
+  first: Int
+  offset: Int
+  orderBy: _MovieOrdering
+): [Movie]
+```
+
+```graphql
+Genre(
+  name: String
+  _id: Int
+  first: Int
+  offset: Int
+  orderBy: _GenreOrdering
+): [Genre]
+```
+
+### Generated Mutations
+
+Create, update, delete, and add relationship mutations are also generated for each type. For example:
+
+**Create**
+
+```
+CreateMovie(
+  title: String
+  year: Int
+  imdbRating: Float
+): Movie
+```
+
+**Update**
+
+```
+UpdateMovie(
+  title: String!
+  year: Int
+  imdbRating: Float
+): Movie
+```
+
+**Delete**
+
+```
+DeleteMovie(
+  title: String!
+): Movie
+```
+
+**Add Relationship**
+
+```
+AddMovieGenres(
+  movietitle: String!
+  genrename: String!
+): Movie
+```
+
+**Remove Relationship**
+
+```
+RemoveMovieGenres(
+  movietitle: String!
+  genrename: String!
+): Movie
+```
+
+
+### Ordering
+
+`neo4j-graphql-js` supports ordering results through the use of an `orderBy` parameter. The augment schema process will add `orderBy` to fields as well as appropriate ordering enum types (where values are a combination of each field and `_asc` for ascending order and `_desc` for descending order). For example:
+
+```
+enum _MovieOrdering {
+  title_asc
+  title_desc
+  year_asc
+  year_desc
+  imdbRating_asc
+  imdbRating_desc
+  _id_asc
+  _id_desc
+}
+```
+
+### Pagination
+
+`neo4j-graphql-js` support pagination through the use of `first` and `offset` parameters. These parameters are added to the appropriate fields as part of the schema augmentation process.
 
 ## Middleware
 
 Middleware is often useful for features such as authentication / authorization. You can use middleware with neo4j-graphql-js by injecting the request object after middleware has been applied into the context. For example:
 
-```
+```javascript
 const server = new ApolloServer({
   schema: augmentedSchema,
   // inject the request object into the context to support middleware
@@ -295,6 +491,12 @@ See [movies-middleware.js](https://github.com/neo4j-graphql/neo4j-graphql-js/tre
 - [ ] Handle interface types
 - [ ] Handle inline fragments
 - [ ] Ordering
+
+## Benefits
+
+* Send a single query to the database
+* No need to write queries for each resolver
+* Exposes the power of the Cypher query language through GraphQL
 
 ## Examples
 

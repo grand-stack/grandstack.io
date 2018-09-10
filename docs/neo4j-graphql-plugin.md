@@ -1,7 +1,7 @@
 ---
 id: neo4j-graphql-plugin
 title: Neo4j-GraphQL Database Plugin
-sidebar_label: Neo4j-GraphQL Plugin
+sidebar_label: Neo4j Database Plugin
 ---
 
 This is a GraphQL-Endpoint extension for Neo4j and is part of GRANDstack.
