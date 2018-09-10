@@ -306,7 +306,7 @@ server.use(
 
 ## Schema Augmentation
 
-Similarly to the [Neo4j-GraphQL database plug-in](neo4j-graphql-plugin.md), `neo4j-graphql-js` can augment the provided GraphQL schema to add 
+`neo4j-graphql-js` can augment the provided GraphQL schema to add 
 
 * auto-generated mutations and queries
 * ordering and pagination fields
