@@ -396,6 +396,8 @@ CreateMovie(
 ): Movie
 ```
 
+> If an `ID` typed field is specified in the type defintion, but not provided when the create mutation is executed then a random UUID will be generated and stored in the database. 
+
 **Update**
 
 ```
