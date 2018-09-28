@@ -212,7 +212,7 @@ SKIP 0
 
 ## `@cypher` directive
 
-*NOTE: The `@cypher` directive has a dependency on the APOC procedure library, specifically the function `apoc.cypher.runFirstColumn` to run subqueries. If you'd like to make use of the `@cypher` feature you'll need to install [APOC](https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/tag/3.2.0.5-beta) in Neo4j 3.2+*
+> The `@cypher` directive feature has a dependency on the APOC procedure library, to enable subqueries. If you'd like to make use of the `@cypher` feature you'll need to install the [APOC procedure library](https://github.com/neo4j-contrib/neo4j-apoc-procedures#installation-with-neo4j-desktop).
 
 GraphQL is fairly limited when it comes to expressing complex queries such as filtering, or aggregations. We expose the graph querying language Cypher through GraphQL via the `@cypher` directive. Annotate a field in your schema with the `@cypher` directive to map the results of that query to the annotated GraphQL field. For example:
 
