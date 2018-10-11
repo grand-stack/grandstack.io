@@ -538,7 +538,7 @@ When queries are generated (through [`augmentSchema`](neo4j-graphql-js-api.html#
 type _MovieRatings {
   timestamp: Int
   rating: Float
-  User(...): User
+  User: User
 }
 ```
 
