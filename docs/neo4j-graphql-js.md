@@ -485,6 +485,62 @@ enum _MovieOrdering {
 
 `neo4j-graphql-js` support pagination through the use of `first` and `offset` parameters. These parameters are added to the appropriate fields as part of the schema augmentation process.
 
+### Configuring Schema Augmentation
+
+You may not want to generate Query and Mutation fields for all types included in your type definitions, or you may not want to generate a Mutation type at all. Both `augmentSchema` and `makeAugmentedSchema` can be passed an optional configuration object to specify which types should be included in queries and mutations.
+
+#### Disabling Auto-generated Queries and Mutations
+
+By default, both Query and Mutation types are auto-generated from type definitions and will include fields for all types in the schema. An optional `config` object can be passed to disable generating either the Query or Mutation type.
+
+Using `makeAugmentedSchema`, disable generating the Mutation type:
+
+```javascript
+import { makeAugmentedSchema } from "neo4j-graphql-js";
+
+const schema = makeAugmentedSchema({ 
+  typeDefs,
+  config: {
+    query: true, // default
+    mutation: false
+  }
+}
+```
+
+Using `augmentSchema`, disable auto-generating mutations:
+
+```javascript
+import { augmentSchema } from "neo4j-graphql-js";
+
+const augmentedSchema = augmentSchema(schema, {
+  query: true, //default
+  mutation: false
+})
+```
+
+#### Excluding Types 
+
+To exclude specific types from being included in the generated Query and Mutation types, pass those type names in to the config object under `exclude`. For example:
+
+```javascript
+import { makeAugmentedSchema } from "neo4j-graphql-js";
+
+const schema = makeAugmentedSchema({
+  typeDefs,
+  config: {
+    query: {
+      exclude: ["MyCustomPayload"]
+    },
+    mutation: {
+      exclude: ["MyCustomPayload"]
+    }
+  }
+});
+```
+
+See the API Reference for [`augmentSchema`](neo4j-graphql-js-api.md#augmentschemaschema-graphqlschema) and [`makeAugmentedSchema`](neo4j-graphql-js-api.md#makeaugmentedschemaoptions-graphqlschema) for more information.
+
+
 ## Relationship Types
 
 ### Defining relationships in SDL

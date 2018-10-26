@@ -41,13 +41,38 @@ Specifies whether to log the generated Cypher queries for each GraphQL request. 
 [ExecutionResult](https://graphql.org/graphql-js/execution/#execute)
 
 
-### `augmentSchema(schema)`: <`GraphQLSchema`>
+### `augmentSchema(schema, config)`: <`GraphQLSchema`>
 
 Takes an existing GraphQL schema object and adds neo4j-graphql-js specific enhancements, including auto-generated mutations and queries, and ordering and pagination fields. See [this guide](neo4j-graphql-js.md) for more information.
 
 #### Parameters
 
 * `schema`: <`GraphQLSchema`>
+* `config`: <`Object`>
+
+`config` is an object that can contain the keys `query` and `mutation` (both optional). `query` and `mutation` can be either booleans (both true by default) or objects. Booleans to specify if the Query and Mutation types should be auto-generated, or for more fine-grained control objects with the key `exclude` where `exclude` is an array of type names to exclude from the augmentation process.
+
+For example:
+
+```javascript
+const augmentedSchema = augmentSchema(schema, {
+  query: true, //default
+  mutation: false
+})
+```
+
+or
+
+```javascript
+const augmentedSchema = augmentSchema(schema, {
+    query: {
+        exclude: ["MyPayloadType"]
+    },
+    mutation: {
+        exclude: ["MyPayloadType"]
+    }
+})
+```
 
 #### Returns
 
@@ -70,6 +95,37 @@ Wraps [`makeExecutableSchema`](https://www.apollographql.com/docs/apollo-server/
     * `schemaDirectives` = null
     * `parseOptions` = {}
     * `inheritResolversFromInterfaces` = false
+    * `config`: <`Object`>
+
+`config` is an object that can contain the keys `query` and `mutation` (both optional). `query` and `mutation` can be either booleans (both true by default) or objects. Booleans to specify if the Query and Mutation types should be auto-generated, or for more fine-grained control objects with the key `exclude` where `exclude` is an array of type names to exclude from the augmentation process.
+
+For example:
+
+```javascript
+const schema = makeAugmentedSchema({
+  typeDefs,
+  config: {
+      query: true, //default
+    mutation: false
+  }
+})
+```
+
+or
+
+```javascript
+const schema = makeAugmentedSchema({
+    typeDefs,
+    config: {
+        query: {
+            exclude: ["MyPayloadType"]
+        },
+        mutation: {
+            exclude: ["MyPayloadType"]
+        }
+    }
+})
+```
 
 #### Returns
 
