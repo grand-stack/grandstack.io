@@ -80,8 +80,12 @@ class HomeSplash extends React.Component {
         <div className="inner">
           <ProjectTitle />
           <PromoSection>
-            <Button href="https://github.com/grand-stack/grand-stack-starter/releases/download/v0.0.5/grand-stack-starter.zip">Download Starter</Button>
-            <Button href={docUrl("getting-started.html", language)}>Learn More</Button>
+            <Button href="https://github.com/grand-stack/grand-stack-starter/releases/download/v0.0.5/grand-stack-starter.zip">
+              Download Starter
+            </Button>
+            <Button href={docUrl("getting-started.html", language)}>
+              Learn More
+            </Button>
             {/* <Button href={docUrl('doc2.html', language)}>Example Link 2</Button> */}
           </PromoSection>
         </div>
@@ -205,9 +209,7 @@ const GraphQL = props => (
           </div>
 
           <div className="blockImage">
-            <img
-              src={imgUrl("/logo/graphql.svg")}
-            />
+            <img src={imgUrl("/logo/graphql.svg")} />
           </div>
         </div>
       </div>
@@ -215,17 +217,13 @@ const GraphQL = props => (
   </div>
 );
 
-
 const ReactSlide = props => (
   <div className="container lightBackground paddingBottom paddingTop">
     <div className="wrapper">
       <div className="gridBlock">
         <div className="blockElement imageAlignSide imageAlignLeft twoByGridBlock">
-
-        <div className="blockImage">
-            <img
-              src={imgUrl("/logo/react.svg")}
-            />
+          <div className="blockImage">
+            <img src={imgUrl("/logo/react.svg")} />
           </div>
 
           <div className="blockContent">
@@ -239,9 +237,7 @@ const ReactSlide = props => (
 
             <div>
               <span>
-                <p>
-                  A JavaScript library for building user interfaces.
-                </p>
+                <p>A JavaScript library for building user interfaces.</p>
               </span>
             </div>
 
@@ -256,7 +252,9 @@ const ReactSlide = props => (
             <div>
               <span>
                 <p>
-                  Build reusable and composable user interface components. React components encapsulate data and state and can be composed for building complex user interfaces.
+                  Build reusable and composable user interface components. React
+                  components encapsulate data and state and can be composed for
+                  building complex user interfaces.
                 </p>
               </span>
             </div>
@@ -272,13 +270,12 @@ const ReactSlide = props => (
             <div>
               <span>
                 <p>
-                  Design views for data and React handles re-rendering your interface when application data changes.
+                  Design views for data and React handles re-rendering your
+                  interface when application data changes.
                 </p>
               </span>
             </div>
           </div>
-
-          
         </div>
       </div>
     </div>
@@ -302,7 +299,8 @@ const Apollo = props => (
             <div>
               <span>
                 <p>
-                  A suite of tools that work together to create great GraphQL workflows.
+                  A suite of tools that work together to create great GraphQL
+                  workflows.
                 </p>
               </span>
             </div>
@@ -318,7 +316,9 @@ const Apollo = props => (
             <div>
               <span>
                 <p>
-                Query GraphQL APIs using Apollo Client frontend framework integrations. Server side tooling enables GraphQL schema generation and performance monitoring
+                  Query GraphQL APIs using Apollo Client frontend framework
+                  integrations. Server side tooling enables GraphQL schema
+                  generation and performance monitoring
                 </p>
               </span>
             </div>
@@ -334,16 +334,15 @@ const Apollo = props => (
             <div>
               <span>
                 <p>
-                Consistent tooling across server-side and client-side development.
+                  Consistent tooling across server-side and client-side
+                  development.
                 </p>
               </span>
             </div>
           </div>
 
           <div className="blockImage">
-            <img
-              src={imgUrl("/logo/apollo.svg")}
-            />
+            <img src={imgUrl("/logo/apollo.svg")} />
           </div>
         </div>
       </div>
@@ -356,11 +355,8 @@ const Neo4jDatabase = props => (
     <div className="wrapper">
       <div className="gridBlock">
         <div className="blockElement imageAlignSide imageAlignLeft twoByGridBlock">
-
-        <div className="blockImage">
-            <img
-              src={imgUrl("/logo/neo4j.svg")}
-            />
+          <div className="blockImage">
+            <img src={imgUrl("/logo/neo4j.svg")} />
           </div>
 
           <div className="blockContent">
@@ -374,9 +370,7 @@ const Neo4jDatabase = props => (
 
             <div>
               <span>
-                <p>
-                  The open source native graph database.
-                </p>
+                <p>The open source native graph database.</p>
               </span>
             </div>
 
@@ -391,7 +385,8 @@ const Neo4jDatabase = props => (
             <div>
               <span>
                 <p>
-                Model, store, and query your data the same way you think about it: as a graph. 
+                  Model, store, and query your data the same way you think about
+                  it: as a graph.
                 </p>
               </span>
             </div>
@@ -399,7 +394,9 @@ const Neo4jDatabase = props => (
             <h2>
               <div>
                 <span>
-                  <p>Near Real Time Query Performance With Index-Free Adjacency</p>
+                  <p>
+                    Near Real Time Query Performance With Index-Free Adjacency
+                  </p>
                 </span>
               </div>
             </h2>
@@ -407,12 +404,12 @@ const Neo4jDatabase = props => (
             <div>
               <span>
                 <p>
-                Express complex graph traversals using the Cypher query language.                </p>
+                  Express complex graph traversals using the Cypher query
+                  language.{" "}
+                </p>
               </span>
             </div>
           </div>
-
-          
         </div>
       </div>
     </div>

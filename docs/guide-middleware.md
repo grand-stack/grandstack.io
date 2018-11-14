@@ -32,7 +32,7 @@ const resolvers = {
   Query: {
     Movie(object, params, ctx, resolveInfo) {
       if (!ctx.req.user) {
-        throw new Error('request not authenticated');
+        throw new Error("request not authenticated");
       } else {
         return neo4jgraphql(object, params, ctx, resolveInfo);
       }
@@ -73,26 +73,26 @@ and will throw an error if any of the above are defined.
 Full example:
 
 ```javascript
-import { makeAugmentedSchema } from 'neo4j-graphql-js';
-import { ApolloServer } from 'apollo-server-express';
-import express from 'express';
-import bodyParser from 'body-parser';
-import { makeExecutableSchema } from 'apollo-server';
-import { v1 as neo4j } from 'neo4j-driver';
-import { typeDefs } from './movies-schema';
+import { makeAugmentedSchema } from "neo4j-graphql-js";
+import { ApolloServer } from "apollo-server-express";
+import express from "express";
+import bodyParser from "body-parser";
+import { makeExecutableSchema } from "apollo-server";
+import { v1 as neo4j } from "neo4j-driver";
+import { typeDefs } from "./movies-schema";
 
 const schema = makeAugmentedSchema({
-    typeDefs
-  });
+  typeDefs
+});
 
 // Add auto-generated mutations
 const schema = augmentSchema(schema);
 
 const driver = neo4j.driver(
-  process.env.NEO4J_URI || 'bolt://localhost:7687',
+  process.env.NEO4J_URI || "bolt://localhost:7687",
   neo4j.auth.basic(
-    process.env.NEO4J_USER || 'neo4j',
-    process.env.NEO4J_PASSWORD || 'letmein'
+    process.env.NEO4J_USER || "neo4j",
+    process.env.NEO4J_PASSWORD || "letmein"
   )
 );
 
@@ -100,11 +100,11 @@ const app = express();
 app.use(bodyParser.json());
 
 const checkErrorHeaderMiddleware = async (req, res, next) => {
-  req.error = req.headers['x-error'];
+  req.error = req.headers["x-error"];
   next();
 };
 
-app.use('*', checkErrorHeaderMiddleware);
+app.use("*", checkErrorHeaderMiddleware);
 
 const server = new ApolloServer({
   schema: schema,
@@ -118,6 +118,6 @@ const server = new ApolloServer({
   }
 });
 
-server.applyMiddleware({ app, path: '/' });
-app.listen(3000, '0.0.0.0');
+server.applyMiddleware({ app, path: "/" });
+app.listen(3000, "0.0.0.0");
 ```

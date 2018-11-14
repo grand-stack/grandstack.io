@@ -1,9 +1,12 @@
 {
   "docs": {
-    "Getting Started": ["getting-started", "getting-started-grand-stack-starter", "neo4j-graphql"],
+    "Getting Started": [
+      "getting-started",
+      "getting-started-grand-stack-starter",
+      "neo4j-graphql"
+    ],
     "neo4j-graphql-js": ["neo4j-graphql-js", "neo4j-graphql-js-api"],
     "Guides": ["guide-middleware", "neo4j-graphql-plugin"],
     "Resources": ["links"]
-
   }
 }

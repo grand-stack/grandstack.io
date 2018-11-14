@@ -67,7 +67,7 @@ server.listen(3003, '0.0.0.0').then(({ url }) => {
 If you don't want auto-generated resolvers, you can also call `neo4jgraphql()` in your GraphQL resolver. Your GraphQL query will be translated to Cypher and the query passed to Neo4j.
 
 ```js
-import { neo4jgraphql } from 'neo4j-graphql-js';
+import { neo4jgraphql } from "neo4j-graphql-js";
 
 const resolvers = {
   Query: {
@@ -88,8 +88,7 @@ npm build
 npm test
 ```
 
-The `npm test` script will run unit tests that check GraphQL -> Cypher translation and the schema augmentation features and can be easily run locally without a test environment. Full integration tests can be found in `/test` and are [run on CircleCI](https://circleci.com/gh/neo4j-graphql/neo4j-graphql-js) as part of the CI process. 
-
+The `npm test` script will run unit tests that check GraphQL -> Cypher translation and the schema augmentation features and can be easily run locally without a test environment. Full integration tests can be found in `/test` and are [run on CircleCI](https://circleci.com/gh/neo4j-graphql/neo4j-graphql-js) as part of the CI process.
 
 ## What is `neo4j-graphql-js`
 
@@ -97,20 +96,20 @@ A package to make it easier to use GraphQL and [Neo4j](https://neo4j.com/) toget
 
 ### Goals
 
-* Translate GraphQL queries to Cypher to simplify the process of writing GraphQL resolvers
-* Allow for custom logic by overriding of any resolver function
-* Work with `graphl-tools`, `graphql-js`, and `apollo-server`
-* Support GraphQL servers that need to resolve data from multiple data services/databases
-* Expose the power of Cypher through GraphQL via the `@cypher` directive
+- Translate GraphQL queries to Cypher to simplify the process of writing GraphQL resolvers
+- Allow for custom logic by overriding of any resolver function
+- Work with `graphl-tools`, `graphql-js`, and `apollo-server`
+- Support GraphQL servers that need to resolve data from multiple data services/databases
+- Expose the power of Cypher through GraphQL via the `@cypher` directive
 
 ## How it works
 
 `neo4j-graphql-js` aims to simplify the process of building GraphQL APIs backed by Neo4j, embracing the paradigm of GraphQL First Development. Specifically,
 
-* The Neo4j datamodel is defined by a GraphQL schema.
-* Inside resolver functions, GraphQL queries are translated to Cypher queries and can be sent to a Neo4j database by including a Neo4j driver instance in the context object of the GraphQL request.
-* Any resolver can be overridden by a custom resolver function implementation to allow for custom logic
-* Optionally, GraphQL fields can be resolved by a user defined Cypher query through the use of the `@cypher` schema directive.
+- The Neo4j datamodel is defined by a GraphQL schema.
+- Inside resolver functions, GraphQL queries are translated to Cypher queries and can be sent to a Neo4j database by including a Neo4j driver instance in the context object of the GraphQL request.
+- Any resolver can be overridden by a custom resolver function implementation to allow for custom logic
+- Optionally, GraphQL fields can be resolved by a user defined Cypher query through the use of the `@cypher` schema directive.
 
 ### Start with a GraphQL schema
 
@@ -145,15 +144,15 @@ type Query {
 
 We define two types, `Movie` and `Actor` as well as a top level Query `Movie` which becomes our entry point. This looks like a standard GraphQL schema, except for the use of two directives `@relation` and `@cypher`. In GraphQL directives allow us to annotate fields and provide an extension point for GraphQL.
 
-* `@cypher` directive - maps the specified Cypher query to the value of the field. In the Cypher query, `this` is bound to the current object being resolved.
-* `@relation` directive - used to indicate relationships in the data model. The `name` argument specifies the relationship type, and `direction` indicates the direction of the relationship ("IN" or "OUT" are valid values)
+- `@cypher` directive - maps the specified Cypher query to the value of the field. In the Cypher query, `this` is bound to the current object being resolved.
+- `@relation` directive - used to indicate relationships in the data model. The `name` argument specifies the relationship type, and `direction` indicates the direction of the relationship ("IN" or "OUT" are valid values)
 
 ### Translate GraphQL To Cypher
 
 Inside each resolver, use `neo4j-graphql()` to generate the Cypher required to resolve the GraphQL query, passing through the query arguments, context and resolveInfo objects.
 
 ```js
-import { neo4jgraphql } from 'neo4j-graphql-js';
+import { neo4jgraphql } from "neo4j-graphql-js";
 
 const resolvers = {
   // entry point to GraphQL service
@@ -284,8 +283,8 @@ let driver;
 function context(headers, secrets) {
   if (!driver) {
     driver = neo4j.driver(
-      'bolt://localhost:7687',
-      neo4j.auth.basic('neo4j', 'letmein')
+      "bolt://localhost:7687",
+      neo4j.auth.basic("neo4j", "letmein")
     );
   }
   return { driver };
@@ -306,21 +305,21 @@ server.use(
 
 ## Schema Augmentation
 
-`neo4j-graphql-js` can augment the provided GraphQL schema to add 
+`neo4j-graphql-js` can augment the provided GraphQL schema to add
 
-* auto-generated mutations and queries
-* ordering and pagination fields
+- auto-generated mutations and queries
+- ordering and pagination fields
 
 > NOTE: neo4j-graphql-js does not currently support the `filter` parameter, as currently implemented in the Neo4j-GraphQL database plugin.
 
 To add these augmentations to the schema use either the [`augmentSchema`](neo4j-graphql-js-api.md#augmentschemaschema-graphqlschema) or [`makeAugmentedSchema`](neo4j-graphql-js-api.md#makeaugmentedschemaoptions-graphqlschema) functions exported from `neo4j-graphql-js`.
 
-**`augmentSchema`** - *when you already have a GraphQL schema object*
+**`augmentSchema`** - _when you already have a GraphQL schema object_
 
 ```javascript
-import { augmentSchema } from 'neo4j-graphql-js';
-import { makeExecutableSchema } from 'apollo-server';  
-import { typeDefs, resolvers } from './movies-schema';
+import { augmentSchema } from "neo4j-graphql-js";
+import { makeExecutableSchema } from "apollo-server";
+import { typeDefs, resolvers } from "./movies-schema";
 
 const schema = makeExecutableSchema({
   typeDefs,
@@ -328,13 +327,12 @@ const schema = makeExecutableSchema({
 });
 
 const augmentedSchema = augmentSchema(schema);
-
 ```
 
-**`makeAugmentedSchema`** - *generate executable schema from GraphQL type definitions only*
+**`makeAugmentedSchema`** - _generate executable schema from GraphQL type definitions only_
 
 ```javascript
-import { makeAugmentedSchema } from 'neo4j-graphql-js';
+import { makeAugmentedSchema } from "neo4j-graphql-js";
 
 const typeDefs = `
 type Movie {
@@ -396,7 +394,7 @@ CreateMovie(
 ): Movie
 ```
 
-> If an `ID` typed field is specified in the type defintion, but not provided when the create mutation is executed then a random UUID will be generated and stored in the database. 
+> If an `ID` typed field is specified in the type defintion, but not provided when the create mutation is executed then a random UUID will be generated and stored in the database.
 
 **Update**
 
@@ -420,7 +418,7 @@ DeleteMovie(
 
 Input types are used for relationship mutations.
 
-*Add a relationship with no properties:*
+_Add a relationship with no properties:_
 
 ```graphql
 AddMovieGenres(
@@ -498,7 +496,7 @@ Using `makeAugmentedSchema`, disable generating the Mutation type:
 ```javascript
 import { makeAugmentedSchema } from "neo4j-graphql-js";
 
-const schema = makeAugmentedSchema({ 
+const schema = makeAugmentedSchema({
   typeDefs,
   config: {
     query: true, // default
@@ -515,10 +513,10 @@ import { augmentSchema } from "neo4j-graphql-js";
 const augmentedSchema = augmentSchema(schema, {
   query: true, //default
   mutation: false
-})
+});
 ```
 
-#### Excluding Types 
+#### Excluding Types
 
 To exclude specific types from being included in the generated Query and Mutation types, pass those type names in to the config object under `exclude`. For example:
 
@@ -540,7 +538,6 @@ const schema = makeAugmentedSchema({
 
 See the API Reference for [`augmentSchema`](neo4j-graphql-js-api.md#augmentschemaschema-graphqlschema) and [`makeAugmentedSchema`](neo4j-graphql-js-api.md#makeaugmentedschemaoptions-graphqlschema) for more information.
 
-
 ## Relationship Types
 
 ### Defining relationships in SDL
@@ -559,6 +556,7 @@ type Genre {
   movies: [Movie] @relation(name: "IN_GENRE", direction: "IN")
 }
 ```
+
 ### Relationships with properties
 
 The above example (annotating a field with `@relation`) works for simple relationships without properties, but does not allow for modeling relationship properties. Imagine that we have users who can rate movies, and we want to store their rating and timestamp as a property on a relationship connecting the user and movie. We can represent this by promoting the relationship to a type and moving the `@relation` directive to annotate this new type:
@@ -642,9 +640,9 @@ See [movies-middleware.js](https://github.com/neo4j-graphql/neo4j-graphql-js/tre
 
 ## Benefits
 
-* Send a single query to the database
-* No need to write queries for each resolver
-* Exposes the power of the Cypher query language through GraphQL
+- Send a single query to the database
+- No need to write queries for each resolver
+- Exposes the power of the Cypher query language through GraphQL
 
 ## Examples
 
@@ -652,6 +650,6 @@ See [/examples](https://github.com/neo4j-graphql/neo4j-graphql-js/tree/master/ex
 
 ## Resources
 
-* Read more in the [project docs](https://github.com/neo4j-graphql/neo4j-graphql-js).
-* Open an issue on the project [issue tracker on Github.](https://github.com/neo4j-graphql/neo4j-graphql-js/issues)
-* neo4j-graphql-js [on NPM](https://www.npmjs.com/package/neo4j-graphql-js)
+- Read more in the [project docs](https://github.com/neo4j-graphql/neo4j-graphql-js).
+- Open an issue on the project [issue tracker on Github.](https://github.com/neo4j-graphql/neo4j-graphql-js/issues)
+- neo4j-graphql-js [on NPM](https://www.npmjs.com/package/neo4j-graphql-js)

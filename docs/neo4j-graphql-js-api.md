@@ -16,23 +16,23 @@ It can be called within a resolver to generate a Cypher query and handle the dat
 
 #### Parameters
 
-* `object`: <`Object`>
+- `object`: <`Object`>
 
 The previous object being resolved. Rarely used for a field on the root Query type.
 
-* `params`: <`Object`>
+- `params`: <`Object`>
 
 The arguments provided to the field in the GraphQL query.
 
-* `context`: <`Object`>
+- `context`: <`Object`>
 
-Value provided to every resolver and hold contextual information about the request, such as the currently logged in user, or access to a database. *`neo4j-graphql-js` assumes a `neo4j-javascript-driver` instance exists in this object, under the key `driver`.*
+Value provided to every resolver and hold contextual information about the request, such as the currently logged in user, or access to a database. _`neo4j-graphql-js` assumes a `neo4j-javascript-driver` instance exists in this object, under the key `driver`._
 
-* `resolveInfo`: <`GraphQLResolveInfo`>
+- `resolveInfo`: <`GraphQLResolveInfo`>
 
-Holds field-specific infomation relevant to the current query as well as the GraphQL schema. 
+Holds field-specific infomation relevant to the current query as well as the GraphQL schema.
 
-* `debug`: `Boolean` *(default: `true`)*
+- `debug`: `Boolean` _(default: `true`)_
 
 Specifies whether to log the generated Cypher queries for each GraphQL request. Logging is enabled by default.
 
@@ -40,15 +40,14 @@ Specifies whether to log the generated Cypher queries for each GraphQL request. 
 
 [ExecutionResult](https://graphql.org/graphql-js/execution/#execute)
 
-
 ### `augmentSchema(schema, config)`: <`GraphQLSchema`>
 
 Takes an existing GraphQL schema object and adds neo4j-graphql-js specific enhancements, including auto-generated mutations and queries, and ordering and pagination fields. See [this guide](neo4j-graphql-js.md) for more information.
 
 #### Parameters
 
-* `schema`: <`GraphQLSchema`>
-* `config`: <`Object`>
+- `schema`: <`GraphQLSchema`>
+- `config`: <`Object`>
 
 `config` is an object that can contain the keys `query` and `mutation` (both optional). `query` and `mutation` can be either booleans (both true by default) or objects. Booleans to specify if the Query and Mutation types should be auto-generated, or for more fine-grained control objects with the key `exclude` where `exclude` is an array of type names to exclude from the augmentation process.
 
@@ -58,20 +57,20 @@ For example:
 const augmentedSchema = augmentSchema(schema, {
   query: true, //default
   mutation: false
-})
+});
 ```
 
 or
 
 ```javascript
 const augmentedSchema = augmentSchema(schema, {
-    query: {
-        exclude: ["MyPayloadType"]
-    },
-    mutation: {
-        exclude: ["MyPayloadType"]
-    }
-})
+  query: {
+    exclude: ["MyPayloadType"]
+  },
+  mutation: {
+    exclude: ["MyPayloadType"]
+  }
+});
 ```
 
 #### Returns
@@ -84,18 +83,18 @@ Wraps [`makeExecutableSchema`](https://www.apollographql.com/docs/apollo-server/
 
 #### Parameters
 
-* `options`: <`Object`>
-    * `schema`: <`GraphQLSchema`>
-    * `typeDefs`: <`String`>
-    * `resolvers`: <`Object`>
-    * `logger`: <`Object`>
-    * `allowUndefinedInResolve` = false
-    * `resolverValidationOptions` = {}
-    * `directiveResolvers` = null
-    * `schemaDirectives` = null
-    * `parseOptions` = {}
-    * `inheritResolversFromInterfaces` = false
-    * `config`: <`Object`>
+- `options`: <`Object`>
+  - `schema`: <`GraphQLSchema`>
+  - `typeDefs`: <`String`>
+  - `resolvers`: <`Object`>
+  - `logger`: <`Object`>
+  - `allowUndefinedInResolve` = false
+  - `resolverValidationOptions` = {}
+  - `directiveResolvers` = null
+  - `schemaDirectives` = null
+  - `parseOptions` = {}
+  - `inheritResolversFromInterfaces` = false
+  - `config`: <`Object`>
 
 `config` is an object that can contain the keys `query` and `mutation` (both optional). `query` and `mutation` can be either booleans (both true by default) or objects. Booleans to specify if the Query and Mutation types should be auto-generated, or for more fine-grained control objects with the key `exclude` where `exclude` is an array of type names to exclude from the augmentation process.
 
@@ -105,26 +104,26 @@ For example:
 const schema = makeAugmentedSchema({
   typeDefs,
   config: {
-      query: true, //default
+    query: true, //default
     mutation: false
   }
-})
+});
 ```
 
 or
 
 ```javascript
 const schema = makeAugmentedSchema({
-    typeDefs,
-    config: {
-        query: {
-            exclude: ["MyPayloadType"]
-        },
-        mutation: {
-            exclude: ["MyPayloadType"]
-        }
+  typeDefs,
+  config: {
+    query: {
+      exclude: ["MyPayloadType"]
+    },
+    mutation: {
+      exclude: ["MyPayloadType"]
     }
-})
+  }
+});
 ```
 
 #### Returns
@@ -137,9 +136,9 @@ Generates a Cypher query (and associated parameters) to resolve a given GraphQL 
 
 #### Parameters
 
-* `params`: <`Object`>
-* `context`: <`Object`>
-* `resolveInfo`: <`GraphQLResolveInfo`>
+- `params`: <`Object`>
+- `context`: <`Object`>
+- `resolveInfo`: <`GraphQLResolveInfo`>
 
 #### Returns
 
@@ -153,9 +152,9 @@ Similar to `cypherQuery`, but for mutations. Generates a Cypher query (and assoc
 
 #### Parameters
 
-* `params`: <`Object`>
-* `context`: <`Object`>
-* `resolveInfo`: <`GraphQLResolveInfo`>
+- `params`: <`Object`>
+- `context`: <`Object`>
+- `resolveInfo`: <`GraphQLResolveInfo`>
 
 #### Returns
 

@@ -6,12 +6,11 @@ sidebar_label: Neo4j Database Plugin
 
 This is a GraphQL-Endpoint extension for Neo4j and is part of GRANDstack.
 
-*This readme assumes you are somewhat familiar with [GraphQL](http://graphql.org/) and minimally with [Cypher](http://neo4j.com/developer/cypher).*
+_This readme assumes you are somewhat familiar with [GraphQL](http://graphql.org/) and minimally with [Cypher](http://neo4j.com/developer/cypher)._
 
 Based on your _GraphQL schema_, it translates GraphQL _Queries_ and _Mutations_ into Cypher statements and executes them on Neo4j.
 
-It offers both an *HTTP API*, as well as, Neo4j Cypher *Procedures* to execute and manage your GraphQL API.
-
+It offers both an _HTTP API_, as well as, Neo4j Cypher _Procedures_ to execute and manage your GraphQL API.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/J-J90uwugb4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
@@ -19,7 +18,7 @@ It offers both an *HTTP API*, as well as, Neo4j Cypher *Procedures* to execute a
 
 Download and install [Neo4j Desktop](http://neo4j.com/download).
 
-Neo4j Desktop provides a quick install button for *neo4j-graphql*.
+Neo4j Desktop provides a quick install button for _neo4j-graphql_.
 
 After creating your database you can find it under "Manage" in the "Plugins" tab for a single click install.
 
@@ -51,9 +50,10 @@ The best tool to use is [GraphiQL](https://electronjs.org/apps/graphiql) the Gra
 
 Enter your GraphQL URL, like `http://localhost:7474/graphql/` (_note the trailing slash_).
 
-If your Neo4j Server runs with *authentication enabled*, add the appropriate Basic-Auth ([base64 encoded](https://www.base64encode.org/)) `username:password` header in the "Edit HTTP Headers" screen.
+If your Neo4j Server runs with _authentication enabled_, add the appropriate Basic-Auth ([base64 encoded](https://www.base64encode.org/)) `username:password` header in the "Edit HTTP Headers" screen.
 
 .Command to generate the `Authorization` header value.
+
 ```
 echo "Basic $(echo -n "neo4j:<password>" | base64)"
 ```
@@ -65,17 +65,18 @@ Just a Movie with actors, and a Person with movies.
 
 Simple properties are mapped directly while the relationships are mapped to fields `movies` and `actors`
 
-*Movies Schema*
+_Movies Schema_
+
 ```graphql
-type Movie  {
+type Movie {
   title: String!
   released: Int
-  actors: [Person] @relation(name:"ACTED_IN",direction:IN)
+  actors: [Person] @relation(name: "ACTED_IN", direction: IN)
 }
 type Person {
   name: String!
   born: Int
-  movies: [Movie] @relation(name:"ACTED_IN")
+  movies: [Movie] @relation(name: "ACTED_IN")
 }
 ```
 
@@ -108,20 +109,22 @@ To visualize your GraphQL schema in Neo4j Browser use: `call graphql.schema()`.
 
 ### Auto-Generated Query Types
 
-From that schema, the plugin automatically generate *Query Types* for each of the declared types.
+From that schema, the plugin automatically generate _Query Types_ for each of the declared types.
 
 e.g. `Movie(title,released,first,offset,_id,orderBy, filter): [User]`
 
-* Each field of the entity is available as _query argument_, with an equality check (plural for list-contains)
-* We also provide a `filter` argument for more complex filtering with nested predicates, also for relation-fields (see [graphcool docs](https://www.graph.cool/docs/reference/graphql-api/query-api-nia9nushae))
-* For ordered results there is a `orderBy` argument
-* And `first`, `offset` allow for pagination
+- Each field of the entity is available as _query argument_, with an equality check (plural for list-contains)
+- We also provide a `filter` argument for more complex filtering with nested predicates, also for relation-fields (see [graphcool docs](https://www.graph.cool/docs/reference/graphql-api/query-api-nia9nushae))
+- For ordered results there is a `orderBy` argument
+- And `first`, `offset` allow for pagination
 
 Now you can for instance run this query:
 
-*Simple query example*
+_Simple query example_
+
 ```graphql
-{ Person(name:"Kevin Bacon") {
+{
+  Person(name: "Kevin Bacon") {
     name
     born
     movies {
@@ -132,9 +135,11 @@ Now you can for instance run this query:
   }
 }
 ```
+
 ![](/docs/assets/img/graphiql-query1.jpg)
 
-*Advanced query example*
+_Advanced query example_
+
 ```graphql
 query Nineties($released: Long, $letter: String)
 { Movie(released: $released,
@@ -165,43 +170,49 @@ And get this result:
 
 ### Auto-Generated Mutations
 
-Additionally *Mutations* for each type are created, which return update statistics.
+Additionally _Mutations_ for each type are created, which return update statistics.
 
 e.g. for the `Movie` type:
 
-* `createMovie(title: ID!, released: Int) : String`
-* `updateMovie(title: ID!, released: Int) : String`
-* `deleteMovie(title: ID!) : String`
+- `createMovie(title: ID!, released: Int) : String`
+- `updateMovie(title: ID!, released: Int) : String`
+- `deleteMovie(title: ID!) : String`
 
 and for it's relationships:
 
-* `addMovieActors(title: ID!, actors:[ID]!) : String`
-* `deleteMovieActors(title: ID!, actors:[ID]!) : String`
+- `addMovieActors(title: ID!, actors:[ID]!) : String`
+- `deleteMovieActors(title: ID!, actors:[ID]!) : String`
 
 Those mutations then allow you to create and update your data with GraphQL.
 
-*Single Mutation*
+_Single Mutation_
+
 ```graphql
 mutation {
-    createPerson(name:"Chadwick Boseman", born: 1977)
+  createPerson(name: "Chadwick Boseman", born: 1977)
 }
 ```
 
-*Mutation Result*
+_Mutation Result_
+
 ```json
-{ "data": {
+{
+  "data": {
     "createPerson": "Nodes created: 1\nProperties set: 2\nLabels added: 1\n"
   }
 }
 ```
 
-*Several Mutations at once*
+_Several Mutations at once_
+
 ```graphql
 mutation {
-    pp: createMovie(title:"Black Panther", released: 2018)
-    lw: createPerson(name:"Letitia Wright", born: 1993)
-    cast: addMovieActors(title: "Black Panther",
-          actors:["Chadwick Boseman","Letitia Wright"])
+  pp: createMovie(title: "Black Panther", released: 2018)
+  lw: createPerson(name: "Letitia Wright", born: 1993)
+  cast: addMovieActors(
+    title: "Black Panther"
+    actors: ["Chadwick Boseman", "Letitia Wright"]
+  )
 }
 ```
 
@@ -219,7 +230,8 @@ You have already seen the `@relation(name:"ACTED_IN", direction:"IN")` directive
 
 The `@cypher` directive is a powerful way of declaring _computed_ fields, query types and mutations with a Cypher statement.
 
-*For instance, `directors`*
+_For instance, `directors`_
+
 ```graphql
 type Movie {
   ...
@@ -227,15 +239,17 @@ type Movie {
 }
 ```
 
-*Register Top-Level Schema Types*
+_Register Top-Level Schema Types_
+
 ```graphql
 schema {
-   query: QueryType
-   mutation: MutationType
+  query: QueryType
+  mutation: MutationType
 }
 ```
 
-*A custom query*
+_A custom query_
+
 ```graphql
 type QueryType {
   ...
@@ -243,7 +257,8 @@ type QueryType {
 }
 ```
 
-*A custom mutation*
+_A custom mutation_
+
 ```graphql
 type MutationType {
   ...
@@ -252,30 +267,36 @@ type MutationType {
 }
 ```
 
+_Full enhanced Schema_
 
-*Full enhanced Schema*
 ```graphql
-type Movie  {
+type Movie {
   title: String!
   released: Int
-  actors: [Person] @relation(name:"ACTED_IN",direction:IN)
-  directors: [Person] @cypher(statement:"MATCH (this)<-[:DIRECTED]-(d) RETURN d")
+  actors: [Person] @relation(name: "ACTED_IN", direction: IN)
+  directors: [Person]
+    @cypher(statement: "MATCH (this)<-[:DIRECTED]-(d) RETURN d")
 }
 type Person {
   name: String!
   born: Int
-  movies: [Movie] @relation(name:"ACTED_IN")
+  movies: [Movie] @relation(name: "ACTED_IN")
 }
 schema {
-   query: QueryType
-   mutation: MutationType
+  query: QueryType
+  mutation: MutationType
 }
 type QueryType {
-  coActors(name:ID!): [Person] @cypher(statement:"MATCH (p:Person {name:$name})-[:ACTED_IN]->()<-[:ACTED_IN]-(co) RETURN distinct co")
+  coActors(name: ID!): [Person]
+    @cypher(
+      statement: "MATCH (p:Person {name:$name})-[:ACTED_IN]->()<-[:ACTED_IN]-(co) RETURN distinct co"
+    )
 }
 type MutationType {
-  rateMovie(user:ID!, movie:ID!, rating:Int!): Int
-  @cypher(statement:"MATCH (p:Person {name:$user}),(m:Movie {title:$movie}) MERGE (p)-[r:RATED]->(m) SET r.rating=$rating RETURN r.rating")
+  rateMovie(user: ID!, movie: ID!, rating: Int!): Int
+    @cypher(
+      statement: "MATCH (p:Person {name:$user}),(m:Movie {title:$movie}) MERGE (p)-[r:RATED]->(m) SET r.rating=$rating RETURN r.rating"
+    )
 }
 ```
 
@@ -283,12 +304,14 @@ type MutationType {
 
 This library also comes with Cypher Procedures to execute GraphQL from within Neo4j.
 
-*Simple Procedure Query*
+_Simple Procedure Query_
+
 ```cypher
 CALL graphql.query('{ Person(born: 1961) { name, born } }')
 ```
 
-*Advanced Procedure Query with parameters and post-processing*
+_Advanced Procedure Query with parameters and post-processing_
+
 ```cypher
 WITH 'query ($year:Long,$limit:Int) { Movie(released: $year, first:$limit) { title, actors {name} } }' as query
 
@@ -300,12 +323,11 @@ RETURN movie.title, [a IN movie.actors | a.name] as actors
 
 ![](/docs/assets/img/graphql.execute.jpg)
 
-*Update with Mutation*
+_Update with Mutation_
+
 ```cypher
 CALL graphql.execute('mutation { createMovie(title:"The Shape of Water", released:2018)}')
 ```
-
-
 
 ### Procedures
 
@@ -318,24 +340,25 @@ call graphql.introspect("https://api.github.com/graphql",{Authorization:"bearer 
 
 ![](/docs/assets/img/graphql.introspect-github.jpg)
 
-
 ## Examples
 
 Some more examples
 
-*Relationship Argument*
+_Relationship Argument_
+
 ```graphql
 query MoviePersonQuery {
   Movie {
     title
-    actedIn(name:"Tom Hanks") {
+    actedIn(name: "Tom Hanks") {
       name
     }
   }
 }
 ```
 
-*Nested Relationships*
+_Nested Relationships_
+
 ```graphql
 query PersonMoviePersonQuery {
   Person {
@@ -350,7 +373,8 @@ query PersonMoviePersonQuery {
 }
 ```
 
-*Sorting*
+_Sorting_
+
 ```graphql
 query PersonQuery {
   Person(orderBy: [age_asc, name_desc]) {
@@ -361,5 +385,6 @@ query PersonQuery {
 ```
 
 ## Resources
-* Read more in the [project docs]().
-* Report an issue on the [Github issue tracker]().
+
+- Read more in the [project docs]().
+- Report an issue on the [Github issue tracker]().

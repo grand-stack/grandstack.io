@@ -42,14 +42,14 @@ class Hackathon extends React.Component {
           <div className="post">
             <header className="postHeader">
               <h1>GRANDstack Online Hackathon</h1>
-              </header>
-              <span>
+            </header>
+            <span>
               <p>
-                Build a GRANDstack app during the month of <a href="https://www.graphql-europe.org/">GraphQL Europe</a> and
+                Build a GRANDstack app during the month of{" "}
+                <a href="https://www.graphql-europe.org/">GraphQL Europe</a> and
                 win cool prizes
               </p>
-              </span>
-            
+            </span>
 
             <GridBlock
               contents={steps}
@@ -61,16 +61,35 @@ class Hackathon extends React.Component {
               <h2>Resources</h2>
               <ul>
                 <li>
-                  The <a href="http://grandstack.io/docs/getting-started-grand-stack-starter.html">grand-stack-starter project</a> is a great way to quickly spin up a skeleton GRANDstack app.
+                  The{" "}
+                  <a href="http://grandstack.io/docs/getting-started-grand-stack-starter.html">
+                    grand-stack-starter project
+                  </a>{" "}
+                  is a great way to quickly spin up a skeleton GRANDstack app.
                 </li>
-                <li>Use the <a href="http://grandstack.io/docs/neo4j-graphql-plugin.html">Neo4j-GraphQL plugin</a> to serve a GraphQL endpoint directly from Neo4j. </li>
-                <li>Quickly spin up a free hosted Neo4j instance, choose from existing datasets with <a href="https://neo4j.com/sandbox-v2/"> Neo4j Sandbox.</a> </li>
-                <li>See what others are doing on the <a href="https://blog.grandstack.io/">GRANDstack Blog.</a></li>
+                <li>
+                  Use the{" "}
+                  <a href="http://grandstack.io/docs/neo4j-graphql-plugin.html">
+                    Neo4j-GraphQL plugin
+                  </a>{" "}
+                  to serve a GraphQL endpoint directly from Neo4j.{" "}
+                </li>
+                <li>
+                  Quickly spin up a free hosted Neo4j instance, choose from
+                  existing datasets with{" "}
+                  <a href="https://neo4j.com/sandbox-v2/"> Neo4j Sandbox.</a>{" "}
+                </li>
+                <li>
+                  See what others are doing on the{" "}
+                  <a href="https://blog.grandstack.io/">GRANDstack Blog.</a>
+                </li>
               </ul>
 
-              <p><li>
+              <p>
+                <li>
                   Email <i>will@grandstack.io</i> with any questions
-                </li></p>
+                </li>
+              </p>
             </header>
           </div>
         </Container>
