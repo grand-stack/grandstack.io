@@ -80,7 +80,7 @@ class HomeSplash extends React.Component {
         <div className="inner">
           <ProjectTitle />
           <PromoSection>
-            <Button href="https://github.com/grand-stack/grand-stack-starter/releases/download/v0.0.5/grand-stack-starter.zip">
+            <Button href="https://github.com/grand-stack/grand-stack-starter/releases/download/v0.0.6/grand-stack-starter.zip">
               Download Starter
             </Button>
             <Button href={docUrl("getting-started.html", language)}>
