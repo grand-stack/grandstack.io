@@ -185,11 +185,13 @@ const siteConfig = {
 
   /* Open Graph and Twitter card images */
   ogImage: "img/GrandStack-Logo-Square.png",
-  twitterImage: "img/GrandStack-Logo-Square.png"
+  twitterImage: "img/GrandStack-Logo-Square.png",
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
   //   repoUrl: 'https://github.com/facebook/test-site',
+
+  editUrl: "https://github.com/grand-stack/grandstack.io/tree/master/docs/"
 };
 
 module.exports = siteConfig;
