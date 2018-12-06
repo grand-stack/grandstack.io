@@ -1,94 +1,8 @@
 ---
 id: neo4j-graphql-js
-title: neo4j-graphql-js
-sidebar_label: Getting Started
+title: neo4j-graphql.js User Guide
+sidebar_label: User Guide
 ---
-
-A GraphQL to Cypher query execution layer for Neo4j and JavaScript GraphQL implementations.
-
-## Installation and usage
-
-### Install
-
-```shell
-npm install --save neo4j-graphql-js
-```
-
-### Usage
-
-Start with GraphQL type definitions:
-
-```javascript
-const typeDefs = `
-type Movie {
-    title: String
-    year: Int
-    imdbRating: Float
-    genres: [Genre] @relation(name: "IN_GENRE", direction: "OUT")
-}
-type Genre {
-    name: String
-    movies: [Movie] @relation(name: "IN_GENRE", direction: "IN")
-}
-`;
-```
-
-Create an executable GraphQL schema with auto-generated resolvers for Query and Mutation types, ordering, pagination, and support for computed fields defined using the `@cypher` GraphQL schema directive:
-
-```
-import { makeAugmentedSchema } from 'neo4j-graphql-js';
-
-const schema = makeAugmentedSchema({ typeDefs });
-```
-
-Create a neo4j-javascript-driver instance:
-
-```
-import { v1 as neo4j } from 'neo4j-driver';
-
-const driver = neo4j.driver(
-  'bolt://localhost:7687',
-  neo4j.auth.basic('neo4j', 'letmein')
-);
-```
-
-Use your favorite JavaScript GraphQL server implementation to serve your GraphQL schema, injecting the Neo4j driver instance into the context so your data can be resolved in Neo4j:
-
-```
-import { ApolloServer } from 'apollo-server';
-
-const server = new ApolloServer({ schema, context: { driver } });
-
-server.listen(3003, '0.0.0.0').then(({ url }) => {
-  console.log(`GraphQL API ready at ${url}`);
-});
-```
-
-If you don't want auto-generated resolvers, you can also call `neo4jgraphql()` in your GraphQL resolver. Your GraphQL query will be translated to Cypher and the query passed to Neo4j.
-
-```js
-import { neo4jgraphql } from "neo4j-graphql-js";
-
-const resolvers = {
-  Query: {
-    Movie(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo);
-    }
-  }
-};
-```
-
-## Test
-
-We use the `ava` test runner.
-
-```
-npm install
-npm build
-npm test
-```
-
-The `npm test` script will run unit tests that check GraphQL -> Cypher translation and the schema augmentation features and can be easily run locally without a test environment. Full integration tests can be found in `/test` and are [run on CircleCI](https://circleci.com/gh/neo4j-graphql/neo4j-graphql-js) as part of the CI process.
 
 ## What is `neo4j-graphql-js`
 
@@ -599,6 +513,110 @@ type _MovieRatings {
 ### Relationship mutations
 
 See the [generated mutations](#generated-mutations) section for information on the mutations generated for relationship types.
+
+## Temporal Types (DateTime)
+
+> Temporal types are available in Neo4j v3.4+ Read more about [using temporal types](https://neo4j.com/docs/cypher-manual/current/syntax/temporal/) and [functions](https://neo4j.com/docs/cypher-manual/current/functions/temporal/) in Neo4j in the docs and [in this post](https://www.adamcowley.co.uk/neo4j/temporal-native-dates/).
+
+Neo4j supports native temporal types as properties on nodes and relationships. These types include Date, DateTime, and LocalDateTime. With neo4j-graphql.js you can use these temporal types in your GraphQL schema. Just use them in your SDL type definitions.
+
+### Temporal Types In SDL
+
+neo4j-graphql.js makes available the following temporal types for use in your GraphQL type definitions: `Date`, `DateTime`, and `LocalDateTime`. You can use the temporal types in a field definition in your GraphQL type like this:
+
+```
+type Movie {
+  id: ID!
+  title: String
+  published: DateTime
+}
+```
+
+> NOTE: Temporal types as relationship properties are not yet supported by neo4j-graphql.js
+
+### Using Temporal Fields In Queries
+
+Temporal types expose their date components (such as day, month, year, hour, etc) as fields, as well as a `formatted` field which is the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) string representation of the temporal value. The specific fields available vary depending on which temporal is used, but generally conform to [those specified here](https://neo4j.com/docs/cypher-manual/current/syntax/temporal/). For example:
+
+*GraphQL query*
+```
+{
+  Movie(title: "River Runs Through It, A") {
+    title
+    published {
+      day
+      month
+      year
+      hour
+      minute
+      second
+      formatted
+    }
+  }
+}
+```
+
+*GraphQL result*
+```
+{
+  "data": {
+    "Movie": [
+      {
+        "title": "River Runs Through It, A",
+        "published": {
+          "day": 9,
+          "month": 10,
+          "year": 1992,
+          "hour": 0,
+          "minute": 0,
+          "second": 0,
+          "formatted": "1992-10-09T00:00:00Z"
+        }
+      }
+    ]
+  }
+}
+```
+
+> NOTE: Temporal fields cannot yet be used as query arguments, but support for this will be added.
+
+### Using Temporal Fields In Mutations
+
+As part of the [schema augmentation process](#schema-augmentation) input types are created and used for the auto-generated create, update, delete mutations using the type definitions specified for the GraphQL schema. These temporal input types also include fields for each component of the temporal type (day, month, year, hour, etc) as well as `formatted`, the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) representation. When used in a mutation, specify either the individual components **or** the `formatted` field, but not both.
+
+For example, this mutation:
+
+```
+mutation {
+  CreateMovie(
+    title: "River Runs Through It, A"
+    published: { year: 1992, month: 10, day: 9 }
+  ) {
+    title
+    published {
+      formatted
+    }
+  }
+}
+```
+
+is equivalent to this version, using the `formatted` field instead
+
+```
+mutation {
+  CreateMovie(
+    title: "River Runs Through It, A"
+    published: { formatted: "1992-10-09T00:00:00Z" }
+  ) {
+    title
+    published {
+      formatted
+    }
+  }
+}
+```
+
+The input types for temporals generally correspond to the fields used for specifying temporal instants in Neo4j [described here](https://neo4j.com/docs/cypher-manual/current/syntax/temporal/#cypher-temporal-specifying-temporal-instants).
 
 ## Middleware
 
