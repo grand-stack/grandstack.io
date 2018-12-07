@@ -577,12 +577,67 @@ Temporal types expose their date components (such as day, month, year, hour, etc
   }
 }
 ```
+#### Temporal Query Arguments
 
-> NOTE: Temporal fields cannot yet be used as query arguments, but support for this will be added.
+As part of the [schema augmentation process](#schema-augmentation) temporal input types are added to the schema and can be used as query arguments. For example, given the type definition:
+
+```
+type Movie{
+  movieId: ID!
+  title: String
+  released: Date
+}
+```
+
+the following query will be generated for the `Movie` type:
+
+```
+Movie (
+  movieId: ID!
+  title: String
+  released: _Neo4jDate
+  _id: String
+  first: Int
+  offset: Int
+  orderBy: _MovieOrdering
+)
+```
+
+and the type `_Neo4jDateInput` added to the schema:
+
+```
+type _Neo4jDateTimeInput {
+  year: Int
+  month: Int
+  day: Int
+  formatted: String
+}
+```
+
+At query time, either specify the individual components (year, month, day, etc) or the `formatted` field, which is the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) representation. For example, to query for all movies with a release date of October 10th, 1992:
+
+```
+{
+  Movie(dateTime: { year: 1992, month: 10, day: 9 }) {
+    title
+  }
+}
+```
+
+or equivalently:
+
+```
+{
+  Movie(dateTime: { formatted: "1992-10-09" }) {
+    title
+  }
+}
+```
+
 
 ### Using Temporal Fields In Mutations
 
-As part of the [schema augmentation process](#schema-augmentation) input types are created and used for the auto-generated create, update, delete mutations using the type definitions specified for the GraphQL schema. These temporal input types also include fields for each component of the temporal type (day, month, year, hour, etc) as well as `formatted`, the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) representation. When used in a mutation, specify either the individual components **or** the `formatted` field, but not both.
+As part of the [schema augmentation process](#schema-augmentation) temporal input types are created and used for the auto-generated create, update, delete mutations using the type definitions specified for the GraphQL schema. These temporal input types also include fields for each component of the temporal type (day, month, year, hour, etc) as well as `formatted`, the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) representation. When used in a mutation, specify either the individual components **or** the `formatted` field, but not both.
 
 For example, this mutation:
 
