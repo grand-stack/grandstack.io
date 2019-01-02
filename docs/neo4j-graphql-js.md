@@ -532,8 +532,6 @@ type Movie {
 }
 ```
 
-> NOTE: Temporal types as relationship properties are not yet supported by neo4j-graphql.js
-
 ### Using Temporal Fields In Queries
 
 Temporal types expose their date components (such as day, month, year, hour, etc) as fields, as well as a `formatted` field which is the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) string representation of the temporal value. The specific fields available vary depending on which temporal is used, but generally conform to [those specified here](https://neo4j.com/docs/cypher-manual/current/syntax/temporal/). For example:
