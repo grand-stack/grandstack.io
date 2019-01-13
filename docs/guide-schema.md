@@ -19,8 +19,8 @@ A GraphQL schema defines the types and the fields available on each type, includ
 The official guide to GraphQL makes the observation that with GraphQL you model your business domain as a graph, which in the client presents an object-oriented like approach to data where objects reference other types, creating a graph. However, as GraphQL is data layer agnostic, the guide says developers are free to implement the backend however they wish. Well if we use a graph database on the backend, we don't need a mapping and translation layer, instead the type definitions can drive the database data model.
 
 > Thinking in Graphs
-It's Graphs All the Way Down * 
-With GraphQL, you model your business domain as a graph
+> It's Graphs All the Way Down
+> With GraphQL, you model your business domain as a graph
 
 https://graphql.org/learn/thinking-in-graphs/#shared-language
 
