@@ -97,21 +97,22 @@ class Footer extends React.Component {
             }
             alt="GRANDstack"
             width="170"
-            height="45"
           />
         </a>
         <section className="copyright">
           <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
             <img
               alt="Creative Commons License"
-              style={{borderWidth:0}}
+              style={{ borderWidth: 0 }}
               src="https://i.creativecommons.org/l/by/4.0/88x31.png"
             />
           </a>
-          <br />This work is licensed under a {" "}
+          <br />
+          This work is licensed under a{" "}
           <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
             Creative Commons Attribution 4.0 International License
-          </a>.
+          </a>
+          .
         </section>
       </footer>
     );
