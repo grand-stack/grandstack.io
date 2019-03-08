@@ -191,7 +191,9 @@ const siteConfig = {
   // template. For example, if you need your repo's URL...
   //   repoUrl: 'https://github.com/facebook/test-site',
 
-  editUrl: "https://github.com/grand-stack/grandstack.io/tree/master/docs/"
+  editUrl: "https://github.com/grand-stack/grandstack.io/tree/master/docs/",
+
+  docsSideNavCollapsible: true
 };
 
 module.exports = siteConfig;
