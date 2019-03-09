@@ -10,7 +10,7 @@
       "neo4j-graphql-js",
       "neo4j-graphql-js-api"
     ],
-    "Guides": ["guide-middleware", "neo4j-graphql-plugin"],
+    "Guides": ["guide-schema", "guide-middleware", "neo4j-graphql-plugin"],
     "Resources": ["links"]
   }
 }
