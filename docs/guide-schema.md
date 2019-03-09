@@ -4,41 +4,47 @@ title: Designing Your GraphQL Schema
 sidebar_label: Schema Design
 ---
 
-The goal of this guide is to explain how to design your GraphQL schema for use with GRANDstack and neo4j-graphql. We use "neo4j-grapqhl" to refer to the various Neo4j GraphQL integrations such as [neo4j-graphql.js](), [neo4j-graphql-java](neo4j-graphql-js.md), and the [Neo4j GraphQL database plugin](neo4j-graphql-plugin.md) While the examples in this guide reference neo4j-graphql.js the same concepts apply to the other implementations of neo4j-graphql. We also discuss some best practices for schema design and common patterns for considerations such as implementing custom logic.
+The goal of this guide is to explain how to design your GraphQL schema for use with GRANDstack and neo4j-graphql. 
+
+> We use "neo4j-graphql" to refer to the various Neo4j GraphQL integrations such as [neo4j-graphql.js](neo4j-graphql-js.md), [neo4j-graphql-java](https://github.com/neo4j-graphql/neo4j-graphql-java), and the [Neo4j GraphQL database plugin](neo4j-graphql-plugin.md) 
+
+While the examples in this guide are specific to neo4j-graphql.js the same concepts apply to the other implementations of neo4j-graphql. We also discuss some best practices for schema design and common patterns for considerations such as implementing custom logic.
 
 ## Three Principles of neo4j-graphql
 
+It's important to understand the goals and advantages of using neo4j-graphql.
+
 1. GraphQL type definitions drive the Neo4j database schema.
 2. A single Cypher database query is generated for each GraphQL request.
-3. Custom logic can be added with `@cypher` GraphQL schema directives to extend the functionality of GraphQL.
+3. Custom logic can be added with `@cypher` GraphQL schema directives to extend the functionality of GraphQL beyond CRUD.
 
 ### GraphQL Type Definitions Drive The Database
 
 ![GraphQL type definitions](/docs/assets/img/type-defs.png)
 
-A major benefit of using neo4j-graphql is the ability to define both the database schema and the GraphQL schema with the same type definitions. neo4j-graphql can also automatically create Query and Mutation types from your type definitions that give you instant CRUD functionality. This GraphQL CRUD API can be configured and extended.
+A major benefit of using neo4j-graphql is the ability to define both the database schema and the GraphQL schema with the same type definitions. neo4j-graphql can also automatically create `Query` and `Mutation` types from your type definitions that provide instant CRUD functionality. This GraphQL CRUD API can be configured and extended.
 
 ### A Single Cypher database query is generated for each GraphQL Request
 
 ![GraphQL type definitions](/docs/assets/img/cypher.png)
 
-Since we use GraphQL type defintions to define the database schema, neo4j-graphql can generate a Cypher query to resolve any arbitrary GraphQL request. This also means our resolvers are automatically implemented for us. No need to write boilerplate data fetching code, just inject a Neo4j driver instance into the request context and neo4j-graphql will take care of generating the database query and handling the database call. Additinoally, a single Cypher query is generated, resulting in a huge performance boost and eliminating the n+1 query problem.
+Since GraphQL type definitions are used to define the database schema, neo4j-graphql can generate a single Cypher query to resolve any arbitrary GraphQL request. This also means our resolvers are automatically implemented for us. No need to write boilerplate data fetching code, just inject a Neo4j driver instance into the request context and neo4j-graphql will take care of generating the database query and handling the database call. Additionally, since a single Cypher query is generated, this results in a huge performance boost and eliminates the n+1 query problem.
 
 ### Defining Custom Logic With `@cypher` Schema Directives
 
 ![GraphQL type definitions](/docs/assets/img/cypher-directive.png)
 
-Since GraphQL is an API query language and not a database query language it lacks semantics for operations such as aggregations, projections, and more complex graph traversals. We can extend the power of GraphQL through the use of [`@cypher` GraphQL schema directives]() to bind the results of a Cypher query to a GraphQL field. This allows us to express complex logic and can be used on a Query or Mutation field to define custom data fetching or mutation logic.
+Since GraphQL is an API query language and not a database query language it lacks semantics for operations such as aggregations, projections, and more complex graph traversals. We can extend the power of GraphQL through the use of [`@cypher` GraphQL schema directives](neo4j-graphql-js.md#cypher-directive) to bind the results of a Cypher query to a GraphQL field. This allows for the expression of complex logic using Cypher and can be used on Query and Mutation fields to define custom data fetching or mutation logic.
 
-For more on how neo4j-graphql aims to solve some of common problems that come up when building GraphQL APIs [see this post.](https://blog.grandstack.io/five-common-graphql-problems-and-how-neo4j-graphql-aims-to-solve-them-e9a8999c8d43)
+> For more on how neo4j-graphql aims to solve some of the common problems that come up when building GraphQL APIs [see this post.](https://blog.grandstack.io/five-common-graphql-problems-and-how-neo4j-graphql-aims-to-solve-them-e9a8999c8d43)
 
 ## What is a GraphQL schema?
 
-A GraphQL schema defines the types and the fields available on each type, including references to other types. A GraphQL schema includes two special types `Query` and `Mutation` the fields of which define the entry points for the schema. In typical GraphQL implementations the Query and Mutation types must be defined by the developer, however in our case neo4j-graphql.js will handle generating CRUD queries and mutations based on our type definitions. We do however have the ability to define custom queries and mutations by either using a `@cypher` schema directive in our type definitions,effectively annotation the schema with a Cypher query, or implementing the resolver in code. See below for examples of each of those approaches.
+A GraphQL schema defines the types and the fields available on each type, which can include references to other types. A GraphQL schema includes two special types `Query` and `Mutation`, the fields of which define the entry points for the schema. In typical GraphQL implementations the `Query` and `Mutation` types must be defined by the developer, however in our case neo4j-graphql.js will handle generating CRUD queries and mutations based on our type definitions. We do however have the ability to define custom queries and mutations by either using a `@cypher` schema directive in our type definitions, effectively annotation the schema with a Cypher query, or implementing the resolver in code. See below for examples of each of those approaches.
 
 ## Graph Thinking
 
-The [official guide to GraphQL](https://graphql.org/learn/thinking-in-graphs/#shared-language) makes the observation that **your application data is a graph** and GraphQL models your business domain as a graph, which in the client presents an object-oriented like approach to data where objects reference other types, creating a graph. However, as GraphQL is data layer agnostic, the guide says developers are free to implement the backend however they wish. Well if we use a graph database on the backend, we don't need a mapping and translation layer, instead the type definitions can drive the database data model. The graph model of GraphQL translates easily to the labeled property graph model used by Neo4j and other graph database systems.
+The [official guide to GraphQL](https://graphql.org/learn/thinking-in-graphs/#shared-language) makes the observation that **your application data is a graph**. GraphQL allows you to model your business domain as a graph, which in the client presents an object-oriented like approach to data where objects reference other types, creating a graph. However, as GraphQL is data layer agnostic, the guide says developers are free to implement the backend however they wish. When GraphQL is used with a graph database such as Neo4j, we don't need a mapping and translation layer to translate our datamodel, instead the GraphQL type definitions can drive the database data model. The graph model of GraphQL translates easily to the labeled property graph model used by Neo4j and other graph database systems.
 
 ### Nodes, relationships, and properties.
 
@@ -56,7 +62,7 @@ type TypeName {
 }
 ```
 
-How do we map the GraphQL type system to the labeled property graph? By applying these basic rules:
+How then do we map the GraphQL type system to the labeled property graph? By applying these basic rules:
 
 1. GraphQL type names become node labels
 2. Fields become node properties
@@ -68,7 +74,7 @@ In GraphQL we use the Schema Definition Language (SDL) to define our types in a 
 
 ## Type Definitions
 
-We use SDL to define object types for our domain and the fields available on each type. For example: 
+We use SDL to define object types for our domain and the fields available on each type, which may be scalar types or reference other object types. For example: 
 
 ```GraphQL
 type Movie {
@@ -79,7 +85,7 @@ type Movie {
 }
 ```
 
-This type definition is defining as a node with the label `Movie` and the properties `movieId`, `title`, `description`, and `year`:
+This type definition is defining a node with the label `Movie` and the properties `movieId`, `title`, `description`, and `year`:
 
 ![](/docs/assets/img/arrows2.png)
 
@@ -103,7 +109,7 @@ type Movie {
 
 ### Arguments
 
-Fields can have arguments as well. For example, we may want to limit the number of actors we return for movie:
+Fields can include arguments. For example, we may want to limit the number of actors we return for movie:
 
 ```GraphQL
 type Actor {
@@ -125,7 +131,7 @@ Here `limit` is an integer argument with default value 10. This argument can be 
 
 ### Schema Directives
 
-Schema directives are GraphQL's built in extension mechanism. We can use them to annotate fields or object type definitions.
+Schema directives are GraphQL's built-in extension mechanism. We can use them to annotate fields or object type definitions.
 
 #### `@relation` Schema Directive
 
@@ -156,7 +162,7 @@ These type definitions then map to this labeled property graph model in Neo4j:
 
 #### `@cypher` Schema Directive
 
-neo4j-graphql implementations introduce a `@cypher` GraphQL schema directive that can be used to bind a GraphQL field to the results of a Cypher query.
+neo4j-graphql implementations introduce a `@cypher` GraphQL schema directive that can be used to bind a GraphQL field to the results of a Cypher query. For example, let's add a field `similarMovies` to our `Movie` which is bound to a Cypher query to find other movies with an overlap of actors: 
 
 ```GraphQL
 type Actor {
@@ -179,15 +185,15 @@ type Movie {
 }
 ```
 
-> `this` is bound to the currently resolved object, similar to the `object` parameter passed to the GraphQL resolver
+> In the context of the Cypher query used in a `@cypher` directive field, `this` is bound to the currently resolved object, similar to the `object` parameter passed to the GraphQL resolver, in this example `this` becomes the currently resolved movie.
 
-GraphQL field arguments are included passed to the Cypher query as Cypher parameters (See `$limit`)
+GraphQL field arguments for the `@cypher` directive field are passed to the Cypher query as Cypher parameters (In this case `$limit`)
 
-> `@cypher` directives can be used to implement authorization logic as well. The request context can specify values to be included in the query.
+> `@cypher` directives can be used to implement authorization logic as well. We can include values from the request context, such as those added by authorization middleware as Cypher parameters. See the [authorization guide](guide-middleware.md) for more information.
 
 ### Relationship types
 
-In the case above we model properties on nodes, but not on relationships. To handle the case where we want to model properties on relationships we promote the reference field to a proper object type and annotate it with the directive `@relation`. For example, let's introduce users and ratings:
+In the case above we model properties on nodes, but not on relationships. To handle the case where we want to model properties on relationships we promote the reference field to an object type and annotate it with the directive `@relation`. For example, let's introduce users and ratings:
 
 ```GraphQL
 type Actor {
@@ -223,17 +229,15 @@ type Rated @relation(name: "RATED") {
 }
 ```
 
-An object type definition that includes an `@relation` directive will be treated as a relationship. We use the convention that the fields `from` and `to` define the nodes on the outgoing and incoming ends of the relationship, respectively.
-
-This results in the follow model in Neo4j:
+An object type definition that includes an `@relation` directive will be treated as a relationship. We use the convention that the fields `from` and `to` define the nodes on the outgoing and incoming ends of the relationship, respectively, thus resulting in the following model in Neo4j:
 
 ![](/docs/assets/img/arrows4.png)
 
 ## API Generation
 
-In typical GraphQL server implementations we would also define a `Query` and `Mutation` object type, the fields of each becoming the entrypoints for our API. With neo4j-graphql we don't need to define a `Query` or `Mutation` type as queries and mutations with full CRUD operations will be generated for us from our type defintions.
+In typical GraphQL server implementations we would now define a `Query` and `Mutation` object type, the fields of each becoming the entry points for our API. With neo4j-graphql we don't need to define a `Query` or `Mutation` type as queries and mutations with full CRUD operations will be generated for us from our type defintions.
 
-We also don't need to define resolvers - the functions that contain the logic for resolving the actual data from the data layer. Since neo4j-graphql handles database query generation and data fetching our resolvers are generated for us as part of the [schema augmetation process.]()
+We also don't need to define resolvers - the functions that contain the logic for resolving the actual data from the data layer. Since neo4j-graphql handles database query generation and data fetching our resolvers are generated for us as part of the [schema augmetation process.](neo4j-graphql-js.md#schema-augmentation)
 
 The following `Query` and `Mutation` types would be generated for our type definitions above, defining CRUD operations for all our types:
 
@@ -264,18 +268,18 @@ type Mutation {
 }
 ```
 
-You can read more about the API generation process in the [neo4j-graphql.js user guide]() but here are a few observations:
-
-* _id field
-* ordering
-* pagination fields (first, offset)
-* Input fields / payload fields?
+You can read more about the API generation process in the [neo4j-graphql.js user guide](neo4j-graphql-js.md#schema-augmentation).
 
 ## Custom Queries And Mutations
 
-The autogenerated API gives us basic CRUD functionality, but what if we wanted to implement our own custom logic?
+The auto-generated API gives us basic CRUD functionality, but what if we wanted to implement our own custom logic? We have two options for implementing custom logic with neo4j-graphql:
+
+1. Using the`@cypher` schema directive
+2. Implementing custom resolvers
 
 ### Using `@cypher`
+
+To implement a custom `Query` field, simply include a `Query` type in your type definitions and include your custom logic in a `@cypher` directive annotated field. Here we use a fulltext index to perform a fuzzy text match for searching for movies:
 
 ```GraphQL
 type Query {
@@ -290,7 +294,7 @@ type Query {
 
 ### Implementing Custom Resolvers
 
-Resolvers are functions that define how to actually fetch the data from the data layer. Because neo4j-graphql.js autogenerates CRUD resolvers for queries and mutations, you don't need to implement resolvers yourself, however if you have some custom code beyond which can be defined using an `@cypher` directive, you can implement your own resolvers and pass those along. Here's an example:
+Resolvers are functions that define how to actually fetch the data from the data layer. Because neo4j-graphql.js autogenerates CRUD resolvers for queries and mutations, you don't need to implement resolvers yourself, however if you have some custom code beyond which can be defined using an `@cypher` directive, you can implement your own resolvers and pass those along. Here's a simple example defining a field resolver for `fullName`.
 
 ```javascript
 import { makeAugmentedSchema } from "neo4j-graphql-js";
