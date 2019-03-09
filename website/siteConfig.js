@@ -98,13 +98,25 @@ const siteConfig = {
           },
           contains: [
             hljs.HASH_COMMENT_MODE,
-            hljs.QUOTE_STRING_MODE,
+            //hljs.QUOTE_STRING_MODE,
             hljs.NUMBER_MODE,
             {
               className: "type",
               begin: "[^\\w][A-Z][a-z]",
               end: "\\W",
               excludeEnd: true
+            },
+            {
+              className: "string",
+              begin: '"""',
+              end: '"""'
+            },
+            {
+              className: "string",
+              begin: '"',
+              end: '"',
+              illegal: "\\n",
+              contains: [hljs.BACKSLASH_ESCAPE]
             },
             {
               className: "literal",
