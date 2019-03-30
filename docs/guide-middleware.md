@@ -6,6 +6,179 @@ sidebar_label: Auth / Middleware
 
 This guide discusses some of the ways to address authentication and authorization when using `neo4j-graphql-js` and will evolve as new auth-specific features are added.
 
+## Schema Directives
+
+Schema directives can be used to define authorization logic. We use the [`graphql-auth-directives`](https://www.npmjs.com/package/graphql-auth-directives) library to add authorization schema directives that can then be used in the schema. `graphql-auth-directives` work with JSON Web Tokens (JWT), and assumes a JWT is included in the GraphQL request header. The claims contained in the JWT (roles, scopes, etc) are used to validate the GraphQL request, protecting resources in the following ways:
+
+### `isAuthenticated`
+
+The `isAuthenticated` schema directive can be used on types or fields. The request must be authenticated to access the resource (in other words, the request must contain a valid signed JWT). `@isAuthenticated` can be used on a type definition, applying the authorization rule to the entire object, for example:
+
+```GraphQL
+type Movie @isAuthenticated {
+  movieId: ID!
+  title: String
+  plot: String
+}
+```
+
+We could also annotate individual fields, in this case restricting only the `plot` field:
+
+```GraphQL
+type Movie {
+  movieId: ID!
+  title: String
+  plot: String @isAuthenticated
+  views: Int
+}
+```
+
+### `hasRole`
+
+The `hasRole` schema directive can be used on types or fields and indicates that:
+
+1. a request must contain a valid signed JWT, and
+1. the `roles` claim in the JWT must include the role specified in the schema directive. 
+
+Valid roles should be defined in a GraphQL enum. For example:
+
+```GraphQL
+enum Role {
+  reader
+  user
+  admin
+}
+
+type Movie @hasRole(roles:[admin]) {
+  movieId: ID!
+  title: String
+  plot: String
+  views: Int
+}
+
+```
+
+### `hasScope`
+
+The `hasScope` schema directive can be used on Query or Mutation fields and indicates that
+
+1. a request must contain a valid signed JWT, and
+1. the `scope` claim in the JWT includes at least one of the required scopes in the directive
+
+``` GraphQL
+type Mutation {
+  CreateMovie(movieId: ID!, title: String, plot: String, views: Int): Movie @hasScope(scope:["Movie:Create"])
+}
+```
+
+The `hasScope` directive can be used on custom queries and mutations with `@cypher` directive, as well as on the auto-generated queries and mutations (see next section)
+
+```GraphQL
+type Mutation {
+  IncrementView(movieId: ID!): Movie @hasScope(scope:["Movie:Update"]) @cypher(
+    statement: """
+      MATCH (m:Movie {movieId: $movieId})
+      SET m.views = m.views + 1
+    """)
+}
+```
+
+### Configuring schema directives
+
+To make use of the directives from `graphql-auth-directives` you must 
+
+1. Set the `JWT_SECRET` environment variable
+1. Enable the auth directives in the config object passed to `makeAugmentedSchema` or `augmentSchema`
+
+#### Environment variables used to configure JWT
+
+You must set the `JWT_SECRET` environment variable:
+
+```shell
+export JWT_SECRET=<YOUR_JWT_SECRET_KEY_HERE>
+```
+
+By default `@hasRole` will validate the `roles`, `role`, `Roles`, or `Role` claim (whichever is found first). You can override this by setting `AUTH_DIRECTIVES_ROLE_KEY` environment variable. For example, if your role claim is stored in the JWT like this
+
+```JavaScript
+"https://grandstack.io/roles": [
+    "admin"
+]
+```
+
+then declare a value for `AUTH_DIRECTIVES_ROLE_KEY` environment variable:
+
+```shell
+export AUTH_DIRECTIVES_ROLE_KEY=https://grandstack.io/roles
+```
+
+#### Enabling Auth Directives
+
+By default the auth directives are disabled and must be explicitly enabled in the config object passed to `makeAugmentedSchema` or `augmenteSchema`.
+
+If enabled, authorization directives re declared and can be used in the schema. If `@hasScope` is enabled it is automatically added to all generated query and mutation fields. To enable authorization schema directives (`@isAuthenticated`, `@hasRole`, `@hasScope`), pass values for the `auth` key in the `config` object. For example:
+
+```JavaScript
+import { makeAugmentedSchema } from "neo4j-graphql-js";
+
+const schema = makeAugmentedSchema({
+  tyepDefs,
+  config: {
+    auth: {
+      isAuthenticated: true,
+      hasRole: true
+    }
+  }
+})
+```
+
+With this configuration, the `isAuthenticated` and `hasRole` directives will be available to be used in the schema, but not the `hasScope` directive.
+
+#### Attaching Directives To Auto-Generated Queries and Mutations
+
+Since neo4j-graphql.js automatically adds Query and Mutation types to the schema, these auto-generated fields cannot be annotated by the user with directives. To enable authorization on the auto-generated queries and mutations, simply enable the `hasScope` directive and it will be added to the generated CRUD API with the appropriate scope for each operation. For example:
+
+```JavaScript
+import { makeAugmentedSchema } from "neo4j-graphql-js";
+
+const schema = makeAugmentedSchema({
+  tyepDefs,
+  config: {
+    auth: {
+      hasScope: true
+    }
+  }
+})
+```
+
+## Cypher Parameters From Context
+
+Another approach to implementing authorization logic is to access values from the context object in a Cypher query used in a `@cypher` directive. This is useful for example, to access authenticated user information that may be stored in a request token or added to the request object via middleware. Any parameters in the `cypherParams` object in the context are passed with the Cypher query and can be used as Cypher parameters.
+
+For example:
+
+```GraphQL
+type Query {
+  currentUser: User @cypher(statement: """
+    MATCH (u:User {id: $cypherParams.currentUserId})
+    RETURN u
+  """)
+}
+```
+
+Here is an example of how to add values to the `cypherParams` in the context using ApolloServer:
+
+``` JavaScript
+const server = new ApolloServer({
+  context: ({req}) => ({
+    driver,
+    cypherParams: {
+      currentUserId: req.user.id
+    }
+  })
+})
+```
+
 ## Inspect Context In Resolver
 
 A common pattern for dealing with authentication / authorization in GraphQL is to inspect an authorization token or a user object injected into the context in a resolver function to ensure the authenticated user is appropirately authorized to request the data. This can be done in `neo4j-graphql-js` by implementing your own resolver function(s) and calling [`neo4jgraphql`](neo4j-graphql-js-api.md#neo4jgraphqlobject-params-context-resolveinfo-debug-executionresult-https-graphqlorg-graphql-js-execution-execute) after inspecting the token / user object.
