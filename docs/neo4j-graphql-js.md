@@ -221,10 +221,9 @@ server.use(
 
 `neo4j-graphql-js` can augment the provided GraphQL schema to add
 
-- auto-generated mutations and queries
+- auto-generated mutations and queries (including resolvers)
 - ordering and pagination fields
-
-> NOTE: neo4j-graphql-js does not currently support the `filter` parameter, as currently implemented in the Neo4j-GraphQL database plugin.
+- filter fields
 
 To add these augmentations to the schema use either the [`augmentSchema`](neo4j-graphql-js-api.md#augmentschemaschema-graphqlschema) or [`makeAugmentedSchema`](neo4j-graphql-js-api.md#makeaugmentedschemaoptions-graphqlschema) functions exported from `neo4j-graphql-js`.
 
@@ -396,6 +395,90 @@ enum _MovieOrdering {
 ### Pagination
 
 `neo4j-graphql-js` support pagination through the use of `first` and `offset` parameters. These parameters are added to the appropriate fields as part of the schema augmentation process.
+
+### Filtering
+
+A `filter` argument is added to field arguments, as well as input types used to support them.
+
+> Filtering is currently supported for scalar types, enums, and `@relation` fields. Filtering on temporal and `@relation` types are not yet supported.
+
+#### `filter` Argument
+
+The auto-generated `filter` argument is used to support complex filtering in queries. For example, to filter for Movies released before 1920:
+
+```GraphQL
+{
+  Movie(filter: { year_lt: 1920 }) {
+    title
+  }
+}
+```
+
+#### Nested Filter
+
+To filter based on the results of nested fields applied to the root, simply nest the filters used. For example, to search for movies whose title starts with "River" and has at least one actor whose name starts with "Brad":
+
+```GraphQL
+{
+  Movie(
+    filter: {
+      title_starts_with: "River"
+      actors_some: { name_contains: "Brad" }
+    }
+  ) {
+    title
+  }
+}
+```
+
+#### Logical Operators: `AND`, `OR`
+
+Filters can be wrapped in logical operations `AND` and `OR`. For example, to find movies that were released before 1920 or have a title that contains "River Runs":
+
+```GraphQL
+{
+  Movie(filter: { OR: [{ year_lt: 1920 }, { title_contains: "River Runs" }] }) {
+    title
+  }
+}
+```
+
+These logical operators can be nested as well. For example, find movies that there were released before 1920 or have a title that contains "River" and belong to the genre "Drama":
+
+```GraphQL
+{
+  Movie(
+    filter: {
+      OR: [
+        { year_lt: 1920 }
+        {
+          AND: [{ title_contains: "River" }, { genres_some: { name: "Drama" } }]
+        }
+      ]
+    }
+  ) {
+    title
+  }
+}
+```
+
+#### Filtering In Selections
+
+Filters can be used in not only the root query argument, but also throughout the selection set. For example, search for all movies that contain the string "River", and when returning the genres of the these movies only return genres with the name "Drama":
+
+
+```GraphQL
+{
+  Movie(filter: { title_contains: "River" }) {
+    title
+    genres(filter: { name: "Drama" }) {
+      name
+    }
+  }
+}
+```
+
+See the [filtering tests](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/test/tck/filterTck.md) for more examples of the use of filters.
 
 ### Configuring Schema Augmentation
 
