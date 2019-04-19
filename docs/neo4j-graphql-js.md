@@ -478,6 +478,72 @@ Filters can be used in not only the root query argument, but also throughout the
 }
 ```
 
+#### Filter Criteria
+
+The filter criteria available depends on the type of the field and are added to the generated input type prefixed by the name of the field and suffixed with the criteria. For example, given the following type definitions:
+
+```GraphQL
+type Movie {
+  movieId: ID!
+  title: String
+  year: Int
+  rating: RATING
+  available: Boolean
+  actors: [Actor] @relation(name: "ACTED_IN", direction:"IN")
+}
+```
+
+the following filtering criteria is available, through the generated `_MovieFilter` input type. 
+
+*This table shows the fields available on the generated `_MovieFilter` input type, and a brief explanation of each filter criteria.*
+|  | Field | Type            | Explanation                                  |
+| ------------------|-------|-----------------|-----------------------------|
+| **Logical operators**|    |                 |                             | 
+|  | `AND`   | `[_MovieFilter]` | Use to apply logical AND to a list of filters, typically used when nested with OR operators |
+|  | `OR`    | `[_MovieFilter]` | Use to apply logical OR to a list of filters.|
+| **ID fields** | |||
+|  | `movieId`        | `ID`   | Matches nodes when value is an exact match   |  
+|  | `movieId_not`    | `ID`   | Matches nodes when value is not an exact match |   
+|  | `movieId_in`     | `[ID!]`| Matches nodes based on equality of at least one value in list of values | 
+|  | `movieId_not_in` | `[ID!]`| Matches nodes based on inequality of all values in list of values       |
+| **String fields**|  |        |                                                                         |      
+|  | `title`                 | `String`    | Matches nodes based on equality of value |
+|  | `title_not`             | `String`    | Matches nodes based on inequality of value|
+|  | `title_in`              | `[String!]` | Matches nodes based on equality of at least one value in list |
+|  | `title_not_in`          | `[String!]` | Matches nodes based on inequality of all values in list |
+|  | `title_contains`        | `String`    | Matches nodes when value contains given substring |
+|  | `title_not_contains`    | `String`    | Matches nodes when value does not contain given substring      |
+|  | `title_starts_with`     | `String`    | Matches nodes when value starts with given substring         |
+|  | `title_not_starts_with` | `String`    | Matches nodes when value does not start with given substring        |
+|  | `title_ends_with`       | `String`    | Matches nodes when value ends with given substring |
+|  | `title_not_ends_with`   | `String`    | Matches nodes when value does not end with given substring |
+| **Numeric fields**  |      |             | *Similar behavior for float fields*        |
+|  | `year`                  | `Int`       | Matches nodes when value is an exact match |
+|  | `year_not`              | `Int`       | Matches nodes based on inequality of value   |
+|  | `year_in`               | `[Int!]`    | Matches nodes based on equality of at least one value in list |
+|  | `year_not_in`           | `[Int!]`    | Matches nodes based on inequality of all values in list |
+|  | `year_lt`               |  `Int`      | Matches nodes when value is less than given integer |
+|  | `year_lte`              |  `Int`      | Matches nodes when value is less than or equal to given integer |
+|  | `year_gt`               |  `Int`      | Matches nodes when value is greater than given integer |
+|  | `year_gte`              |  `Int`      | Matches nodes when value is greater than or equal to given integer |
+| **Enum fields**    |       |                  |         |
+|  | `rating`                | `RATING_ENUM`    | Matches nodes based on enum value |
+|  | `rating_not`            | `RATING_ENUM`    | Matches nodes based on inequality of enum value |
+|  | `rating_in`             | `[RATING_ENUM!]` | Matches nodes based on equality of at least one enum value in list |
+|  | `rating_not_in`         | `[RATING_ENUM!]` | Matches nodes based on inequality of all values in list |
+| **Boolean fields**         |            |          |
+|  | `available`             | `Boolean`         | Matches nodes based on value |
+|  | `available_not`         | `Boolean`         | Matches nodes base on inequality of value |
+| **Relationship fields**|   |                   | *Use a relationship field filter to apply a nested filter to matches at the root level* |
+|  | `actors`                | `_ActorFilter`    | Matches nodes based on a filter of the related node |
+|  | `actors_not`            | `_ActorFilter`    | Matches nodes when a filter of the related node is not a match |
+|  | `actors_in`             | `[_ActorFilter!]` | Matches nodes when the filter matches at least one of the related nodes |
+|  | `actors_not_in`         | `[_ActorFilter!]` | Matches nodes when the filter matches none of the related nodes |
+|  | `actors_some`           | `_ActorFilter`    | Matches nodes when at least one of the related nodes is a match |
+|  | `actors_none`           | `_ActorFilter`    | Matches nodes when none of the related nodes are a match |
+|  | `actors_single`         | `_ActorFilter`    | Matches nodes when exactly one of the related nodes is a match |
+|  | `actors_every`          | `_ActorFilter`    | Matches nodes when all related nodes are a match|
+
 See the [filtering tests](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/test/tck/filterTck.md) for more examples of the use of filters.
 
 ### Configuring Schema Augmentation
