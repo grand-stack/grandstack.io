@@ -400,7 +400,7 @@ enum _MovieOrdering {
 
 A `filter` argument is added to field arguments, as well as input types used to support them.
 
-> Filtering is currently supported for scalar types, enums, and `@relation` fields. Filtering on temporal and `@relation` types are not yet supported.
+> Filtering is currently supported for scalar types, enums, and `@relation` fields. Filtering on `@cypher` directive fields, temporal fields and `@relation` types are not yet supported.
 
 #### `filter` Argument
 
