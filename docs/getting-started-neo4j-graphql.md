@@ -1,5 +1,5 @@
 ---
-id: getting-started
+id: getting-started-neo4j-graphql
 title: Getting Started With GRANDstack
 sidebar_label: What is GRANDstack
 ---
@@ -25,4 +25,4 @@ Here's how it all fits together in the context of a movie search app:
 
 ## Resources
 
-See the [resources page](links.md) for links to tutorials, videos, presentations and code samples.
+See the [resources page](grandstack-resources.md) for links to tutorials, videos, presentations and code samples.

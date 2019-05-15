@@ -89,3 +89,21 @@ npm test
 ```
 
 The `npm test` script will run unit tests that check GraphQL -> Cypher translation and the schema augmentation features and can be easily run locally without a test environment. Full integration tests can be found in `/test` and are [run on CircleCI](https://circleci.com/gh/neo4j-graphql/neo4j-graphql-js) as part of the CI process.
+
+## Benefits
+
+- Send a single query to the database
+- No need to write queries for each resolver
+- Exposes the power of the Cypher query language through GraphQL
+
+
+## Features
+
+- [x] translate basic GraphQL queries to Cypher
+- [x] `first` and `offset` arguments for pagination
+- [x] `@cypher` schema directive for exposing Cypher through GraphQL
+- [x] Handle fragments
+- [x] Ordering
+- [x] Filtering
+- [~] Handle interface types
+- [~] Handle inline fragments

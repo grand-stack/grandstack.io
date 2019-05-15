@@ -1,1 +1,7 @@
-/docs   /docs/getting-started.html
+/docs                           /docs/getting-started-neo4j-graphql.html
+/docs/guide-schema.html         /docs/guide-graphql-schema-design.html
+/docs/getting-started.html      /docs/getting-started-neo4j-graphql.html
+/docs/neo4j-graphql.html        /docs/neo4j-graphql-overview.html
+/docs/guide-middleware.html     /docs/neo4j-graphql-js-middleware-authorization.html
+/docs/neo4j-graphql-plugin.html /docs/neo4j-graphql-database-plugin.html
+/docs/links.html                /docs/grandstack-resources.html

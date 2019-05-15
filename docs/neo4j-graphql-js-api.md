@@ -1,6 +1,6 @@
 ---
 id: neo4j-graphql-js-api
-title: neo4j-graphql-js API Reference
+title: neo4j-graphql.js API Reference
 sidebar_label: API Reference
 ---
 

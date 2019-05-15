@@ -1,7 +1,7 @@
 ---
-id: links
-title: Links
-sidebar_label: Links
+id: grandstack-resources
+title: GRANDstack Resources
+sidebar_label: GRANDstack Resources
 ---
 
 Resources for getting started with GRANDstack.

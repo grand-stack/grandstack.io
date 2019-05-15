@@ -1,17 +1,21 @@
 {
   "docs": {
     "Getting Started": [
-      "getting-started",
+      "getting-started-neo4j-graphql",
       "getting-started-grand-stack-starter",
-      "neo4j-graphql"
+      "neo4j-graphql-overview"
     ],
     "neo4j-graphql.js": [
       "neo4j-graphql-js-quickstart",
       "neo4j-graphql-js",
-      "guide-middleware",
-      "neo4j-graphql-js-api"
+      "graphql-schema-generation-augmentation",
+      "graphql-relationship-types",
+      "graphql-temporal-types-datetime",
+      "neo4j-graphql-js-middleware-authorization",
+      "neo4j-graphql-js-api",
+      "neo4j-graphql-js-resources"
     ],
-    "Guides": ["guide-schema", "neo4j-graphql-plugin"],
-    "Resources": ["links"]
+    "Guides": ["guide-graphql-schema-design", "neo4j-graphql-database-plugin"],
+    "Resources": ["grandstack-resources"]
   }
 }

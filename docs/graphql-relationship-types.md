@@ -1,0 +1,65 @@
+---
+id: graphql-relationship-types
+title: GraphQL Relationship Types
+sidebar_label: Relationship Types
+---
+
+### Defining relationships in SDL
+
+GraphQL types can reference other types. When defining your schema, use the `@relation` GraphQL schema directive on the fields that reference other types. For example:
+
+```graphql
+type Movie {
+  title: String
+  year: Int
+  genres: [Attribute] @relation(name: "IN_GENRE", direction: "OUT")
+}
+
+type Genre {
+  name: String
+  movies: [Movie] @relation(name: "IN_GENRE", direction: "IN")
+}
+```
+
+### Relationships with properties
+
+The above example (annotating a field with `@relation`) works for simple relationships without properties, but does not allow for modeling relationship properties. Imagine that we have users who can rate movies, and we want to store their rating and timestamp as a property on a relationship connecting the user and movie. We can represent this by promoting the relationship to a type and moving the `@relation` directive to annotate this new type:
+
+```graphql
+type Movie {
+  title: String
+  year: Int
+  ratings: [Rated]
+}
+
+type User {
+  userId: ID
+  name: String
+  rated: [Rated]
+}
+
+type Rated @relation(name: "RATED") {
+  from: User
+  to: Movie
+  rating: Float
+  timestamp: Int
+}
+```
+
+This approach of an optional relationship type allows for keeping the schema simple when we don't need relationship properties, but having the flexibility of handling relationship properties when we want to model them.
+
+### Relationship queries
+
+When queries are generated (through [`augmentSchema`](neo4j-graphql-js-api.html#augmentschemaschema-graphqlschema) or [`makeAugmentedSchema`](neo4j-graphql-js-api.md#makeaugmentedschemaoptions-graphqlschema)) fields referencing a relationship type are replaced with a special payload type that contains the relationship properties and the type reference. For example:
+
+```graphql
+type _MovieRatings {
+  timestamp: Int
+  rating: Float
+  User: User
+}
+```
+
+### Relationship mutations
+
+See the [generated mutations](#generated-mutations) section for information on the mutations generated for relationship types.

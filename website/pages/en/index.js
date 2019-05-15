@@ -83,7 +83,9 @@ class HomeSplash extends React.Component {
             <Button href="https://github.com/grand-stack/grand-stack-starter/releases/download/v0.0.7/grand-stack-starter.zip">
               Download Starter
             </Button>
-            <Button href={docUrl("getting-started.html", language)}>
+            <Button
+              href={docUrl("getting-started-neo4j-graphql.html", language)}
+            >
               Learn More
             </Button>
             {/* <Button href={docUrl('doc2.html', language)}>Example Link 2</Button> */}

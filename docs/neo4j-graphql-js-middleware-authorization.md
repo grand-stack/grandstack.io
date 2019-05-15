@@ -1,12 +1,12 @@
 ---
-id: guide-middleware
-title: Authentication/Authorization And Middleware
-sidebar_label: Auth / Middleware
+id: neo4j-graphql-js-middleware-authorization
+title: GraphQL Authorization And Middleware
+sidebar_label: Authorization / Middleware
 ---
 
 This guide discusses some of the ways to address authentication and authorization when using `neo4j-graphql-js` and will evolve as new auth-specific features are added.
 
-## Schema Directives
+## GraphQL Authorization Schema Directives
 
 Schema directives can be used to define authorization logic. We use the [`graphql-auth-directives`](https://www.npmjs.com/package/graphql-auth-directives) library to add authorization schema directives that can then be used in the schema. `graphql-auth-directives` work with JSON Web Tokens (JWT), and assumes a JWT is included in the GraphQL request header. The claims contained in the JWT (roles, scopes, etc) are used to validate the GraphQL request, protecting resources in the following ways:
 
