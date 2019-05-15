@@ -6,6 +6,10 @@ sidebar_label: Links
 
 Resources for getting started with GRANDstack.
 
+## Video Courses
+
+- **[Egghead: Build a Neo4j & GraphQL API ](https://egghead.io/courses/build-a-neo4j-graphql-api)** - This course shows some of the basics of getting data into and out of Neo4j, as well as leveraging neo4j-graphql.js to quickly create and use a full-featured GraphQL API.
+
 ## Articles / References
 
 - **[An Overview Of GraphQL - Dzone Refcard](https://dzone.com/refcardz/an-overview-of-graphql)** - This Refcard introduces GraphQL concepts such as the GraphQL type system and schema, and demonstrates how to build a GraphQL service that connects to a database using JavaScript.
