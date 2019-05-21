@@ -9,6 +9,7 @@
       "neo4j-graphql-js-quickstart",
       "neo4j-graphql-js",
       "graphql-schema-generation-augmentation",
+      "graphql-filtering",
       "graphql-relationship-types",
       "graphql-temporal-types-datetime",
       "neo4j-graphql-js-middleware-authorization",
