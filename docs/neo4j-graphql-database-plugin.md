@@ -1,6 +1,6 @@
 ---
 id: neo4j-graphql-database-plugin
-title: Neo4j-GraphQL Database Plugin
+title: Neo4j GraphQL Database Plugin
 sidebar_label: Neo4j Database Plugin
 ---
 
