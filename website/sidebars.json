@@ -12,11 +12,15 @@
       "graphql-filtering",
       "graphql-relationship-types",
       "graphql-temporal-types-datetime",
-      "neo4j-graphql-js-middleware-authorization",
+      "neo4j-graphql-js-middldeware-authorization",
       "neo4j-graphql-js-api",
       "neo4j-graphql-js-resources"
     ],
-    "Guides": ["guide-graphql-schema-design", "neo4j-graphql-database-plugin"],
+    "Guides": [
+      "guide-graphql-schema-design",
+      "neo4j-graphql-java",
+      "neo4j-graphql-database-plugin"
+    ],
     "Resources": ["grandstack-resources"]
   }
 }
