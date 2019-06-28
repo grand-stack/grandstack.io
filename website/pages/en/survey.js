@@ -21,7 +21,7 @@ class Survey extends React.Component {
 
             <iframe
               src="https://docs.google.com/forms/d/e/1FAIpQLSeB2vbVItYzj9FC4JtkUnwfESg-h-NXKNAswa7AG39kZKxiLA/viewform?embedded=true"
-              width="1200"
+              width="720"
               height="2148"
               frameBorder="0"
               marginHeight="0"
