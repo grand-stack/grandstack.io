@@ -218,6 +218,25 @@ This resolver object can then be attached to the GraphQL schema using [`makeAugm
 
 We can apply this same strategy to check for user scopes, inspect scopes on a JWT, etc.
 
+## Aditional Schema Directives
+
+### `@additionalLabels`
+
+The `additionalLabels` schema directive can only be used on types for adding additional labels on the nodes. Use this if you need extra labels on you nodes or if you want to implement a kind of "multi-tenancy" graph that isolates the subgraph with different labels. The directive accept an array of strings that can be combined with `cypherParams` variables. 
+
+Adding 2 labels to the Movie type; 1 static label and 1 dynamic label that uses fields from `cypherParams`. For example:
+
+```GraphQL
+type Movie @additionalLabels(labels: ["u_<%= $cypherParams.userId %>", "newMovieLabel"])  {
+  movieId: ID!
+  title: String
+  plot: String
+  views: Int
+}
+
+```
+This will add the labels "newMovieLabel" and "u_1234" on the query when creating/updating/querying the database. This does not work if there exist a `@cypher` directive on the type.
+
 ## Middleware
 
 Middleware is often useful for features such as authentication / authorization. You can use middleware with neo4j-graphql-js by injecting the request object after middleware has been applied into the context. For example:
