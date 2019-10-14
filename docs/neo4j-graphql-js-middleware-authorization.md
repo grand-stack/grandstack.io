@@ -214,7 +214,7 @@ const resolvers = {
 };
 ```
 
-This resolver object can then be attached to the GraphQL schema using [`makeAugmentedSchema`](http://localhost:3000/docs/neo4j-graphql-js-api.html#makeaugmentedschemaoptions-graphqlschema)
+This resolver object can then be attached to the GraphQL schema using [`makeAugmentedSchema`](neo4j-graphql-js-api.html#makeaugmentedschemaoptions-graphqlschema)
 
 We can apply this same strategy to check for user scopes, inspect scopes on a JWT, etc.
 
