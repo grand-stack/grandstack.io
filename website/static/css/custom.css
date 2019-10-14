@@ -16,6 +16,12 @@
 }
 
 .featureImageBlock > div > div > div > div > div > img {
-    height: 89px;
-    width: 80px;
+  height: 89px;
+  width: 80px;
+}
+
+.blockElement.imageAlignSide .blockImage img {
+  margin-top: 48px;
+  width: 100%;
+  height: 250px;
 }
