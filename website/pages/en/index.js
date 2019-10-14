@@ -52,7 +52,7 @@ const SplashContainer = props => (
 
 const Logo = props => (
   <div className="projectLogo">
-    <img src={props.img_src} />
+    <img alt="logo" src={props.img_src} />
   </div>
 );
 
@@ -113,24 +113,28 @@ const Features = props => (
         {
           content: "",
           image: imgUrl("logo/graphql.svg"),
+          imageAlt: "graphql logo",
           imageAlign: "top",
           title: "GraphQL"
         },
         {
           content: "",
           image: imgUrl("logo/react.svg"),
+          imageAlt: "react logo",
           imageAlign: "top",
           title: "React"
         },
         {
           content: "",
           image: imgUrl("logo/apollo.svg"),
+          imageAlt: "apollo logo",
           imageAlign: "top",
           title: "Apollo"
         },
         {
           content: "",
           image: imgUrl("logo/neo4j.svg"),
+          imageAlt: "neo4j logo",
           imageAlign: "top",
           title: "Neo4j Database"
         }
@@ -211,7 +215,7 @@ const GraphQL = props => (
           </div>
 
           <div className="blockImage">
-            <img src={imgUrl("/logo/graphql.svg")} />
+            <img alt="graphql logo" src={imgUrl("/logo/graphql.svg")} />
           </div>
         </div>
       </div>
@@ -225,7 +229,7 @@ const ReactSlide = props => (
       <div className="gridBlock">
         <div className="blockElement imageAlignSide imageAlignLeft twoByGridBlock">
           <div className="blockImage">
-            <img src={imgUrl("/logo/react.svg")} />
+            <img alt="react logo" src={imgUrl("/logo/react.svg")} />
           </div>
 
           <div className="blockContent">
@@ -344,7 +348,7 @@ const Apollo = props => (
           </div>
 
           <div className="blockImage">
-            <img src={imgUrl("/logo/apollo.svg")} />
+            <img alt="apollo logo" src={imgUrl("/logo/apollo.svg")} />
           </div>
         </div>
       </div>
@@ -358,7 +362,7 @@ const Neo4jDatabase = props => (
       <div className="gridBlock">
         <div className="blockElement imageAlignSide imageAlignLeft twoByGridBlock">
           <div className="blockImage">
-            <img src={imgUrl("/logo/neo4j.svg")} />
+            <img alt="neo4j logo" src={imgUrl("/logo/neo4j.svg")} />
           </div>
 
           <div className="blockContent">
