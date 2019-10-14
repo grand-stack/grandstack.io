@@ -52,7 +52,7 @@ const SplashContainer = props => (
 
 const Logo = props => (
   <div className="projectLogo">
-    <img src={props.img_src} />
+    <img alt="logo" src={props.img_src} />
   </div>
 );
 
@@ -113,24 +113,28 @@ const Features = props => (
         {
           content: "",
           image: imgUrl("logo/graphql.svg"),
+          imageAlt: "graphql logo",
           imageAlign: "top",
           title: "GraphQL"
         },
         {
           content: "",
           image: imgUrl("logo/react.svg"),
+          imageAlt: "react logo",
           imageAlign: "top",
           title: "React"
         },
         {
           content: "",
           image: imgUrl("logo/apollo.svg"),
+          imageAlt: "apollo logo",
           imageAlign: "top",
           title: "Apollo"
         },
         {
           content: "",
           image: imgUrl("logo/neo4j.svg"),
+          imageAlt: "neo4j logo",
           imageAlign: "top",
           title: "Neo4j Database"
         }
@@ -152,7 +156,7 @@ const FeatureCallout = props => (
 );
 
 const GraphQL = props => (
-  <div className="container darkBackground paddingBottom paddingTop">
+  <div className="container lightBackground paddingBottom paddingTop">
     <div className="wrapper">
       <div className="gridBlock">
         <div className="blockElement imageAlignSide imageAlignRight twoByGridBlock">
@@ -211,7 +215,7 @@ const GraphQL = props => (
           </div>
 
           <div className="blockImage">
-            <img src={imgUrl("/logo/graphql.svg")} />
+            <img alt="graphql logo" src={imgUrl("/logo/graphql.svg")} />
           </div>
         </div>
       </div>
@@ -220,12 +224,12 @@ const GraphQL = props => (
 );
 
 const ReactSlide = props => (
-  <div className="container lightBackground paddingBottom paddingTop">
+  <div className="container paddingBottom paddingTop">
     <div className="wrapper">
       <div className="gridBlock">
         <div className="blockElement imageAlignSide imageAlignLeft twoByGridBlock">
           <div className="blockImage">
-            <img src={imgUrl("/logo/react.svg")} />
+            <img alt="react logo" src={imgUrl("/logo/react.svg")} />
           </div>
 
           <div className="blockContent">
@@ -285,7 +289,7 @@ const ReactSlide = props => (
 );
 
 const Apollo = props => (
-  <div className="container darkBackground paddingBottom paddingTop">
+  <div className="container lightBackground paddingBottom paddingTop">
     <div className="wrapper">
       <div className="gridBlock">
         <div className="blockElement imageAlignSide imageAlignRight twoByGridBlock">
@@ -344,7 +348,7 @@ const Apollo = props => (
           </div>
 
           <div className="blockImage">
-            <img src={imgUrl("/logo/apollo.svg")} />
+            <img alt="apollo logo" src={imgUrl("/logo/apollo.svg")} />
           </div>
         </div>
       </div>
@@ -353,12 +357,12 @@ const Apollo = props => (
 );
 
 const Neo4jDatabase = props => (
-  <div className="container lightBackground paddingBottom paddingTop">
+  <div className="container paddingBottom paddingTop">
     <div className="wrapper">
       <div className="gridBlock">
         <div className="blockElement imageAlignSide imageAlignLeft twoByGridBlock">
           <div className="blockImage">
-            <img src={imgUrl("/logo/neo4j.svg")} />
+            <img alt="neo4j logo" src={imgUrl("/logo/neo4j.svg")} />
           </div>
 
           <div className="blockContent">
@@ -417,75 +421,6 @@ const Neo4jDatabase = props => (
     </div>
   </div>
 );
-
-const LearnHow = props => (
-  <Block background="light">
-    {[
-      {
-        content: "Talk about learning how to use this",
-        image: imgUrl("docusaurus.svg"),
-        imageAlign: "right",
-        title: "Learn How"
-      }
-    ]}
-  </Block>
-);
-
-const TryOut = props => (
-  <Block id="try">
-    {[
-      {
-        content: "Talk about trying this out",
-        image: imgUrl("docusaurus.svg"),
-        imageAlign: "left",
-        title: "Try it Out"
-      }
-    ]}
-  </Block>
-);
-
-const Description = props => (
-  <Block background="dark">
-    {[
-      {
-        content: "This is another description of how this project is useful",
-        image: imgUrl("docusaurus.svg"),
-        imageAlign: "right",
-        title: "Description"
-      }
-    ]}
-  </Block>
-);
-
-const Showcase = props => {
-  if ((siteConfig.users || []).length === 0) {
-    return null;
-  }
-  const showcase = siteConfig.users
-    .filter(user => {
-      return user.pinned;
-    })
-    .map((user, i) => {
-      return (
-        <a href={user.infoLink} key={i}>
-          <img src={user.image} alt={user.caption} title={user.caption} />
-        </a>
-      );
-    });
-
-  return (
-    <div className="productShowcaseSection paddingBottom">
-      <h2>{"Who's Using This?"}</h2>
-      <p>This project is used by all these people</p>
-      <div className="logos">{showcase}</div>
-      <div className="more-users">
-        <a className="button" href={pageUrl("users.html", props.language)}>
-          More {siteConfig.title} Users
-        </a>
-      </div>
-    </div>
-  );
-};
 
 class Index extends React.Component {
   render() {
