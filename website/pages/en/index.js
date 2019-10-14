@@ -152,7 +152,7 @@ const FeatureCallout = props => (
 );
 
 const GraphQL = props => (
-  <div className="container darkBackground paddingBottom paddingTop">
+  <div className="container lightBackground paddingBottom paddingTop">
     <div className="wrapper">
       <div className="gridBlock">
         <div className="blockElement imageAlignSide imageAlignRight twoByGridBlock">
@@ -220,7 +220,7 @@ const GraphQL = props => (
 );
 
 const ReactSlide = props => (
-  <div className="container lightBackground paddingBottom paddingTop">
+  <div className="container paddingBottom paddingTop">
     <div className="wrapper">
       <div className="gridBlock">
         <div className="blockElement imageAlignSide imageAlignLeft twoByGridBlock">
@@ -285,7 +285,7 @@ const ReactSlide = props => (
 );
 
 const Apollo = props => (
-  <div className="container darkBackground paddingBottom paddingTop">
+  <div className="container lightBackground paddingBottom paddingTop">
     <div className="wrapper">
       <div className="gridBlock">
         <div className="blockElement imageAlignSide imageAlignRight twoByGridBlock">
@@ -353,7 +353,7 @@ const Apollo = props => (
 );
 
 const Neo4jDatabase = props => (
-  <div className="container lightBackground paddingBottom paddingTop">
+  <div className="container paddingBottom paddingTop">
     <div className="wrapper">
       <div className="gridBlock">
         <div className="blockElement imageAlignSide imageAlignLeft twoByGridBlock">
