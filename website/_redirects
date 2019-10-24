@@ -5,3 +5,4 @@
 /docs/guide-middleware.html     /docs/neo4j-graphql-js-middleware-authorization.html
 /docs/neo4j-graphql-plugin.html /docs/neo4j-graphql-database-plugin.html
 /docs/links.html                /docs/grandstack-resources.html
+/book                           https://www.manning.com/books/fullstack-graphql-applications-with-grandstack
