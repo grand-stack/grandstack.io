@@ -65,7 +65,7 @@ Temporal types expose their date components (such as day, month, year, hour, etc
 ```
 ### Temporal Query Arguments
 
-As part of the [schema augmentation process](#schema-augmentation) temporal input types are added to the schema and can be used as query arguments. For example, given the type definition:
+As part of the [schema augmentation process](graphql-schema-generation-augmentation.md) temporal input types are added to the schema and can be used as query arguments. For example, given the type definition:
 
 ```
 type Movie{

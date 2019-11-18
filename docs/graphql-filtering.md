@@ -101,6 +101,57 @@ Filtering can be applied to GraphQL temporal fields, using the temporal input ty
 }
 ```
 
+## Spatial Filtering
+
+When querying using point data, often we want to find things that are close to other things. For example, what businesses are within 1.5km of me? For example:
+
+*GraphQL query*
+```GraphQL
+{
+  Business(
+    filter: {
+      location_distance_lt: {
+        point: { latitude: 46.859924, longitude: -113.985402 }
+        distance: 1500
+      }
+    }
+  ) {
+    name
+    location {
+      latitude
+      longitude
+    }
+  }
+}
+
+```
+
+*GraphQL result*
+```JSON
+{
+  "data": {
+    "Business": [
+      {
+        "name": "Missoula Public Library",
+        "location": {
+          "latitude": 46.870035,
+          "longitude": -113.990976
+        }
+      },
+      {
+        "name": "Market on Front",
+        "location": {
+          "latitude": 46.869824,
+          "longitude": -113.993633
+        }
+      }
+    ]
+  }
+}
+```
+
+For points using the Geographic coordinate reference system (latitude and longitude) `distance` is measured in meters.
+
 ## Filter Criteria
 
 The filter criteria available depends on the type of the field and are added to the generated input type prefixed by the name of the field and suffixed with the criteria. For example, given the following type definitions:
@@ -137,6 +188,12 @@ type UserReview @relation(name:"RATED"){
   to: Movie
   rating: Float
   createdAt: DateTime
+}
+
+type Business {
+  id: ID!
+  name: String
+  location: Point
 }
 ```
 
@@ -199,6 +256,14 @@ the following filtering criteria is available, through the generated `filter` in
 |  | `createdAt_lte`         | `_Neo4jDateTimeInput`   | Matches when value is less than or equal to given DateTime |
 |  | `createdAt_gt`          | `_Neo4jDateTimeInput`   | Matches when value is greater than given DateTime |
 |  | `cratedAt_gte`          | `_Neo4jDateTimeInput`   | Matches when value is greater than or equal to given DateTime |
+| **Spatial fields**|        |                         |*Spatial filers use the point inputs described in the [Spatial Types section](graphql-spatial-types.md)*|
+|  | `location`              | `_Neo4jPointInput`      | Matches point property exactly           |
+|  | `location_not`          | `_Neo4jPointInput`      | Matches based on inequality of point values |
+|  | `location_distance`     | `_Neo4jPointDistanceFilter` | Matches based on computed distance of location to provided point |
+|  | `location_distance_lt`  | `_Neo4jPointDistanceFilter` | Matches when computed distance of location to provided point is less than distance specified |
+|  | `location_distance_lte` | `_Neo4jPointDistanceFilter` | Matches when computed distance of location to provided point is less than or equal to distance specified |
+| | `location_distance_gt`  | `_Neo4jPointDistanceFilter` | Matches when computed distance of location to provided point is greater than distance specified |
+|  | `location_distance_gte` | `_Neo4jPointDistanceFilter` | Matches when computed distance of location to provided point is greater than or equal to distance specified |
 
 
 See the [filtering tests](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/test/tck/filterTck.md) for more examples of the use of filters.
