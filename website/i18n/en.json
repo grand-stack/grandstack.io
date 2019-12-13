@@ -5,6 +5,18 @@
     "previous": "Previous",
     "tagline": "Build full stack graph applications with ease.",
     "docs": {
+      "apollo-client": {
+        "title": "Apollo Client",
+        "sidebar_label": "Apollo Client"
+      },
+      "apollo-server": {
+        "title": "Apollo Server",
+        "sidebar_label": "Apollo Server"
+      },
+      "apollo": {
+        "title": "Apollo",
+        "sidebar_label": "Apollo"
+      },
       "getting-started-grand-stack-starter": {
         "title": "GRANDstack Starter",
         "sidebar_label": "GRANDstack Starter"
@@ -29,13 +41,25 @@
         "title": "GraphQL Schema Generation And Augmentation",
         "sidebar_label": "Schema Generation And Augmentation"
       },
+      "graphql-spatial-types": {
+        "title": "GraphQL Spatial Types",
+        "sidebar_label": "Spatial Types"
+      },
       "graphql-temporal-types-datetime": {
         "title": "GraphQL Temporal Types (DateTime)",
         "sidebar_label": "Temporal Types (DateTime)"
       },
+      "graphql": {
+        "title": "GraphQL",
+        "sidebar_label": "GraphQL"
+      },
       "guide-graphql-schema-design": {
         "title": "Designing Your GraphQL Schema",
         "sidebar_label": "GraphQL Schema Design"
+      },
+      "guide-order": {
+        "title": "Ordering Results With neo4j-graphql",
+        "sidebar_label": "Ordering Results"
       },
       "neo4j-graphql-database-plugin": {
         "title": "Neo4j GraphQL Database Plugin",
@@ -68,6 +92,18 @@
       "neo4j-graphql-overview": {
         "title": "Neo4j GraphQL",
         "sidebar_label": "Neo4j GraphQL Overview"
+      },
+      "neo4j": {
+        "title": "Neo4j Database",
+        "sidebar_label": "Neo4j Database"
+      },
+      "react": {
+        "title": "React",
+        "sidebar_label": "React"
+      },
+      "tutorial": {
+        "title": "Tutorial",
+        "sidebar_label": "Building A Fullstack GRANDstack App"
       }
     },
     "links": {
