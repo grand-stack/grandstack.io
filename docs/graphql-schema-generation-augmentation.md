@@ -4,7 +4,6 @@ title: GraphQL Schema Generation And Augmentation
 sidebar_label: Schema Generation And Augmentation
 ---
 
-
 `neo4j-graphql.js` can create an executable GraphQL schema from GraphQL type definitions or augment an existing GraphQL schema, adding
 
 - auto-generated mutations and queries (including resolvers)
@@ -22,6 +21,7 @@ import { makeAugmentedSchema } from "neo4j-graphql-js";
 
 const typeDefs = `
 type Movie {
+    movieId: ID!
     title: String
     year: Int
     imdbRating: Float
@@ -61,6 +61,7 @@ Based on the type definitions provided, fields are added to the Query type for e
 
 ```graphql
 Movie(
+  movieID: ID!
   title: String
   year: Int
   imdbRating: Float
@@ -85,37 +86,52 @@ Genre(
 
 Create, update, delete, and add relationship mutations are also generated for each type. For example:
 
-**Create**
+### Create
 
 ```graphql
 CreateMovie(
+  movieId: ID!
   title: String
   year: Int
   imdbRating: Float
 ): Movie
 ```
 
-> If an `ID` typed field is specified in the type defintion, but not provided when the create mutation is executed then a random UUID will be generated and stored in the database.
+> If an `ID` typed field is specified in the type definition, but not provided when the create mutation is executed then a random UUID will be generated and stored in the database.
 
-**Update**
+### Update
 
 ```graphql
 UpdateMovie(
+  movieId: ID!
   title: String!
   year: Int
   imdbRating: Float
 ): Movie
 ```
 
-**Delete**
+### Delete
 
 ```graphql
 DeleteMovie(
-  title: String!
+  movieId: ID!
 ): Movie
 ```
 
-**Add / Remove Relationship**
+### Merge
+
+> In Neo4j, the `MERGE` clause ensures that a pattern exists in the graph. Either the pattern already exists, or it needs to be created. See the [Cypher manual](https://neo4j.com/docs/cypher-manual/current/clauses/merge/) for more information.
+
+```graphql
+MergeMovie(
+  movieId: ID!
+  title: String
+  year: Int
+  imdbRating: Float
+)
+```
+
+### Add / Remove Relationship
 
 Input types are used for relationship mutations.
 
@@ -152,13 +168,34 @@ type _RatedInput {
 }
 ```
 
-Remove relationship:
+### Remove relationship:
 
 ```graphql
 RemoveMovieGenres(
   from: _MovieInput!
   to: _GenreInput!
 ): _RemoveMovieGenresPayload
+```
+
+### Merge relationship:
+
+```graphql
+MergeMovieGenres(
+  from: _MovieInput!
+  to: _GenreInput!
+):  _MergeMovieGenresPayload
+```
+
+### Update relationship
+
+Used to update properties on a relationship type.
+
+```graphql
+UpdateUserRated(
+  from: _UserInput!
+  to: _MovieInput!
+  data: _RatedInput!
+): _UpdateUserRatedPayload
 ```
 
 > See [the relationship types](#relationship-types) section for more information, including how to declare these types in the schema and the relationship type query API.
