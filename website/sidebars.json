@@ -14,6 +14,7 @@
       "graphql-temporal-types-datetime",
       "graphql-spatial-types",
       "neo4j-graphql-js-middleware-authorization",
+      "neo4j-multiple-database-graphql",
       "neo4j-graphql-js-api",
       "neo4j-graphql-js-resources"
     ],
