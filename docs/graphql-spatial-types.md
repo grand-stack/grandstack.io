@@ -183,3 +183,7 @@ Note that not all fields of the `_Neo4jPointInput` type need to specified. In ge
 
 
 See the [Neo4j Cypher docs for more details](https://neo4j.com/docs/cypher-manual/current/syntax/spatial/#cypher-spatial-specifying-spatial-instants) on the spatial point type.
+
+## Resources
+
+* Blog post: [Working With Spatial Data In Neo4j GraphQL In The Cloud](https://blog.grandstack.io/working-with-spatial-data-in-neo4j-graphql-in-the-cloud-eee2bf1afad) - Serverless GraphQL, Neo4j Aura, and GRANDstack

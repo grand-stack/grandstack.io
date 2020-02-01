@@ -216,3 +216,7 @@ server.use(
   }))
 );
 ```
+
+## Resources
+
+* Blog post: [Five Common GraphQL Problems and How Neo4j-GraphQL Aims To Solve Them](https://blog.grandstack.io/five-common-graphql-problems-and-how-neo4j-graphql-aims-to-solve-them-e9a8999c8d43) - Digging Into the Goals of A Neo4j-GraphQL Integration

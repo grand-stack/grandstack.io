@@ -158,3 +158,7 @@ mutation {
 ```
 
 The input types for temporals generally correspond to the fields used for specifying temporal instants in Neo4j [described here](https://neo4j.com/docs/cypher-manual/current/syntax/temporal/#cypher-temporal-specifying-temporal-instants).
+
+## Resources
+
+* Blog post: [Using Native DateTime Types With GRANDstack](https://blog.grandstack.io/using-native-datetime-types-with-grandstack-e126728fb2a0) - Leverage Neo4j’s Temporal Types In Your GraphQL Schema With neo4j-graphql.js

@@ -281,3 +281,7 @@ const schema = makeAugmentedSchema({
 ```
 
 See the API Reference for [`augmentSchema`](neo4j-graphql-js-api.md#augmentschemaschema-graphqlschema) and [`makeAugmentedSchema`](neo4j-graphql-js-api.md#makeaugmentedschemaoptions-graphqlschema) for more information.
+
+## Resources
+
+* Blog post: [GraphQL API Configuration With neo4j-graphql.js](https://blog.grandstack.io/graphql-api-configuration-with-neo4j-graphql-js-bf7a1331c793) - Excluding Types From The Auto-Generated GraphQL Schema

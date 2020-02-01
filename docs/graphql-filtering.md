@@ -267,3 +267,7 @@ the following filtering criteria is available, through the generated `filter` in
 
 
 See the [filtering tests](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/test/tck/filterTck.md) for more examples of the use of filters.
+
+## Resources
+
+* Blog post: [Complex GraphQL Filtering With neo4j-graphql.js](https://blog.grandstack.io/complex-graphql-filtering-with-neo4j-graphql-js-aef19ad06c3e) - Use filtering in your GraphQL queries without writing any resolvers

@@ -313,3 +313,7 @@ const server = new ApolloServer({
 server.applyMiddleware({ app, path: "/" });
 app.listen(3000, "0.0.0.0");
 ```
+
+## Resources
+
+* Blog post: [Authorization In GraphQL Using Custom Schema Directives](https://blog.grandstack.io/authorization-in-graphql-using-custom-schema-directives-eafa6f5b4658) - With Apollo’s graphql-tools, Auth0 JWTs, and neo4j-graphql.js
