@@ -44,7 +44,7 @@ const schema = makeAugmentedSchema({ typeDefs });
 Create a neo4j-javascript-driver instance:
 
 ```
-import { v1 as neo4j } from 'neo4j-driver';
+import neo4j from 'neo4j-driver';
 
 const driver = neo4j.driver(
   'bolt://localhost:7687',
