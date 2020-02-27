@@ -204,7 +204,7 @@ UpdateUserRated(
 
 `neo4j-graphql-js` supports ordering results through the use of an `orderBy` parameter. The augment schema process will add `orderBy` to fields as well as appropriate ordering enum types (where values are a combination of each field and `_asc` for ascending order and `_desc` for descending order). For example:
 
-```
+```graphql
 enum _MovieOrdering {
   title_asc
   title_desc
@@ -281,6 +281,33 @@ const schema = makeAugmentedSchema({
 ```
 
 See the API Reference for [`augmentSchema`](neo4j-graphql-js-api.md#augmentschemaschema-graphqlschema) and [`makeAugmentedSchema`](neo4j-graphql-js-api.md#makeaugmentedschemaoptions-graphqlschema) for more information.
+
+### Excluding relationships
+
+To exclude specific relationships between types from being resolved using the generated neo4j resolver, use the `@neo4j_ignore` directive. This is useful when combining other data sources with your neo4j graph. Used alongside excluding types from augmentation, it allows data related to graph nodes to be blended with eth neo4j result. For example:
+
+```graphql
+type IMDBReview {
+    rating: Int
+    text: String
+}
+
+extend type Movie {
+    imdbUrl: String
+    imdbReviews: [IMDBReview] @neo4j_ignore
+}
+```
+
+```javascript
+const schema = makeAugmentedSchema({
+    resolvers: {
+        Movie: {
+            imdbReviews: ({imdbURL}) => // fetch data from IMDB and return JSON result
+        }
+    }
+    config: {query: {exclude: ['IMDBReview']}}
+])
+```
 
 ## Resources
 
