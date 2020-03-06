@@ -33,6 +33,10 @@
         "title": "Complex GraphQL Filtering",
         "sidebar_label": "Filtering"
       },
+      "graphql-interface-union-types": {
+        "title": "Using GraphQL Interface And Union Types",
+        "sidebar_label": "Interface and Union Types"
+      },
       "graphql-relationship-types": {
         "title": "GraphQL Relationship Types",
         "sidebar_label": "Relationship Types"

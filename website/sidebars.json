@@ -13,6 +13,7 @@
       "graphql-relationship-types",
       "graphql-temporal-types-datetime",
       "graphql-spatial-types",
+      "graphql-interface-union-types",
       "neo4j-graphql-js-middleware-authorization",
       "neo4j-multiple-database-graphql",
       "neo4j-graphql-js-api",
