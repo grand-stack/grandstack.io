@@ -10,83 +10,113 @@ This page describes how interface and union types can be used with neo4j-graphql
 
 GraphQL supports two kinds of abstract types: interfaces and unions. Interfaces are abstract types that include a set of fields that all implementing types must include. A union type indicates that a field can return one of several object types, but doesn't specify any fields that must be included in the implementing types of the union. See the GraphQL documentation to learn more about [interface](https://graphql.org/learn/schema/#interfaces) and [union](https://graphql.org/learn/schema/#union-types) types.
 
-
-
-When interfaces are useful
-
-When unions are useful
-
-How to define interface in SDL
-
-How interfaces map to property graph model
-
 ## Interface Types
 
-### Defining In SDL
+Interface types are supported in neo4j-graphql.js through the use of multiple labels in Neo4j. For example, consider the following GraphQL type definitions:
+
+```GraphQL
+interface Person {
+  id: ID!
+  name: String
+}
+
+type User implements Person {
+  id: ID!
+  name: String
+  screenName: String
+  reviews: [Review] @relation(name: "WROTE", direction: OUT)
+}
+
+type Actor implements Person {
+  id: ID!
+  name: String
+  movies: [Movie] @relation(name: "ACTED_IN", direction: OUT)
+}
+
+type Movie {
+  movieId: ID!
+  title: String
+}
+
+type Review {
+  rating: Int
+  created: DateTime
+  movie: Movie @relation(name: "REVIEWS", direction: OUT)
+}
+```
+
+The above GraphQL type definitions would define the following property graph model using neo4j-graphql.js:
+
+![Property graph model](/docs/assets/img/interface-model.png)
+
+<!--
+<ul class="graph-diagram-markup" data-internal-scale="1.41" data-external-scale="1">
+  <li class="node" data-node-id="0" data-x="0" data-y="0">
+    <span class="caption">:Review</span><dl class="properties"><dt>rating</dt><dd>Int</dd><dt>created</dt><dd>DateTime</dd></dl></li>
+  <li class="node" data-node-id="1" data-x="-652.1715698242188" data-y="-67.44053077697754">
+    <span class="caption">:Person:User</span><dl class="properties"><dt>id</dt><dd>ID!</dd><dt>name</dt><dd>String</dd><dt>screenName</dt><dd>String</dd></dl></li>
+  <li class="node" data-node-id="2" data-x="-350.590405836173" data-y="-450.8161956570672">
+    <span class="caption">:Person:Actor</span><dl class="properties"><dt>id</dt><dd>ID!</dd><dt>name</dt><dd>String</dd></dl></li>
+  <li class="node" data-node-id="3" data-x="203.93539428710938" data-y="-329.8392028808594">
+    <span class="caption">:Movie</span><dl class="properties"><dt>movieId</dt><dd>ID!</dd><dt>title</dt><dd>String</dd></dl></li>
+  <li class="relationship" data-from="1" data-to="0">
+    <span class="type">WROTE</span>
+  </li>
+  <li class="relationship" data-from="0" data-to="3">
+    <span class="type">REVIEWS</span>
+  </li>
+  <li class="relationship" data-from="2" data-to="3">
+    <span class="type">ACTED_IN</span>
+  </li>
+</ul>
+-->
+
+Note that the label `Person` (which represents the interface type) is added to each node of a type implementing the `Person` interface (`User` and `Actor`),
 
 ### Interface Mutations
 
+When an interface type is included in the GraphQL type definitions, the generated create mutations will add the additional label for the interface type to any nodes of an implementing type when creating data. For example consider the following mutations.
+
 ```GraphQL
 mutation {
-  CreateUser(name:"Bob", screenName: "bobbyTables") {
+  u1: CreateUser(name: "Bob", screenName: "bobbyTables", id: "u1") {
     id
   }
-}
-```
-
-
-```GraphQL
-{
-  "data": {
-    "CreateUser": {
-      "id": "a60bf1bb-e887-44f6-b1bb-d944ff8c2d3a"
-    }
-  }
-}
-```
-
-// TODO: combine into fewer mutations
-
-```GraphQL
-mutation {
-  CreateActor(name:"Brad Pitt") {
+  a1: CreateActor(name: "Brad Pitt", id: "a1") {
     id
   }
-}
-```
-
-```GraphQL
-mutation {
-  CreateMovie(title:"River Runs Through It, A") {
+  m1: CreateMovie(title: "River Runs Through It, A", movieId: "m1") {
     movieId
   }
-}
-```
-
-```GraphQL
-{
-  "data": {
-    "CreateMovie": {
-      "movieId": "1a5b49e7-b354-4aa7-95a1-431446f5d77b"
-    }
-  }
-}
-```
-
-```GraphQL
-mutation {
-  AddActorMovies(from:{id: "f474e9a4-15e8-4bda-b9f9-0fff45732ee3"}, to: {movieId: "1a5b49e7-b354-4aa7-95a1-431446f5d77b"}) {
+  am1: AddActorMovies(from: { id: "a1" }, to: { movieId: "m1" }) {
     from {
-      name
-    }
-    to {
-			title
+      id
     }
   }
 }
 ```
+
+This creates the following graph in Neo4j (note the use of multiple labels):
+
+![Simple movie graph with interface types](/docs/assets/img/interface-data.png)
+
+<!--
+<ul class="graph-diagram-markup" data-internal-scale="1.41" data-external-scale="1">
+  <li class="node" data-node-id="1" data-x="-58.7245244235856" data-y="-3.9691390433209954">
+    <span class="caption">:Person:User</span><dl class="properties"><dt>id</dt><dd>"u1"</dd><dt>name</dt><dd>"Bob"</dd><dt>screenName</dt><dd>"bobbyTables"</dd></dl></li>
+  <li class="node" data-node-id="2" data-x="-396.65084622430464" data-y="-318.41422244673925">
+    <span class="caption">:Person:Actor</span><dl class="properties"><dt>id</dt><dd>"a1"</dd><dt>name</dt><dd>"Brad Pitt"</dd></dl></li>
+  <li class="node" data-node-id="3" data-x="85.11565837454289" data-y="-318.41422244673925">
+    <span class="caption">:Movie</span><dl class="properties"><dt>movieId</dt><dd>"m1"</dd><dt>title</dt><dd>"River Runs Through It, A"</dd></dl></li>
+  <li class="relationship" data-from="2" data-to="3">
+    <span class="type">ACTED_IN</span>
+  </li>
+</ul>
+-->
 
 ### Interface Queries
+
+A query field is addd to the generated `Query` type for each interface. For example, querying using our `Person` interface.
 
 ```GraphQL
 query {
@@ -97,7 +127,7 @@ query {
 ```
 
 
-```GraphQL
+```JSON
 {
   "data": {
     "Person": [
@@ -112,8 +142,7 @@ query {
 }
 ```
 
-
-Add __typename
+The `__typename` introspection field can be added to the selection set to determine the concrete type of the object. 
 
 ```GraphQL
 query {
@@ -124,7 +153,7 @@ query {
 }
 ```
 
-```GraphQL
+```JSON
 {
   "data": {
     "Person": [
@@ -141,7 +170,7 @@ query {
 }
 ```
 
-With inline fragments
+[Inline fragments](https://graphql.org/learn/queries/#inline-fragments) can be used to access fields of the concrete types in the selection set.
 
 ```GraphQL
 query {
@@ -162,7 +191,7 @@ query {
 ```
 
 
-```GraphQL
+```JSON
 {
   "data": {
     "Person": [
@@ -185,7 +214,7 @@ query {
 }
 ```
 
-With filter argument
+The generated filter arguments can be used for interface types. Note however that only fields in the interface definition are included in the generated filter arguments as those apply to all concrete types.
 
 ```GraphQL
 query {
@@ -205,7 +234,7 @@ query {
 }
 ```
 
-```GraphQL
+```JSON
 {
   "data": {
     "Person": [
@@ -223,7 +252,7 @@ query {
 }
 ```
 
-On relationship fields
+We can also use intefaces when defining relationship fields. For example:
 
 ```GraphQL
   friends: [Person] @relation(name: "FRIEND_OF", direction: OUT)
@@ -247,6 +276,6 @@ Use with @cypher directive field for full text index
 
 ## Using Union and Interface Types Together
 
-Note that we cannot have interfaces in unions, but we can inclue the _implementing_ type in a union.
+Note that we cannot have interfaces in unions, but we can include the _concrete_ type in a union.
 
 > NOTE: not yet implmented for relationship types
