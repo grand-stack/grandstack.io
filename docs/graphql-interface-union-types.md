@@ -116,6 +116,8 @@ This creates the following graph in Neo4j (note the use of multiple labels):
 
 ### Interface Queries
 
+#### Query field
+
 A query field is addd to the generated `Query` type for each interface. For example, querying using our `Person` interface.
 
 ```GraphQL
@@ -141,6 +143,8 @@ query {
   }
 }
 ```
+
+#### __typename introspection field
 
 The `__typename` introspection field can be added to the selection set to determine the concrete type of the object. 
 
@@ -169,6 +173,8 @@ query {
   }
 }
 ```
+
+#### Inline fragments
 
 [Inline fragments](https://graphql.org/learn/queries/#inline-fragments) can be used to access fields of the concrete types in the selection set.
 
@@ -214,6 +220,8 @@ query {
 }
 ```
 
+#### Filtering With Interfaces
+
 The generated filter arguments can be used for interface types. Note however that only fields in the interface definition are included in the generated filter arguments as those apply to all concrete types.
 
 ```GraphQL
@@ -252,7 +260,9 @@ query {
 }
 ```
 
-We can also use intefaces when defining relationship fields. For example:
+#### Interface Relationship Fields
+
+We can also use interfaces when defining relationship fields. For example:
 
 ```GraphQL
   friends: [Person] @relation(name: "FRIEND_OF", direction: OUT)
@@ -261,16 +271,171 @@ We can also use intefaces when defining relationship fields. For example:
 
 ## Union Types
 
-// Find some other schema that isn't built off the previous
+> Note that using union types for relationship types is not yet supported by neo4j-graphql.js. Unions can however be used on relationship fields.
 
-### Defining In SDL
+Union types are abstract types that do not specify any fields that must be included in the implementing types of the union, therefore it cannot be assumed that the concrete types of a union include any overlapping fields. Similar to interface types, in neo4j-graphql.js an additional label is added to nodes to represent the union type.
+
+For example, consider the following GraphQL type definitions:
+
+```GraphQL
+union SearchResult = Blog | Movie
+
+type Blog {
+  blogId: ID!
+  created: DateTime
+  content: String
+}
+
+type Movie {
+  movieId: ID!
+  title: String
+}
+```
 
 ### Union Mutations
+
+```GraphQL
+mutation {
+  b1: CreateBlog(
+    blogId: "b1"
+    created: { year: 2020, month: 3, day: 7 }
+    content: "Neo4j GraphQL is the best!"
+  ) {
+    blogId
+  }
+  m1: CreateMovie(movieId: "m1", title: "River Runs Through It, A") {
+    movieId
+  }
+}
+```
+
+This creates the following data in Neo4j. Note the use of multiple node labels.
+
+![Union data in Neo4j](/docs/assets/img/union-data.png)
+
+<!--
+<ul class="graph-diagram-markup" data-internal-scale="1.41" data-external-scale="1">
+  <li class="node" data-node-id="4" data-x="-406.1722451067986" data-y="-5.943980115525266">
+    <span class="caption">:Blog:SearchResult</span><dl class="properties"><dt>blogId</dt><dd>"b1",</dd><dt>created</dt><dd>"03/07/2020",</dd><dt>content</dt><dd>"Neo4j GraphQL is the best!"</dd></dl></li>
+  <li class="node" data-node-id="5" data-x="-502.1348019863696" data-y="-374.4178284990027">
+    <span class="caption">:Movie:SearchResult</span><dl class="properties"><dt>movieId</dt><dd>"m1",</dd><dt>title</dt><dd>"River Runs Through It, A"</dd></dl></li>
+</ul>
+-->
 
 ### Union Queries
 
 
+#### Query Field
+
+```GraphQL
+{
+  SearchResult {
+    __typename
+  }
+}
+```
+
+```JSON
+{
+  "data": {
+    "SearchResult": [
+      {
+        "__typename": "Blog"
+      },
+      {
+        "__typename": "Movie"
+      }
+    ]
+  }
+}
+```
+
+#### Inline Fragments
+
+```GraphQL
+{
+  SearchResult {
+    __typename
+    ... on Blog {
+      created {
+        formatted
+      }
+      content
+    }
+
+    ... on Movie {
+      title
+    }
+  }
+}
+```
+
+```JSON
+{
+  "data": {
+    "SearchResult": [
+      {
+        "__typename": "Blog",
+        "created": {
+          "formatted": "2020-03-07T00:00:00Z"
+        },
+        "content": "Neo4j GraphQL is the best!"
+      },
+      {
+        "__typename": "Movie",
+        "title": "River Runs Through It, A"
+      }
+    ]
+  }
+}
+```
+
+#### Using With @cypher Directive Query Fields
+
+Full text search index example.
+
+```Cypher
+CALL db.index.fulltext.createNodeIndex("searchIndex", ["Blog","Movie"],["content", "title"])
+```
+
+```GraphQL
+type Query {
+  search(searchString: String!): [SearchResult] @cypher(statement:"CALL db.index.fulltext.queryNodes("searchIndex", $searchString) YIELD node RETURN node")
+}
+```
+
 Use with @cypher directive field for full text index
+
+
+```GraphQL
+{
+  search(searchString: "river") {
+    __typename
+    ... on Movie {
+      title
+    }
+    ... on Blog {
+      created {
+        formatted
+      }
+      content
+    }
+  }
+}
+```
+
+```JSON
+{
+  "data": {
+    "search": [
+      {
+        "__typename": "Movie",
+        "title": "River Runs Through It, A"
+      }
+    ]
+  }
+}
+```
 
 ### Use Without Specifying Relationship Type
 
@@ -278,4 +443,3 @@ Use with @cypher directive field for full text index
 
 Note that we cannot have interfaces in unions, but we can include the _concrete_ type in a union.
 
-> NOTE: not yet implmented for relationship types
