@@ -123,7 +123,7 @@ A query field is addd to the generated `Query` type for each interface. For exam
 ```GraphQL
 query {
   Person {
-		name
+   name
   }
 }
 ```
@@ -151,7 +151,7 @@ The `__typename` introspection field can be added to the selection set to determ
 ```GraphQL
 query {
   Person {
-		name
+    name
     __typename
   }
 }
@@ -227,11 +227,11 @@ The generated filter arguments can be used for interface types. Note however tha
 ```GraphQL
 query {
   Person(filter: {name_contains:"Brad"}) {
-		name
+    name
     __typename
     ... on Actor {
       movies {
-        title
+       title
       }
     }
     
@@ -294,6 +294,8 @@ type Movie {
 
 ### Union Mutations
 
+Using the generated mutations to create the following data:
+
 ```GraphQL
 mutation {
   b1: CreateBlog(
@@ -309,7 +311,7 @@ mutation {
 }
 ```
 
-This creates the following data in Neo4j. Note the use of multiple node labels.
+The above mutations create the following data in Neo4j. Note the use of multiple node labels.
 
 ![Union data in Neo4j](/docs/assets/img/union-data.png)
 
@@ -324,8 +326,9 @@ This creates the following data in Neo4j. Note the use of multiple node labels.
 
 ### Union Queries
 
-
 #### Query Field
+
+A query field is added to the Query type for each union type defined in the schema. 
 
 ```GraphQL
 {
@@ -351,6 +354,8 @@ This creates the following data in Neo4j. Note the use of multiple node labels.
 ```
 
 #### Inline Fragments
+
+Inline fragments are used in the selection set to access fields of the concrete type.
 
 ```GraphQL
 {
@@ -392,11 +397,16 @@ This creates the following data in Neo4j. Note the use of multiple node labels.
 
 #### Using With @cypher Directive Query Fields
 
-Full text search index example.
+We can also use unions with `@cypher` directive fields. Unions are often useful in the context of search results, where the result object might be one of several types. In order to support this usecase full text indexes can be used to search across multiple node labels and properties.
+
+
+First, let's create a full text index in Neo4j. This index will include the `:Blog(content)` and `:Movie(title)` properties.
 
 ```Cypher
 CALL db.index.fulltext.createNodeIndex("searchIndex", ["Blog","Movie"],["content", "title"])
 ```
+
+Now we can add a `search` field to the Query type that searches the full text index.
 
 ```GraphQL
 type Query {
@@ -404,8 +414,7 @@ type Query {
 }
 ```
 
-Use with @cypher directive field for full text index
-
+Now we can query the `search` field, leveraging the full text index.
 
 ```GraphQL
 {
@@ -437,9 +446,7 @@ Use with @cypher directive field for full text index
 }
 ```
 
-### Use Without Specifying Relationship Type
+## Resources
 
-## Using Union and Interface Types Together
-
-Note that we cannot have interfaces in unions, but we can include the _concrete_ type in a union.
+* [Using Neo4j’s Full-Text Search With GraphQL](https://blog.grandstack.io/using-neo4js-full-text-search-with-graphql-e3fa484de2ea) -- Defining Custom Query Fields Using The Cypher GraphQL Schema Directive
 
