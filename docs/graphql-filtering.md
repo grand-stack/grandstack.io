@@ -266,7 +266,7 @@ the following filtering criteria is available, through the generated `filter` in
 |  | `location_distance_gte` | `_Neo4jPointDistanceFilter` | Matches when computed distance of location to provided point is greater than or equal to distance specified |
 
 
-See the [filtering tests](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/test/tck/filterTck.md) for more examples of the use of filters.
+See the [filtering tests](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/test/helpers/tck/filterTck.md) for more examples of the use of filters.
 
 ## Resources
 
