@@ -275,7 +275,7 @@ type Movie {
   movieId: ID!
 }
 
-extend type MOvie @additionalLabels(
+extend type Movie @additionalLabels(
   labels: ["newMovieLabel"]
 )
 ```
