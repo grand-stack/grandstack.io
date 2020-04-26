@@ -245,7 +245,6 @@ extend schema {
 ```graphql
 scalar myScalar
 
-# Add a directive
 extend scalar myScalar @myDirective
 ```
 
@@ -325,7 +324,7 @@ extend enum BookGenre {
 ```
 
 ### Input Objects
-[Input Object](https://spec.graphql.org/June2018/#InputObjectTypeExtension) types can be extended with additional input fields or directives.
+[Input object](https://spec.graphql.org/June2018/#InputObjectTypeExtension) types can be extended with additional input fields or directives.
 ```graphql
 input CustomMutationInput {
   title: String
