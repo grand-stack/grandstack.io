@@ -227,6 +227,115 @@ The auto-generated `filter` argument is used to support complex field level filt
 
 See [the Complex GraphQL Filtering section](graphql-filtering.md) for details.
 
+## Type Extensions
+The GraphQL [specification](https://spec.graphql.org/June2018/#sec-Type-Extensions) describes using the `extend` keyword to represent a type which has been extended from another type. The following subsections describe the available behaviors, such as extending an object type to represent additional fields. When using schema augmentation, type extensions are applied when building the fields and types used for the generated Query and Mutation API.
+
+### Schema
+The [schema](https://spec.graphql.org/June2018/#sec-Schema-Extension) type can be extended with operation types.
+```graphql
+schema {
+  query: Query
+}
+extend schema {
+  mutation: Mutation
+}
+```
+### Scalars
+[Scalar](https://spec.graphql.org/June2018/#ScalarTypeExtension) types can be extended with additional directives.
+```graphql
+scalar myScalar
+
+extend scalar myScalar @myDirective
+```
+
+### Objects & Interfaces
+[Object](https://spec.graphql.org/June2018/#ObjectTypeExtension) and [interface](https://spec.graphql.org/June2018/#InterfaceTypeExtension) types can be extended with additional fields and directives. Objects can also be extended to implement interfaces.
+
+##### Fields
+```graphql
+type Movie {
+  movieId: ID!
+  title: String
+  year: Int
+  imdbRating: Float
+}
+
+extend type Movie {
+    genres: [Genre] @relation(name: "IN_GENRE", direction: "OUT")
+    similar: [Movie] @cypher(
+        statement: """MATCH (this)<-[:RATED]-(:User)-[:RATED]->(s:Movie) 
+                      WITH s, COUNT(*) AS score 
+                      RETURN s ORDER BY score DESC LIMIT {first}""")
+}
+```
+##### Directives
+```graphql
+type Movie {
+  movieId: ID!
+}
+
+extend type Movie @additionalLabels(
+  labels: ["newMovieLabel"]
+)
+```
+##### Operation types
+```graphql
+type Query {
+  Movie: [Movie]
+}
+
+extend type Query {
+  customMovie: Movie
+}
+```
+##### Implementing interfaces
+```graphql
+interface Person {
+  userId: ID!
+  name: String
+}
+
+type Actor {
+  userId: ID!
+  name: String
+}
+
+extend type Actor implements Person
+```
+
+### Unions
+A [union](https://spec.graphql.org/June2018/#sec-Union-Extensions) type can be extended with additional member types or directives.
+```graphql
+union MovieSearch = Movie | Genre | Book
+
+extend union MovieSearch = Actor | OldCamera
+```
+### Enums
+[Enum](https://spec.graphql.org/June2018/#EnumTypeExtension) types can be extended with additional values or directives.
+```graphql
+enum BookGenre {
+  Mystery
+  Science
+}
+
+extend enum BookGenre {
+  Math
+}
+```
+
+### Input Objects
+[Input object](https://spec.graphql.org/June2018/#InputObjectTypeExtension) types can be extended with additional input fields or directives.
+```graphql
+input CustomMutationInput {
+  title: String
+}
+
+extend input CustomMutationInput {
+  year: Int
+  imdbRating: Float
+}
+```
+
 ## Configuring Schema Augmentation
 
 You may not want to generate Query and Mutation fields for all types included in your type definitions, or you may not want to generate a Mutation type at all. Both `augmentSchema` and `makeAugmentedSchema` can be passed an optional configuration object to specify which types should be included in queries and mutations.
