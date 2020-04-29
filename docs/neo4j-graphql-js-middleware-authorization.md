@@ -8,7 +8,7 @@ This guide discusses some of the ways to address authentication and authorizatio
 
 ## GraphQL Authorization Schema Directives
 
-Schema directives can be used to define authorization logic. We use the [`graphql-auth-directives`](https://www.npmjs.com/package/graphql-auth-directives) library to add authorization schema directives that can then be used in the schema. `graphql-auth-directives` work with JSON Web Tokens (JWT), and assumes a JWT is included in the GraphQL request header. The claims contained in the JWT (roles, scopes, etc) are used to validate the GraphQL request, protecting resources in the following ways:
+Schema directives can be used to define authorization logic. By default, we use the [`graphql-auth-directives`](https://www.npmjs.com/package/graphql-auth-directives) library to add authorization schema directives that can then be used in the schema. `graphql-auth-directives` work with JSON Web Tokens (JWT), and assumes a JWT is included in the GraphQL request header. The claims contained in the JWT (roles, scopes, etc) are used to validate the GraphQL request, protecting resources in the following ways:
 
 ### `isAuthenticated`
 
@@ -147,6 +147,27 @@ const schema = makeAugmentedSchema({
     auth: {
       hasScope: true
     }
+  }
+})
+```
+
+#### Attaching Custom Authorization Schema Directives
+
+In some use cases, different authentication and authorization logic is required to that provided by `graphql-auth-directives`. For example, you may use middleware to validate bearer tokens and insert scopes into the context obect. It is possible to leverage the schema augmentation functionality afforded by the `config.auth` options whilst providing your own directives to attach. First create your own directive (the default [`graphql-auth-directives` repository](https://github.com/grand-stack/graphql-auth-directives) offers a working template) and then include them in the config object passed to `makeAugmentedSchema` or `augmentSchema`. For example, to override the `@hasScope` directive:
+
+```JavaScript
+import { makeAugmentedSchema } from "neo4j-graphql-js";
+import { MyHasScopeDirective } from "./my-directives";
+
+const schema = makeAugmentedSchema({
+  tyepDefs,
+  config: {
+    auth: {
+      hasScope: true
+    }
+  },
+  schemaDirectives: {
+    hasScope: MyHasScopeDirective
   }
 })
 ```
