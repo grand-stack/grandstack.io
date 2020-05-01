@@ -286,7 +286,7 @@ Review: {
   }
 }
 ```
-Because a query with `neo4jgraphql` resolves at the root field, all representations appropriate for the data the reviews service is responsible for are obtained and provided by the root field translation. When executing a federation query, `neo4jgraphql` decides a default `__typename`. The result is that field resolvers do not normally need to be written to provide representations.
+Because a query with `neo4jgraphql` resolves at the root field, all representations appropriate for the data the reviews service is responsible for are obtained and provided by the root field translation. When executing a federated query, `neo4jgraphql` decides a default `__typename`. The result is that field resolvers do not normally need to be written to provide representations.
 
 In this example, we have not yet selected an *external* field of the `Account` entity which is *not* a key. We have only selected the field of an `Account` key the reviews service can provide. So there is no need to query the accounts service. If we were to select additional fields of the `Account` entity, such as `name`, which the reviews service is not responsible for resolving, it would result in the following:
 ###### *Query*
