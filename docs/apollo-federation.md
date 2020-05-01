@@ -315,7 +315,7 @@ query {
 }
 ```
 The `Account` entity representation data resolved for the `author` field would then be provided to a [new kind of resolver](https://www.apollographql.com/docs/apollo-server/federation/entities/#resolving) defined with a [__resolveReference](https://www.apollographql.com/docs/apollo-server/api/apollo-federation/#__resolvereference) function in the `Account` type resolvers of the accounts service.
-> An implementing service uses reference resolvers for providing data to other services for the fields it resolves for the entities it defines. These reference resolvers are generated during schema augmentation.
+> An implementing service uses reference resolvers for providing data for the fields it resolves for the entities it defines. These reference resolvers are generated during schema augmentation.
 ###### *Accounts resolvers*
 ```js
 Account: {
