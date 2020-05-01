@@ -197,7 +197,7 @@ To support using schema augmentation with Federation, the `isFederated` configur
 
 * Ensures the return format is a schema module - an object containing `typeDefs` and `resolvers`. A schema module is the expected argument format for `buildFederatedSchema`.
 <br>
-* The `isFederated` configuration flag is not required for supporting the use of `neo4jgraphql` to resolve a federated operation. However, two new kinds of resolvers are now generated during schema augmentation to handle entity [references](#resolving-entity-references) and [extensions](#resolving-extension-fields).
+* The `isFederated` configuration flag is not required for supporting the use of `neo4jgraphql` to resolve a federated operation. However, two new kinds of resolvers are now generated during schema augmentation to handle entity [references](#resolving-entity-references) and [extensions](#resolving-entity-extension-fields).
 
 ---
 ## Defining an entity
