@@ -1,3 +1,4 @@
+
 ---
 id: apollo-federation
 title: Apollo Federation & Gateway
@@ -5,7 +6,7 @@ sidebar_label: Apollo Federation & Gateway
 ---
 
 ## Introduction
-[Apollo Gateway](https://www.apollographql.com/docs/apollo-server/federation/gateway/) composes federated schemas into a single schema, with each receiving appropriately delegated operations while running as a service. An [implementing service](https://www.apollographql.com/docs/apollo-server/federation/implementing-services/) is a schema that conforms to the [Apollo Federation specification](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/). This approach exposes a [single data graph](https://principledgraphql.com/integrity#1-one-graph) while enabling [concern-based separation](https://www.apollographql.com/docs/apollo-server/federation/introduction/#concern-based-separation) of types and fields across services.
+[Apollo Gateway](https://www.apollographql.com/docs/apollo-server/federation/gateway/) composes federated schemas into a single schema, with each receiving appropriately delegated operations while running as a service. An [implementing service](https://www.apollographql.com/docs/apollo-server/federation/implementing-services/) is a schema that conforms to the [Apollo Federation specification](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/), which itself is complaint with the [GraphQL specification](http://spec.graphql.org/June2018/). This approach exposes a [single data graph](https://principledgraphql.com/integrity#1-one-graph) while enabling [concern-based separation](https://www.apollographql.com/docs/apollo-server/federation/introduction/#concern-based-separation) of types *and fields* across services, ensuring that the data graph remains simple to consume. 
 
 The following guide will overview this [example](https://github.com/neo4j-graphql/neo4j-graphql-js/tree/master/example/apollo-federation), based on the Apollo Federation [demo](https://github.com/apollographql/federation-demo), to demonstrate current behavior with `neo4j-graphql-js`. 
 
@@ -258,14 +259,6 @@ type Account @key(fields: "id") {
   username: String
 }
 ```
-###### *Products*
-```graphql
-type Product @key(fields: "upc") {
-  upc: String!
-  name: String!
-  price: Int
-}
-```
 ###### *Reviews*
 ```graphql
 type Review @key(fields: "id") {
@@ -274,6 +267,17 @@ type Review @key(fields: "id") {
   authorID: ID
 }
 ```
+###### *Products*
+```graphql
+type Product @key(fields: "upc") {
+  upc: String!
+  name: String!
+  price: Int
+}
+```
+
+An entity can define [multiple keys](https://www.apollographql.com/docs/apollo-server/federation/entities/#defining-multiple-primary-keys) and its relationship fields can be used as [compound keys](https://www.apollographql.com/docs/apollo-server/federation/entities/#defining-multiple-primary-keys). When a compound key is provided in a representation, `neo4jgraphql` will generate a Cypher translation that selects only entity nodes with relationships to other nodes of the key field type that have property values matching those provided for the compound key. This translation is generated using current support for translating a [relationship field](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/test/helpers/tck/filterTck.md#all-related-nodes-matching-filter) query [filtering](https://grandstack.io/docs/graphql-filtering.html) argument for the exact name of the relationship field used as a compound key.
+
 ---
 ## Referencing an entity
 A reference to an entity defined in a given service occurs when that entity is used as the type of a field added to an entity defined in another service. 
@@ -575,3 +579,31 @@ extend type Product @key(fields: "upc") {
 ```
 ### @provides directive
 As an optional optimization, the Federation [@provides](https://www.apollographql.com/docs/apollo-server/federation/entities/#resolving-another-services-field-advanced) directive can be used when both a service defining an entity and another service extending it can access the same data source to resolve its fields. This directive also takes a `fields` argument, used by a given service to define which fields of an extended entity it's responsible for resolving, given those fields could be resolved by either service.
+
+## Resources
+
+### Videos
+* [Your First Federated Schema with Apollo Server](https://youtu.be/zZnHA3yyPJY?t=1953)
+  As part of the [Apollo Space Camp](https://www.eventbrite.com/e/apollo-space-camp-tickets-101566159116#) online event, part two of this video demonstrates using Gateway with services for `astronauts` and `missions`, and a [repository](https://github.com/mandiwise/space-camp-federation-demo) you can clone to try it out.
+<br>
+* [Introducing Apollo Federation](https://www.youtube.com/watch?v=WIeoBYRbprQ)
+  As part of [Apollo Day Seattle 2019](https://www.youtube.com/playlist?list=PLpi1lPB6opQznIY72BAmWtGm50D-WkYxv), this video overviews why Apollo developed Federation & Gateway as the evolution of [schema stitching](https://www.apollographql.com/docs/apollo-server/features/schema-stitching/) and demonstrates features by explaining the schema for the `accounts`, `products`, and `reviews` services of the [Federation demo](https://github.com/apollographql/federation-demo).
+
+### Articles
+
+* [Apollo Federation Introduction](https://www.apollographql.com/blog/apollo-federation-f260cf525d21) - An [Apollo Blog](https://www.apollographql.com/blog/) article introducing Federation by explaining the services used in the Federation demo.
+<br>
+* [Schema stitching guide](https://www.apollographql.com/docs/apollo-server/federation/migrating-from-stitching/) - Apollo provides a guide for migrating from schema stitching to using federated schemas.
+
+### Libraries
+
+* [@apollo/federation](https://www.npmjs.com/package/@apollo/federation) - This package provides utilities for creating GraphQL microservices, which can be combined into a single endpoint through tools like Apollo Gateway.
+<br>
+* [@apollo/gateway](https://www.npmjs.com/package/@apollo/gateway) - A GraphQL to Cypher query execution layer for Neo4j and JavaScript GraphQL implementations.
+<br>
+* [neo4j-graphql-js](https://www.npmjs.com/package/neo4j-graphql-js) - A GraphQL to Cypher query execution layer for Neo4j and JavaScript GraphQL implementations.
+<br>
+* [neo4j-driver](https://www.npmjs.com/package/neo4j-driver) - A database driver for Neo4j 3.0.0+.
+<br>
+* [Awesome Procedures On Cypher (APOC)](https://neo4j.com/labs/apoc/) - APOC is an add-on library for Neo4j that provides hundreds of procedures and functions adding a lot of useful functionality.
+
