@@ -314,7 +314,7 @@ query {
   }
 }
 ```
-The `Account` entity representation data resolved for the `author` field would then be provided to a [new kind of resolver](https://www.apollographql.com/docs/apollo-server/federation/entities/#resolving) defined with a [__resolveReference](https://www.apollographql.com/docs/apollo-server/api/apollo-federation/#__resolvereference) function in the `Account` type resolvers of the accounts service. A given service uses reference resolvers for providing data to other services for any fields on entities it defines.
+The `Account` entity representation data resolved for the `author` field would then be provided to a [new kind of resolver](https://www.apollographql.com/docs/apollo-server/federation/entities/#resolving) defined with a [__resolveReference](https://www.apollographql.com/docs/apollo-server/api/apollo-federation/#__resolvereference) function in the `Account` type resolvers of the accounts service.
 ###### *Accounts resolvers*
 ```js
 Account: {
@@ -385,7 +385,7 @@ type Review @key(fields: "id") {
 ```
 In this case, the products service would need to use a reference resolver for the `Product` entity, in order to provide its `name`, `price`, or `weight` fields when selected through the `product` field referencing it.
 
-> These reference resolvers are generated during schema augmentation
+> An implementing service uses reference resolvers for providing data to other services for any fields on entities it defines. These reference resolvers are generated during schema augmentation
 ###### *Products resolvers*
 ```js
 Product: {
@@ -438,7 +438,7 @@ query {
   }
 }
 ```
-The root field type of a query that selects the `reviews` field may or may not be `Account`. The Gateway query plan may begin with the accounts service or at another service selecting the `reviews` field through a reference to the `Account` entity on some other entity it defines. In the below example, the accounts service initially received the query.
+The root field type of a query that selects the `reviews` field may or may not be `Account`. The Gateway query plan may begin at the accounts service, or at some other service selecting the `reviews` field through a reference to the `Account` entity when it is used as the type of a field on another entity defined by the other service. In the below example, the accounts service initially receives the query.
 ###### *Accounts query*
 ```graphql
 query {
@@ -451,9 +451,9 @@ query {
 ```
 In any case, after the service that receives the root query resolves data for any selected `Account` fields it's responsible for (keys, etc.), the query plan will send any obtained `Account` representations to the reviews service for use in resolving the `reviews` field selection set its responsible for, such as `body`, from appropriately related `Review` entity data.
 
-Resolving fields added to entities from other services also requires the new [__resolveReference](https://www.apollographql.com/docs/apollo-server/api/apollo-federation/#__resolvereference) type resolver. In the case of the `reviews` field added to the `Account` extension, the reviews service must provide a reference resolver for the `Account` entity in order to support resolving `Review` entity data selected through the `reviews` field. A given service uses reference resolvers for providing data to other services for any fields it adds to entities in other services.
+Resolving fields added to entities from other services also requires the new [__resolveReference](https://www.apollographql.com/docs/apollo-server/api/apollo-federation/#__resolvereference) type resolver. In the case of the `reviews` field added to the `Account` extension, the reviews service must provide a reference resolver for the `Account` entity in order to support resolving `Review` entity data selected through the `reviews` field.
  
-> These reference resolvers are generated during schema augmentation
+> An implementing service uses reference resolvers for providing data to other services for any fields it adds to entities in other services. These reference resolvers are generated during schema augmentation
 ###### *Accounts resolvers*
 ```js
 Account: {
