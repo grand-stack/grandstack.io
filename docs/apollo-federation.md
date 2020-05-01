@@ -13,7 +13,7 @@ The following guide will overview this [example](https://github.com/neo4j-graphq
 ## Setup
 As with the Federation demo [services](https://github.com/apollographql/federation-demo/tree/master/services), we use [buildFederatedSchema](https://www.apollographql.com/docs/apollo-server/api/apollo-federation/) to build four schema:
 * [<span style="color: #c990c0;font-weight: bold;">Accounts</span>](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/example/apollo-federation/services/accounts/index.js)
-* [<span style="color: #ffd08f;font-weight: bold;">Reviews</span>](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/example/apollo-federation/services/reviews/index.js)
+* [<span style="color: #ffe081;font-weight: bold;">Reviews</span>](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/example/apollo-federation/services/reviews/index.js)
 * [<span style="color: #f79767;font-weight: bold;">Products</span>](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/example/apollo-federation/services/products/index.js)
 * [<span style="color: #f79767;font-weight: bold;">Inventory</span>](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/example/apollo-federation/services/inventory/index.js)
 
