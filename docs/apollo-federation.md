@@ -168,7 +168,7 @@ const inventoryService = new ApolloServer({
           inStock: Boolean
           shippingEstimate: Int
             @requires(fields: "weight price")
-            @cypher(${cypher`
+            @cypher(statement: """
               CALL apoc.when($price > 900,
                 // free for expensive items
                 'RETURN 0 AS value',
@@ -180,7 +180,7 @@ const inventoryService = new ApolloServer({
                 })
               YIELD value
               RETURN value.value
-            `})
+            """)
         }
       `,
       config: {
@@ -558,7 +558,7 @@ extend type Product @key(fields: "upc") {
   inStock: Boolean
   shippingEstimate: Int
     @requires(fields: "weight price")
-    @cypher(${cypher`
+    @cypher(statement: """
       CALL apoc.when($price > 900,
         // free for expensive items
         'RETURN 0 AS value',
@@ -570,7 +570,7 @@ extend type Product @key(fields: "upc") {
         })
       YIELD value
       RETURN value.value
-    `})
+    """)
 }
 ```
 ### @provides directive
