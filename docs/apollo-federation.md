@@ -385,7 +385,7 @@ type Review @key(fields: "id") {
 ```
 In this case, the products service would need to use a reference resolver for the `Product` entity, in order to provide its `name`, `price`, or `weight` fields when selected through the `product` field referencing it.
 
-> An implementing service uses reference resolvers for providing data to other services for any fields on entities it defines. These reference resolvers are generated during schema augmentation
+> An implementing service uses reference resolvers for providing data to other services for the fields it resolves for any entities it defines. These reference resolvers are generated during schema augmentation.
 ###### *Products resolvers*
 ```js
 Product: {
@@ -453,7 +453,7 @@ In any case, after the service that receives the root query resolves data for an
 
 Resolving fields added to entities from other services also requires the new [__resolveReference](https://www.apollographql.com/docs/apollo-server/api/apollo-federation/#__resolvereference) type resolver. In the case of the `reviews` field added to the `Account` extension, the reviews service must provide a reference resolver for the `Account` entity in order to support resolving `Review` entity data selected through the `reviews` field.
  
-> An implementing service uses reference resolvers for providing data to other services for any fields it adds to entities in other services. These reference resolvers are generated during schema augmentation
+> An implementing service uses reference resolvers for providing data to other services for the fields it resolves for any extensions of entities defined by other services. These reference resolvers are generated during schema augmentation.
 ###### *Accounts resolvers*
 ```js
 Account: {
