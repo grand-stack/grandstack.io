@@ -1,4 +1,3 @@
-
 ---
 id: apollo-federation
 title: Apollo Federation & Gateway
