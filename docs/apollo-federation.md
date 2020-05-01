@@ -49,7 +49,7 @@ Let's consider a reduced version of the example schema:
 import { ApolloServer } from 'apollo-server';
 import { buildFederatedSchema } from '@apollo/federation';
 import { ApolloGateway } from '@apollo/gateway';
-import { neo4jgraphql, makeAugmentedSchema } from 'neo4j-graphql-js';
+import { neo4jgraphql, makeAugmentedSchema, cypher } from 'neo4j-graphql-js';
 import neo4j from 'neo4j-driver';
 
 const driver = neo4j.driver(
@@ -157,6 +157,45 @@ const productService = new ApolloServer({
   }
 });
 
+const inventoryService = new ApolloServer({
+  schema: buildFederatedSchema([
+    makeAugmentedSchema({
+      typeDefs: gql`
+        extend type Product @key(fields: "upc") {
+          upc: String! @external
+          weight: Int @external
+          price: Int @external
+          inStock: Boolean
+          shippingEstimate: Int
+            @requires(fields: "weight price")
+            @cypher(${cypher`
+              CALL apoc.when($price > 900,
+                // free for expensive items
+                'RETURN 0 AS value',
+                // estimate is based on weight
+                'RETURN $weight * 0.5 AS value',
+                {
+                  price: $price,
+                  weight: $weight
+                })
+              YIELD value
+              RETURN value.value
+            `})
+        }
+      `,
+      config: {
+        isFederated: true
+      }
+    })
+  ]),
+  context: ({ req }) => {
+    return {
+      driver,
+      req
+    };
+  }
+});
+
 // Start implementing services
 accountsService.listen({ port: 4001 }).then(({ url }) => {
   console.log(`🚀 Accounts ready at ${url}`);
@@ -170,12 +209,17 @@ productsService.listen({ port: 4003 }).then(({ url }) => {
   console.log(`🚀 Products ready at ${url}`);
 });
 
+inventoryService.listen({ port: 4003 }).then(({ url }) => {
+  console.log(`🚀 Products ready at ${url}`);
+});
+
 // Configure gateway
 const gateway = new ApolloGateway({
   serviceList: [
     { name: 'accounts', url: 'http://localhost:4001/graphql' },
     { name: 'reviews', url: 'http://localhost:4002/graphql' },
-    { name: 'products', url: 'http://localhost:4003/graphql' }
+    { name: 'products', url: 'http://localhost:4003/graphql' },
+    { name: 'inventory', url: 'http://localhost:4004/graphql' }
   ]
 });
 
@@ -268,7 +312,7 @@ query {
   }
 }
 ```
-###### *Reviews resolvers*
+###### *Reviews resolver*
 ```js
 Query: {
   async Review(object, params, context, resolveInfo) {
@@ -316,7 +360,7 @@ query {
 ```
 The `Account` entity representation data resolved for the `author` field would then be provided to a [new kind of resolver](https://www.apollographql.com/docs/apollo-server/federation/entities/#resolving) defined with a [__resolveReference](https://www.apollographql.com/docs/apollo-server/api/apollo-federation/#__resolvereference) function in the `Account` type resolvers of the accounts service.
 > An implementing service uses reference resolvers for providing data for the fields it resolves for the entities it defines. These reference resolvers are generated during schema augmentation.
-###### *Accounts resolvers*
+###### *Accounts resolver*
 ```js
 Account: {
   async __resolveReference(object, context, resolveInfo) {
@@ -349,7 +393,7 @@ type Review @key(fields: "id") {
     """)
 }
 ```
-If `Review` and `Account` data are stored in Neo4j as a [property graph](https://neo4j.com/developer/graph-database/#property-graph), we can use the [@relation](neo4j-graphql-js.md#start-with-a-graphql-schema) field directive to support generated translation to Cypher that selects the related `Account` through [relationships](https://neo4j.com/docs/getting-started/current/cypher-intro/patterns/#cypher-intro-patterns-relationship-syntax).
+If `Review` and `Account` data are stored in Neo4j as a [property graph](https://neo4j.com/developer/graph-database/#property-graph), we can use the [@relation](neo4j-graphql-js.md#start-with-a-graphql-schema) field directive to support generated translation to [Cypher](https://neo4j.com/developer/cypher-query-language/) that selects the related `Account` through [relationships](https://neo4j.com/docs/getting-started/current/cypher-intro/patterns/#cypher-intro-patterns-relationship-syntax).
 ```graphql
 type Review @key(fields: "id") {
   id: ID!
@@ -386,7 +430,7 @@ type Review @key(fields: "id") {
 ```
 In this case, the products service would need to use a reference resolver for the `Product` entity, in order to provide its `name`, `price`, or `weight` fields when selected through the `product` field referencing it.
 
-###### *Products resolvers*
+###### *Products resolver*
 ```js
 Product: {
   async __resolveReference(object, context, resolveInfo) {
@@ -397,7 +441,7 @@ Product: {
 ---
 ## Extending an entity
 An [extension](https://www.apollographql.com/docs/graphql-tools/generate-schema/#extending-types) of an entity defined in a given service occurs when a field is added to it by another service. This enables concern-based separation of types and fields across services. Expanding on the example schema of the reviews service, a `reviews` field is added to the type extension of the `Account` entity below.
-###### *Reviews*
+###### *Reviews schema*
 ```graphql
 extend type Account @key(fields: "id") {
   id: ID! @external
@@ -454,7 +498,7 @@ In any case, after the service that receives the root query resolves data for an
 Resolving fields added to entities from other services also requires the new [__resolveReference](https://www.apollographql.com/docs/apollo-server/api/apollo-federation/#__resolvereference) type resolver. In the case of the `reviews` field added to the `Account` extension, the reviews service must provide a reference resolver for the `Account` entity in order to support resolving `Review` entity data selected through the `reviews` field.
  
 > An implementing service uses reference resolvers for providing data for the fields it resolves for its extensions of entities defined by other services. These reference resolvers are generated during schema augmentation.
-###### *Accounts resolvers*
+###### *Accounts resolver*
 ```js
 Account: {
   async __resolveReference(object, context, resolveInfo) {
@@ -468,3 +512,66 @@ Account: {
   }
 }
 ```
+### @requires directive
+Federation also provides a [@requires](https://www.apollographql.com/docs/apollo-server/federation/entities/#extending-an-entity-with-computed-fields-advanced) field directive that a service can use to define `@external` fields of an extended entity from another service as necessary for resolving the *requiring* field. This new directive also takes a `fields` argument, used to define the *required* fields.
+
+The resolution of a entity extension field with a `@requires` directive waits on its required fields to be resolved from the services responsible for them. If the required fields are not selected in a given query that selects the requiring field, they will still be requested from the service that resolves them and provided in representations for resolving the requiring field.
+
+#### Resolving a `@requires` field
+When using `neo4jgraphql` to resolve a `@requires` field, generated translation uses any values resolved for its `fields` as additional selection keys for the entity defining the field.
+
+Let's take a look at the inventory service from the Federation demo. The `Product` entity defined by the products service is extended to provide additional fields when it is queried. 
+##### *Inventory schema (demo)*
+```graphql
+extend type Product @key(fields: "upc") {
+  upc: String! @external
+  weight: Int @external
+  price: Int @external
+  inStock: Boolean
+  shippingEstimate: Int
+    @requires(fields: "weight price")
+}
+```
+In the demo, the execution of a [shippingEstimate](https://github.com/apollographql/federation-demo/blob/1a73e0f6f34b57ac4a555568034e83abe461d16e/services/inventory/index.js#L22) field resolver for the `Product` entity in the inventory service waits on the products service to resolve the required `@external` fields, `weight` and `price`, to be provided as a representation used in conditional logic.
+##### *Inventory resolver (demo)*
+```js
+Product: {
+  shippingEstimate(object) {
+    // free for expensive items
+    if (object.price > 1000) return 0;
+    // estimate is based on weight
+    return object.weight * 0.5;
+  }
+}
+```
+
+### When `@cypher` `@requires`
+In this case, our example uses a `@cypher` directive in combination with a `@requires` directive in order to support translating it with custom Cypher after the required `Product` data has been resolved. Instead of using a field resolver, the above conditional logic can be expressed in Cypher using a `CALL` to the [apoc.when](https://markhneedham.com/blog/2019/07/31/neo4j-conditional-where-query-apoc/) Neo4j database [procedure](https://neo4j.com/docs/java-reference/current/extending-neo4j/procedures-and-functions/procedures/) from [APOC](https://neo4j.com/labs/apoc/) - a database plugin already used in supporting some other aspects of translation in `neo4j-graphql-js`.
+
+Now we can finally take a look at our example inventory schema.
+##### *Inventory schema*
+```graphql
+extend type Product @key(fields: "upc") {
+  upc: String! @external
+  weight: Int @external
+  price: Int @external
+  inStock: Boolean
+  shippingEstimate: Int
+    @requires(fields: "weight price")
+    @cypher(${cypher`
+      CALL apoc.when($price > 900,
+        // free for expensive items
+        'RETURN 0 AS value',
+        // estimate is based on weight
+        'RETURN $weight * 0.5 AS value',
+        {
+          price: $price,
+          weight: $weight
+        })
+      YIELD value
+      RETURN value.value
+    `})
+}
+```
+### @provides directive
+As an optional optimization, the Federation [@provides](https://www.apollographql.com/docs/apollo-server/federation/entities/#resolving-another-services-field-advanced) directive can be used when both a service defining an entity and another service extending it can access the same data source to resolve its fields. This directive also takes a `fields` argument, used by a given service to define which fields of an extended entity it is responsible for resolving, given those fields could be resolved either service.
