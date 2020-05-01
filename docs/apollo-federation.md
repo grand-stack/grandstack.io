@@ -332,7 +332,7 @@ query {
   }
 }
 ```
-When deciding how to use `neo4jgraphql` to resolve the `author` field, there are a few possibilities we can consider. We may use a property on the `Review` type in a [@cypher](http://localhost:3000/docs/neo4j-graphql-js.html#cypher-directive) directive on its `author` field to select related `Account` data.
+When deciding how to use `neo4jgraphql` to resolve the `author` field, there are a few possibilities we can consider. We may use a property on the `Review` type in a [@cypher](neo4j-graphql-js.md#cypher-directive) directive on its `author` field to select related `Account` data.
 ###### *Reviews schema*
 ```graphql
 type Review @key(fields: "id") {
@@ -348,7 +348,7 @@ type Review @key(fields: "id") {
     """)
 }
 ```
-If `Review` and `Account` data are stored in Neo4j as a [property graph](https://neo4j.com/developer/graph-database/#property-graph), we can use the [@relation](neo4j-graphql-js.md#cypher-directive) field directive to support generated translation to Cypher that selects the related `Account` through [relationships](https://neo4j.com/docs/getting-started/current/cypher-intro/patterns/#cypher-intro-patterns-relationship-syntax).
+If `Review` and `Account` data are stored in Neo4j as a [property graph](https://neo4j.com/developer/graph-database/#property-graph), we can use the [@relation](neo4j-graphql-js.md#start-with-a-graphql-schema) field directive to support generated translation to Cypher that selects the related `Account` through [relationships](https://neo4j.com/docs/getting-started/current/cypher-intro/patterns/#cypher-intro-patterns-relationship-syntax).
 ```graphql
 type Review @key(fields: "id") {
   id: ID!
