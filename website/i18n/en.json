@@ -5,17 +5,9 @@
     "previous": "Previous",
     "tagline": "Build full stack graph applications with ease.",
     "docs": {
-      "apollo-client": {
-        "title": "Apollo Client",
-        "sidebar_label": "Apollo Client"
-      },
-      "apollo-server": {
-        "title": "Apollo Server",
-        "sidebar_label": "Apollo Server"
-      },
-      "apollo": {
-        "title": "Apollo",
-        "sidebar_label": "Apollo"
+      "apollo-federation-gateway-with-neo4j": {
+        "title": "Using Apollo Federation and Gateway With Neo4j",
+        "sidebar_label": "Apollo Federation & Gateway"
       },
       "getting-started-grand-stack-starter": {
         "title": "GRANDstack Starter",
@@ -53,17 +45,9 @@
         "title": "GraphQL Temporal Types (DateTime)",
         "sidebar_label": "Temporal Types (DateTime)"
       },
-      "graphql": {
-        "title": "GraphQL",
-        "sidebar_label": "GraphQL"
-      },
       "guide-graphql-schema-design": {
         "title": "Designing Your GraphQL Schema",
         "sidebar_label": "GraphQL Schema Design"
-      },
-      "guide-order": {
-        "title": "Ordering Results With neo4j-graphql",
-        "sidebar_label": "Ordering Results"
       },
       "neo4j-graphql-database-plugin": {
         "title": "Neo4j GraphQL Database Plugin",
@@ -100,18 +84,6 @@
       "neo4j-multiple-database-graphql": {
         "title": "Using Multiple Neo4j Databases",
         "sidebar_label": "Multiple Databases"
-      },
-      "neo4j": {
-        "title": "Neo4j Database",
-        "sidebar_label": "Neo4j Database"
-      },
-      "react": {
-        "title": "React",
-        "sidebar_label": "React"
-      },
-      "tutorial": {
-        "title": "Tutorial",
-        "sidebar_label": "Building A Fullstack GRANDstack App"
       }
     },
     "links": {
