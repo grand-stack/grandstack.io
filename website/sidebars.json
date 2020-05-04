@@ -23,7 +23,7 @@
       "guide-graphql-schema-design",
       "neo4j-graphql-java",
       "neo4j-graphql-database-plugin",
-      "apollo-federation"
+      "apollo-federation-gateway-with-neo4j"
     ],
     "Resources": ["grandstack-resources"]
   }

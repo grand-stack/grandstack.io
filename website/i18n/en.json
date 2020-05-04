@@ -5,8 +5,8 @@
     "previous": "Previous",
     "tagline": "Build full stack graph applications with ease.",
     "docs": {
-      "apollo-federation": {
-        "title": "Apollo Federation & Gateway",
+      "apollo-federation-gateway-with-neo4j": {
+        "title": "Using Apollo Federation and Gateway With Neo4j",
         "sidebar_label": "Apollo Federation & Gateway"
       },
       "getting-started-grand-stack-starter": {

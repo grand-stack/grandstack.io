@@ -1,23 +1,27 @@
 ---
-id: apollo-federation
-title: Apollo Federation & Gateway
+id: apollo-federation-gateway-with-neo4j
+title: Using Apollo Federation and Gateway With Neo4j
 sidebar_label: Apollo Federation & Gateway
 ---
 
-## Introduction
+## Introduction and Motivation
+
 [Apollo Gateway](https://www.apollographql.com/docs/apollo-server/federation/gateway/) composes federated schemas into a single schema, with each receiving appropriately delegated operations while running as a service. An [implementing service](https://www.apollographql.com/docs/apollo-server/federation/implementing-services/) is a schema that conforms to the [Apollo Federation specification](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/), which itself is complaint with the [GraphQL specification](http://spec.graphql.org/June2018/). This approach exposes a [single data graph](https://principledgraphql.com/integrity#1-one-graph) while enabling [concern-based separation](https://www.apollographql.com/docs/apollo-server/federation/introduction/#concern-based-separation) of types *and fields* across services, ensuring that the data graph remains simple to consume. 
 
-The following guide will overview this [example](https://github.com/neo4j-graphql/neo4j-graphql-js/tree/master/example/apollo-federation), based on the Apollo Federation [demo](https://github.com/apollographql/federation-demo), to demonstrate current behavior with `neo4j-graphql-js`. 
+One way to think of Apollo Federation is that it enables microservices for GraphQL: combining multiple GraphQL services together into a single composed GraphQL gateway. 
+
+The following guide will overview this [example](https://github.com/neo4j-graphql/neo4j-graphql-js/tree/master/example/apollo-federation) found in the `neo4j-graphql.js` Github repo, based on the Apollo Federation [demo](https://github.com/apollographql/federation-demo), to demonstrate current behavior with `neo4j-graphql-js`. 
 
 ---
 ## Setup
+
 As with the Federation demo [services](https://github.com/apollographql/federation-demo/tree/master/services), we use [buildFederatedSchema](https://www.apollographql.com/docs/apollo-server/api/apollo-federation/) to build four schema:
 * [<span style="color: #c990c0;font-weight: bold;">Accounts</span>](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/example/apollo-federation/services/accounts/index.js)
 * [<span style="color: #ffe081;font-weight: bold;">Reviews</span>](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/example/apollo-federation/services/reviews/index.js)
 * [<span style="color: #f79767;font-weight: bold;">Products</span>](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/example/apollo-federation/services/products/index.js)
 * [<span style="color: #f79767;font-weight: bold;">Inventory</span>](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/example/apollo-federation/services/inventory/index.js)
 
-Each federated schema is then exposed as an individual, implementing service using [ApolloServer](https://www.apollographql.com/docs/apollo-server/). Finally, the service names and URLs of those servers are provided to [ApolloGateway](https://www.apollographql.com/docs/apollo-server/api/apollo-gateway/), starting a server for  a single API based on the composition of the federated schema.
+Each federated schema is then exposed as an individual, implementing GraphQL service using [ApolloServer](https://www.apollographql.com/docs/apollo-server/). Finally, the service names and URLs of those servers are provided to [ApolloGateway](https://www.apollographql.com/docs/apollo-server/api/apollo-gateway/), starting a server for  a single API based on the composition of the federated schema.
 
 * [Gateway](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/example/apollo-federation/gateway.js)
 
@@ -233,19 +237,22 @@ const gateway = new ApolloGateway({
   });
 })();
 ```
-### Data sources
+### Data Sources
 All services in this example use `neo4j-graphql-js` and the same Neo4j database as a data source. This is only for demonstration and testing. If you have an existing monolithic GraphQL server, Gateway could compose your schema with another schema that uses `neo4j-graphql-js`, enabling [incremental adoption](https://www.apollographql.com/docs/apollo-server/federation/introduction/#incremental-adoption).
 
-### Schema augmentation
-To support using schema augmentation with Federation, the `isFederated` configuration option can be set to `true`. For now, this does two things.
+### Schema Augmentation
+To support using [schema augmentation](graphql-schema-generation-augmentation.md) with Federation, the `isFederated` configuration option can be set to `true`. For now, this does two things.
 
 * Ensures the return format is a schema module - an object containing `typeDefs` and `resolvers`. A schema module is the expected argument format for `buildFederatedSchema`.
 <br>
 * The `isFederated` configuration flag is not required for supporting the use of `neo4jgraphql` to resolve a federated operation. However, two new kinds of resolvers are now generated during schema augmentation to handle entity [references](#resolving-entity-references) and [extensions](#resolving-entity-extension-fields).
 
 ---
-## Defining an entity
-### @key directive
+
+## Defining An Entity
+
+### `@key` Directive
+
 An [entity](https://www.apollographql.com/docs/apollo-server/federation/entities) is an object type with its primary keys [defined](https://www.apollographql.com/docs/apollo-server/federation/entities/#defining) using a new [@key](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#key) type directive provided by Federation. When a service defines an object type entity, another service can [extend](http://spec.graphql.org/June2018/#ObjectTypeExtension) it, allowing that service to [reference](https://www.apollographql.com/docs/apollo-server/federation/entities/#referencing) it on fields and to [add fields](https://www.apollographql.com/docs/graphql-tools/generate-schema/#extending-types) to it that the service will be responsible for resolving. 
 
 To define an object type as an entity, its primary key fields are provided to the `fields` argument of the `@key` type directive. This allows Apollo Gateway to identify `Account` type data between services. In the below schema, the `id` field of the `Account` type is specified as a key.
@@ -278,7 +285,9 @@ type Product @key(fields: "upc") {
 An entity can define [multiple keys](https://www.apollographql.com/docs/apollo-server/federation/entities/#defining-multiple-primary-keys) and its relationship fields can be used as [compound keys](https://www.apollographql.com/docs/apollo-server/federation/entities/#defining-multiple-primary-keys). When a compound key is provided in a representation, `neo4jgraphql` will generate a Cypher translation that selects only entity nodes with relationships to other nodes of the key field type that have property values matching those provided for the compound key. This translation is generated using current support for translating a [relationship field](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/test/helpers/tck/filterTck.md#all-related-nodes-matching-filter) query [filtering](https://grandstack.io/docs/graphql-filtering.html) argument for the exact name of the relationship field used as a compound key.
 
 ---
-## Referencing an entity
+
+## Referencing An Entity
+
 A reference to an entity defined in a given service occurs when that entity is used as the type of a field added to an entity defined in another service. 
 
 With the above entities defined throughout three services, an entity is introduced from one service into another by using the GraphQL `extend` keyword. This allows for that entity to be referenced on fields of entities defined by the extending service. 
@@ -298,10 +307,10 @@ type Review @key(fields: "id") {
   author: Account
 }
 ```
-### @external directive
+### `@external` Directive
 Another new directive provided by Federation is the [@external](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#external) field directive. When a service extends an entity from another service, the `fields` of the `@key` directive for the entity must be marked as `@external` so field types can be known during runtime when Gateway builds a query plan.
 
-### Resolving entity references
+### Resolving Entity References
 When the `Review` entity is the root field type of a query, the federated operation begins with the reviews service. If [neo4jgraphql](https://grandstack.io/docs/neo4j-graphql-js-api.html#neo4jgraphqlobject-params-context-resolveinfo-debug-executionresult-https-graphqlorg-graphql-js-execution-execute) is used to resolve the query, it will be translated under normal conditions:
 ###### *Reviews query*
 ```graphql
@@ -442,7 +451,7 @@ Product: {
 }
 ```
 ---
-## Extending an entity
+## Extending An Entity
 An [extension](https://www.apollographql.com/docs/graphql-tools/generate-schema/#extending-types) of an entity defined in a given service occurs when a field is added to it by another service. This enables concern-based separation of types and fields across services. Expanding on the example schema of the reviews service, a `reviews` field is added to the type extension of the `Account` entity below.
 ###### *Reviews schema*
 ```graphql
@@ -468,7 +477,7 @@ extend type Product @key(fields: "upc") {
     @relation(name: "REVIEW_OF", direction: IN)
 }
 ```
-### Resolving entity extension fields
+### Resolving Entity Extension Fields
 
 Any other service that can reference the `Account` type can now select the `reviews` field added by the reviews service. The `Review` entity may or may not be the root field type of a query that selects the `reviews` field, so the reviews service may not receive the root operation. When it does, as with the following query, the normal type resolver for the `Review` field of the `Query` type would be called.
 ###### *Reviews query*
@@ -515,7 +524,7 @@ Account: {
   }
 }
 ```
-### @requires directive
+### `@requires` Directive
 Federation also provides a [@requires](https://www.apollographql.com/docs/apollo-server/federation/entities/#extending-an-entity-with-computed-fields-advanced) field directive that a service can use to define `@external` fields of an extended entity from another service as necessary for resolving the *requiring* field. This new directive also takes a `fields` argument, used to define the *required* fields.
 
 The resolution of a entity extension field with a `@requires` directive waits on its required fields to be resolved from the services responsible for them. If the required fields are not selected in a given query that selects the requiring field, they will still be requested from the service that resolves them and provided in representations for resolving the requiring field.
@@ -576,10 +585,12 @@ extend type Product @key(fields: "upc") {
     """)
 }
 ```
-### @provides directive
+### `@provides` Directive
 As an optional optimization, the Federation [@provides](https://www.apollographql.com/docs/apollo-server/federation/entities/#resolving-another-services-field-advanced) directive can be used when both a service defining an entity and another service extending it can access the same data source to resolve its fields. This directive also takes a `fields` argument, used by a given service to define which fields of an extended entity it's responsible for resolving, given those fields could be resolved by either service.
 
 ## Resources
+
+Here are some additional resources to learn more about Apollo Federation and using GraphQL with Neo4j.
 
 ### Videos
 * [Introducing Apollo Federation](https://www.youtube.com/watch?v=WIeoBYRbprQ)
