@@ -596,7 +596,7 @@ Here are some additional resources to learn more about Apollo Federation and usi
 * [Introducing Apollo Federation](https://www.youtube.com/watch?v=WIeoBYRbprQ)
   As part of [Apollo Day Seattle 2019](https://www.youtube.com/playlist?list=PLpi1lPB6opQznIY72BAmWtGm50D-WkYxv), this video overviews why Apollo developed Federation & Gateway as the evolution of [schema stitching](https://www.apollographql.com/docs/apollo-server/features/schema-stitching/) and demonstrates features by explaining the schema for the `accounts`, `products`, and `reviews` services of the [Federation demo](https://github.com/apollographql/federation-demo).
 <br>
-* [Your First Federated Schema with Apollo Server](https://youtu.be/zZnHA3yyPJY?t=1953)
+* [Your First Federated Schema with Apollo Server](https://youtu.be/v_1bn2sHdk4)
   As part of the [Apollo Space Camp](https://www.eventbrite.com/e/apollo-space-camp-tickets-101566159116#) online event, part two of this video demonstrates using Gateway with services for `astronauts` and `missions`, and a [repository](https://github.com/mandiwise/space-camp-federation-demo) you can clone to try it out.
 
 ### Articles
