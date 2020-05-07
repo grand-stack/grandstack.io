@@ -27,6 +27,8 @@ Each federated schema is then exposed as an individual, implementing GraphQL ser
 
 You can follow these steps to run the example:
 * Clone or download the [neo4j-graphql-js](https://github.com/neo4j-graphql/neo4j-graphql-js) repository
+
+Run these Npm scripts to install dependencies and start the gateway:
 * `npm run install`
 * `npm run start-gateway`
 
@@ -45,6 +47,12 @@ mutation {
 }
 ```
 ![Example data in Neo4j Bloom](/docs/assets/img/exampleDataGraph.png)
+<div style="text-align:center;font-style:italic;">Image of example data in Neo4j Bloom</div>
+<br>
+
+With your Neo4j database active and the gateway and services running, you can run current [integration tests](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/test/integration/gateway.test.js). The below Npm script merges example data, runs tests, then deletes the data.
+
+* `npm run test-gateway`
 
 ---
 ## Walkthrough
