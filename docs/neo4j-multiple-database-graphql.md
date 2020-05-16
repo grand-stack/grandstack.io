@@ -63,3 +63,7 @@ server.listen(3004, "0.0.0.0").then(({ url }) => {
   console.log(`GraphQL API ready at ${url}`);
 });
 ```
+
+## Resources
+
+* [Multi-Tenant GraphQL With Neo4j 4.0](https://blog.grandstack.io/multitenant-graphql-with-neo4j-4-0-4a1b2b4dada4) A Look At Using Neo4j 4.0 Multidatabase With neo4j-graphql.js
