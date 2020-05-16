@@ -21,6 +21,8 @@
     ],
     "Guides": [
       "guide-graphql-schema-design",
+      "graphql-custom-logic",
+      "infer-graphql-schema-database",
       "apollo-federation-gateway-with-neo4j",
       "neo4j-graphql-java",
       "neo4j-graphql-database-plugin"

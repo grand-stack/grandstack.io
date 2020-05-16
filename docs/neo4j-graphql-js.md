@@ -187,7 +187,7 @@ SKIP 0
 
 > This means that the entire GraphQL request is still resolved with a single Cypher query, and thus a single round trip to the database.
 
-### Query Neo4j
+## Query Neo4j
 
 Inject a Neo4j driver instance in the context of each GraphQL request and `neo4j-graphql-js` will query the Neo4j database and return the results to resolve the GraphQL query.
 

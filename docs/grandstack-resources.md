@@ -26,6 +26,7 @@ Resources for getting started with GRANDstack.
 
 ## Blog Posts / Articles
 
+- **[Five Common GraphQL Problems and How Neo4j-GraphQL Aims To Solve Them](https://blog.grandstack.io/five-common-graphql-problems-and-how-neo4j-graphql-aims-to-solve-them-e9a8999c8d43)** - Digging Into the Goals of A Neo4j-GraphQL Integration
 - **[An Overview Of GraphQL - Dzone Refcard](https://dzone.com/refcardz/an-overview-of-graphql)** - This Refcard introduces GraphQL concepts such as the GraphQL type system and schema, and demonstrates how to build a GraphQL service that connects to a database using JavaScript.
 - **[How To Transform A REST Service To A Graph Service](https://blog.grandstack.io/how-to-transform-a-rest-service-to-a-graph-service-d2ae8c5bd10d)** - Using Neo4j and GraphQL To Build A Countries GraphQL API
 - **[GraphQL ResolveInfo Deep Dive](https://blog.grandstack.io/graphql-resolveinfo-deep-dive-1b3144075866)** - Building Efficient GraphQL Resolvers By Generating Database Queries
