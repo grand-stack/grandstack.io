@@ -67,7 +67,7 @@ The `hasScope` schema directive can be used on Query or Mutation fields and indi
 
 ``` GraphQL
 type Mutation {
-  CreateMovie(movieId: ID!, title: String, plot: String, views: Int): Movie @hasScope(scope:["Movie:Create"])
+  CreateMovie(movieId: ID!, title: String, plot: String, views: Int): Movie @hasScope(scopes:["Movie:Create"])
 }
 ```
 
@@ -75,7 +75,7 @@ The `hasScope` directive can be used on custom queries and mutations with `@cyph
 
 ```GraphQL
 type Mutation {
-  IncrementView(movieId: ID!): Movie @hasScope(scope:["Movie:Update"]) @cypher(
+  IncrementView(movieId: ID!): Movie @hasScope(scopes:["Movie:Update"]) @cypher(
     statement: """
       MATCH (m:Movie {movieId: $movieId})
       SET m.views = m.views + 1
