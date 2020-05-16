@@ -1,8 +1,9 @@
-/docs                           /docs/getting-started-neo4j-graphql.html                                      301!
-/docs/guide-schema.html         /docs/guide-graphql-schema-design.html                                        301!
-/docs/getting-started.html      /docs/getting-started-neo4j-graphql.html                                      301!
-/docs/neo4j-graphql.html        /docs/neo4j-graphql-overview.html                                             301!
-/docs/guide-middleware.html     /docs/neo4j-graphql-js-middleware-authorization.html                          301!
-/docs/neo4j-graphql-plugin.html /docs/neo4j-graphql-database-plugin.html                                      301!
-/docs/links.html                /docs/grandstack-resources.html                                               301!
-/book                           https://www.manning.com/books/fullstack-graphql-applications-with-grandstack  301!
+/docs                                 /docs/getting-started-neo4j-graphql.html                                      301!
+/docs/guide-schema.html               /docs/guide-graphql-schema-design.html                                        301!
+/docs/getting-started.html            /docs/getting-started-neo4j-graphql.html                                      301!
+/docs/neo4j-graphql.html              /docs/neo4j-graphql-overview.html                                             301!
+/docs/guide-middleware.html           /docs/neo4j-graphql-js-middleware-authorization.html                          301!
+/docs/neo4j-graphql-plugin.html       /docs/neo4j-graphql-database-plugin.html                                      301!
+/docs/links.html                      /docs/grandstack-resources.html                                               301!
+/book                                 https://www.manning.com/books/fullstack-graphql-applications-with-grandstack  301!
+/docs/neo4j-graphql-js-resources.html /docs/grandstack-resources.html                                               301!

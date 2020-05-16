@@ -16,14 +16,14 @@
       "graphql-interface-union-types",
       "neo4j-graphql-js-middleware-authorization",
       "neo4j-multiple-database-graphql",
-      "neo4j-graphql-js-api",
-      "neo4j-graphql-js-resources"
+      "graphql-schema-directives",
+      "neo4j-graphql-js-api"
     ],
     "Guides": [
       "guide-graphql-schema-design",
+      "apollo-federation-gateway-with-neo4j",
       "neo4j-graphql-java",
-      "neo4j-graphql-database-plugin",
-      "apollo-federation-gateway-with-neo4j"
+      "neo4j-graphql-database-plugin"
     ],
     "Resources": ["grandstack-resources"]
   }
