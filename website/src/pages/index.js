@@ -59,10 +59,9 @@ function Feature({ imageUrl, title, description }) {
 
 function Home() {
   const context = useDocusaurusContext();
-  console.log(context);
+
   const themeContext = useThemeContext();
-  console.log("dark theme");
-  console.log(themeContext);
+
   const { siteConfig = {} } = context;
   return (
     <Layout
