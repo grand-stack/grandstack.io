@@ -4,6 +4,8 @@ title: Using GraphQL Interface And Union Types
 sidebar_label: Interface and Union Types
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 ## Overview
 
 This page describes how interface and union types can be used with neo4j-graphql.js.
@@ -46,8 +48,7 @@ type Review {
 ```
 
 The above GraphQL type definitions would define the following property graph model using neo4j-graphql.js:
-
-![Property graph model](/docs/assets/img/interface-model.png)
+<img alt="Property graph model" src={useBaseUrl('assets/img/interface-model.png')} />
 
 <!--
 <ul class="graph-diagram-markup" data-internal-scale="1.41" data-external-scale="1">
@@ -98,7 +99,8 @@ mutation {
 
 This creates the following graph in Neo4j (note the use of multiple labels):
 
-![Simple movie graph with interface types](/docs/assets/img/interface-data.png)
+<img alt="Simple movie graph with inteface" src={useBaseUrl('assets/img/interface-data.png')} />
+
 
 <!--
 <ul class="graph-diagram-markup" data-internal-scale="1.41" data-external-scale="1">
@@ -311,7 +313,7 @@ mutation {
 
 The above mutations create the following data in Neo4j. Note the use of multiple node labels.
 
-![Union data in Neo4j](/docs/assets/img/union-data.png)
+<img alt="Union data in Neo4j" src={useBaseUrl('assets/img/union-data.png')} />
 
 <!--
 <ul class="graph-diagram-markup" data-internal-scale="1.41" data-external-scale="1">

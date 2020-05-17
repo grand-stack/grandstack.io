@@ -4,6 +4,8 @@ title: Designing Your GraphQL Schema
 sidebar_label: GraphQL Schema Design
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl'; 
+
 The goal of this guide is to explain how to design your GraphQL schema for use with GRANDstack and neo4j-graphql.
 
 > We use "neo4j-graphql" to refer to the various Neo4j GraphQL integrations such as [neo4j-graphql.js](neo4j-graphql-js.md), [neo4j-graphql-java](https://github.com/neo4j-graphql/neo4j-graphql-java), and the [Neo4j GraphQL database plugin](neo4j-graphql-database-plugin.md)
@@ -20,19 +22,19 @@ It's important to understand the goals and advantages of using Neo4j GraphQL.
 
 ### GraphQL Type Definitions Drive The Database
 
-![GraphQL type definitions](/docs/assets/img/type-defs.png)
+<img alt="GraphQL type definitions" src={useBaseUrl('assets/img/type-defs.png')} />
 
 A major benefit of using neo4j-graphql is the ability to define both the database schema and the GraphQL schema with the same type definitions. neo4j-graphql can also automatically create `Query` and `Mutation` types from your type definitions that provide instant CRUD functionality. This GraphQL CRUD API can be configured and extended.
 
 ### A Single Cypher database query is generated for each GraphQL Request
 
-![GraphQL type definitions](/docs/assets/img/cypher.png)
+<img alt="Cypher query generation" src={useBaseUrl('assets/img/cypher.png')} />
 
 Since GraphQL type definitions are used to define the database schema, neo4j-graphql can generate a single Cypher query to resolve any arbitrary GraphQL request. This also means our resolvers are automatically implemented for us. No need to write boilerplate data fetching code, just inject a Neo4j driver instance into the request context and neo4j-graphql will take care of generating the database query and handling the database call. Additionally, since a single Cypher query is generated, this results in a huge performance boost and eliminates the n+1 query problem.
 
 ### Defining Custom Logic With `@cypher` Schema Directives
 
-![GraphQL type definitions](/docs/assets/img/cypher-directive.png)
+<img alt="Cypher directive example" src={useBaseUrl('assets/img/cypher-directive.png')} />
 
 Since GraphQL is an API query language and not a database query language it lacks semantics for operations such as aggregations, projections, and more complex graph traversals. We can extend the power of GraphQL through the use of [`@cypher` GraphQL schema directives](neo4j-graphql-js.md#cypher-directive) to bind the results of a Cypher query to a GraphQL field. This allows for the expression of complex logic using Cypher and can be used on Query and Mutation fields to define custom data fetching or mutation logic.
 
@@ -50,7 +52,7 @@ The [official guide to GraphQL](https://graphql.org/learn/thinking-in-graphs/#it
 
 In a graph database nodes are the entities in the graph and relationships connect them. We can store arbitrary key-value pairs as properties on both nodes and relationships. This is the _labeled property graph model_.
 
-![GraphQL type definitions](/docs/assets/img/arrows1.png)
+<img alt="Graph data model" src={useBaseUrl('assets/img/arrows1.png')} />
 
 In GraphQL we define types and the fields available on each type, which may reference other types. For example:
 
@@ -87,7 +89,7 @@ type Movie {
 
 This type definition is defining a node with the label `Movie` and the properties `movieId`, `title`, `description`, and `year`:
 
-![](/docs/assets/img/arrows2.png)
+<img alt="Graph data model" src={useBaseUrl('assets/img/arrows2.png')} />
 
 Our type definitions can reference other object types as well:
 
@@ -157,7 +159,7 @@ _Here `direction` is an enum added to our type definitions by neo4j-graphql with
 
 These type definitions then map to this labeled property graph model in Neo4j:
 
-![](/docs/assets/img/arrows3.png)
+<img alt="Graph data model" src={useBaseUrl('assets/img/arrows3.png')} />
 
 #### `@cypher` Schema Directive
 
@@ -230,7 +232,8 @@ type Rated @relation(name: "RATED") {
 
 An object type definition that includes an `@relation` directive will be treated as a relationship. We use the convention that the fields `from` and `to` define the nodes on the outgoing and incoming ends of the relationship, respectively, thus resulting in the following model in Neo4j:
 
-![](/docs/assets/img/arrows4.png)
+<img alt="Graph data model" src={useBaseUrl('assets/img/arrows4.png')} />
+
 
 ## API Generation
 

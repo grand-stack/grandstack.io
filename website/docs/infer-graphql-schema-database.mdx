@@ -4,13 +4,15 @@ title: Inferring GraphQL Schema From An Existing Database
 sidebar_label: Infer GraphQL Schema
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl'; 
+
 Typically when we start a new application, we don't have an existing database and follow the GraphQL-First development paradigm by starting with type definitions. However, in some cases we may have an existing Neo4j database populated with data. In those cases, it can be convenient to generate GraphQL type definitions based on the existing database that can then be fed into `makeAugmentedSchema` to generate a GraphQL API for the existing database. We can do this with the use of the `inferSchema` functionality in neo4j-graphql.js.
 
 Let's use the [Neo4j Sandbox movies recommendation dataset](https://neo4j.com/sandbox?usecase=recommendations) to auto-generate GraphQL type definitions using `inferSchema`.
 
 This dataset has information about movies, actors, directors, and user ratings of movies, modelled as a graph:
 
-![](/docs/assets/img/movies.png)
+<img alt="Movie graph data model" src={useBaseUrl('assets/img/movies.png')} />
 
 ## How To Use `inferSchema`
 

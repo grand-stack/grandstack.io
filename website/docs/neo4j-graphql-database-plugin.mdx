@@ -4,6 +4,8 @@ title: Neo4j GraphQL Database Plugin
 sidebar_label: Neo4j Database Plugin
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl'; 
+
 This is a GraphQL-Endpoint extension for Neo4j and is part of GRANDstack.
 
 _This readme assumes you are somewhat familiar with [GraphQL](http://graphql.org/) and minimally with [Cypher](http://neo4j.com/developer/cypher)._
@@ -22,7 +24,7 @@ Neo4j Desktop provides a quick install button for _neo4j-graphql_.
 
 After creating your database you can find it under "Manage" in the "Plugins" tab for a single click install.
 
-![Neo4j Desktop Neo4j-GraphQL plugin installation](/docs/assets/img/desktop-graphql.jpg)
+<img alt="Neo4j Desktop Neo4j-GraphQL plugin" src={useBaseUrl('assets/img/desktop-graphql.jpg')} />
 
 ### Use with neo4j-graphql-cli
 
@@ -105,7 +107,8 @@ This also gives you auto-completion, validation and hints when writing queries.
 
 To visualize your GraphQL schema in Neo4j Browser use: `call graphql.schema()`.
 
-![](/docs/assets/img/graphql.schema.jpg)
+<img alt="GraphQL schema" src={useBaseUrl('assets/img/graphql.schema.jpg')} />
+
 
 ### Auto-Generated Query Types
 
@@ -136,7 +139,7 @@ _Simple query example_
 }
 ```
 
-![](/docs/assets/img/graphiql-query1.jpg)
+<img alt="GraphQL query" src={useBaseUrl('assets/img/graphiql-query1.jpg')} />
 
 _Advanced query example_
 
@@ -166,7 +169,7 @@ This query declares query name and parameters (first line), which are passed sep
 
 And get this result:
 
-![](/docs/assets/img/graphiql-query2.jpg)
+<img alt="GraphQL query" src={useBaseUrl('assets/img/graphiql-query2.jpg')} />
 
 ### Auto-Generated Mutations
 
@@ -218,7 +221,7 @@ mutation {
 
 If the same mutations is called multiple times, you _need to use alias prefixes_ to avoid clashes in the returned data, which is keyed on mutation names.
 
-![](/docs/assets/img/graphiql-mutation.jpg)
+<img alt="GraphQL mutation" src={useBaseUrl('assets/img/graphiql-mutation.jpg')} />
 
 You can use those mutations also to [load data from CSV or JSON](https://medium.com/@mesirii/better-data-import-with-graphql-548084a35dfd).
 
@@ -321,7 +324,7 @@ UNWIND result.Movie as movie
 RETURN movie.title, [a IN movie.actors | a.name] as actors
 ```
 
-![](/docs/assets/img/graphql.execute.jpg)
+<img alt="GraphQL execute" src={useBaseUrl('assets/img/graphql.execute.jpg')} />
 
 _Update with Mutation_
 
@@ -338,7 +341,8 @@ Make sure to generate the [Personal Access Token](https://developer.github.com/v
 call graphql.introspect("https://api.github.com/graphql",{Authorization:"bearer d8xxxxxxxxxxxxxxxxxxxxxxx"})
 ```
 
-![](/docs/assets/img/graphql.introspect-github.jpg)
+
+<img alt="GraphQL introspect github" src={useBaseUrl('assets/img/graphql.introspect-github.jpg')} />
 
 ## Examples
 
