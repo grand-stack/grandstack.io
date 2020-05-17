@@ -190,7 +190,7 @@ function Home() {
                 <div class="text--center">
                   <a href="https://grandstack.io/book">
                     <button class="button button-outline button--primary">
-                      Buy Now!
+                      Read Now!
                     </button>
                   </a>
                 </div>
