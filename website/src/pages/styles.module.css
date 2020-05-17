@@ -1,0 +1,160 @@
+/* stylelint-disable docusaurus/copyright-header */
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.heroBanner {
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero {
+  background-color: #2b3137;
+  padding: 48px;
+}
+
+.heroInner {
+  margin: 0 auto;
+  max-width: 1100px;
+  padding: 0 20px;
+}
+
+.heroProjectTagline {
+  color: #fff;
+  font-size: 60px;
+  margin: 0;
+}
+
+.heroProjectKeywords {
+  color: var(--ifm-color-primary);
+}
+
+.heroLogo {
+  max-height: 200px;
+  float: right;
+  /* margin-top: 20px; */
+  padding: 20px;
+}
+
+.indexCtas {
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.indexCtasGetStartedButton {
+  border: 1px solid var(--ifm-color-primary);
+  display: inline-block;
+  line-height: 1.2em;
+  text-decoration: none !important;
+  text-transform: uppercase;
+  transition: background 0.3s, color 0.3s;
+  border-radius: 8px;
+  border-width: 2px;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 18px 36px;
+}
+
+.indexCtasGitHubButtonWrapper {
+  display: flex;
+}
+
+.indexCtasGitHubButton {
+  border: none;
+  margin-left: 24px;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 966px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.features {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  width: 100%;
+}
+
+.featureImage {
+  height: 150px;
+  width: 150px;
+}
+
+.announcement {
+  font-weight: bold;
+  font-size: 24px;
+  font-family: monospace;
+  padding: 20px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.announcementDark {
+  background-color: #20232a;
+  color: #fff;
+}
+
+.announcementShaded {
+  background-color: #d7dbe4;
+}
+
+.shaded {
+  background-color: #f7f7f7;
+}
+
+.announcementInner {
+  margin: 0 auto;
+  max-width: 768px;
+}
+
+.sectionAlt {
+  background-color: var(--ifm-color-emphasis-inverse-alpha-30);
+}
+
+.mainItem {
+  max-height: 400px;
+}
+
+@media only screen and (max-width: 966px) {
+  .hero {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .heroInner {
+    padding: 0;
+  }
+
+  .heroProjectTagline {
+    font-size: 36px;
+    text-align: center;
+  }
+
+  .heroLogo {
+    display: block;
+    float: none;
+    margin: 0 auto;
+  }
+
+  .indexCtas {
+    justify-content: center;
+  }
+
+  .indexCtasGitHubButton {
+    display: none;
+  }
+}

@@ -21,6 +21,10 @@
         "title": "GRANDstack Resources",
         "sidebar_label": "GRANDstack Resources"
       },
+      "graphql-custom-logic": {
+        "title": "Adding Custom Logic To Our GraphQL API",
+        "sidebar_label": "Adding Custom Logic"
+      },
       "graphql-filtering": {
         "title": "Complex GraphQL Filtering",
         "sidebar_label": "Filtering"
@@ -32,6 +36,10 @@
       "graphql-relationship-types": {
         "title": "GraphQL Relationship Types",
         "sidebar_label": "Relationship Types"
+      },
+      "graphql-schema-directives": {
+        "title": "GraphQL Schema Directives",
+        "sidebar_label": "GraphQL Schema Directives"
       },
       "graphql-schema-generation-augmentation": {
         "title": "GraphQL Schema Generation And Augmentation",
@@ -48,6 +56,10 @@
       "guide-graphql-schema-design": {
         "title": "Designing Your GraphQL Schema",
         "sidebar_label": "GraphQL Schema Design"
+      },
+      "infer-graphql-schema-database": {
+        "title": "Inferring GraphQL Schema From An Existing Database",
+        "sidebar_label": "Infer GraphQL Schema"
       },
       "neo4j-graphql-database-plugin": {
         "title": "Neo4j GraphQL Database Plugin",
