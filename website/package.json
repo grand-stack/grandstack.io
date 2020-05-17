@@ -26,7 +26,9 @@
       "git add"
     ]
   },
-  "dependencies": {},
+  "dependencies": {
+    "@docusaurus/plugin-ideal-image": "^2.0.0-alpha.39"
+  },
   "browserslist": {
     "production": [
       ">0.2%",

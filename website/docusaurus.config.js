@@ -38,7 +38,7 @@ module.exports = {
     announcementBar: {
       id: "book1", // Any value that will identify this message
       content:
-        '<div style="display: flex; justify-content: center; align-items: center;"><a target="_blank" rel="noopener noreferrer" href="https://grandstack.io/book"><img src="/img/bookcover.png" style="max-height: 75px;"></img></a><span>Now available in early release! <a target="_blank" rel="noopener noreferrer" href="https://grandstack.io/book">Fullstack GraphQL Applications with GRANDstack</a> book!</span></div>',
+        '<div style="display: flex; justify-content: center; align-items: center;"><a target="_blank" rel="noopener noreferrer" href="https://grandstack.io/book"><img src="/img/bookcover_small.png" style="max-height: 75px;"></img></a><span>Now available in early release! <a target="_blank" rel="noopener noreferrer" href="https://grandstack.io/book">Fullstack GraphQL Applications with GRANDstack</a> book!</span></div>',
       backgroundColor: "#fafbfc", // Defaults to `#fff`
       textColor: "#091E42" // Defaults to `#000`
     },
