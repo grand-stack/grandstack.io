@@ -202,7 +202,7 @@ const server = new ApolloServer({
 
 ## Inspect Context In Resolver
 
-A common pattern for dealing with authentication / authorization in GraphQL is to inspect an authorization token or a user object injected into the context in a resolver function to ensure the authenticated user is appropirately authorized to request the data. This can be done in `neo4j-graphql-js` by implementing your own resolver function(s) and calling [`neo4jgraphql`](neo4j-graphql-js-api.md#neo4jgraphqlobject-params-context-resolveinfo-debug-executionresult-https-graphqlorg-graphql-js-execution-execute) after inspecting the token / user object.
+A common pattern for dealing with authentication / authorization in GraphQL is to inspect an authorization token or a user object injected into the context in a resolver function to ensure the authenticated user is appropirately authorized to request the data. This can be done in `neo4j-graphql-js` by implementing your own resolver function(s) and calling [`neo4jgraphql`](neo4j-graphql-js-api.mdx#neo4jgraphqlobject-params-context-resolveinfo-debug-executionresult-https-graphqlorg-graphql-js-execution-execute) after inspecting the token / user object.
 
 First, ensure the appropriate data is injected into the context object. In this case we inject the entire `request` object, which in our case will contain a `user` object (which comes from some authorization middleware in our application, such as passport.js):
 
@@ -235,7 +235,7 @@ const resolvers = {
 };
 ```
 
-This resolver object can then be attached to the GraphQL schema using [`makeAugmentedSchema`](neo4j-graphql-js-api.html#makeaugmentedschemaoptions-graphqlschema)
+This resolver object can then be attached to the GraphQL schema using [`makeAugmentedSchema`](neo4j-graphql-js-api.mdx#makeaugmentedschemaoptions-graphqlschema)
 
 We can apply this same strategy to check for user scopes, inspect scopes on a JWT, etc.
 

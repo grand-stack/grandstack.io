@@ -108,7 +108,7 @@ Specifies whether to log the generated Cypher queries for each GraphQL request. 
 
 ### `augmentSchema(schema, config)`: <`GraphQLSchema`>
 
-Takes an existing GraphQL schema object and adds neo4j-graphql-js specific enhancements, including auto-generated mutations and queries, and ordering and pagination fields. See [this guide](neo4j-graphql-js.md) for more information.
+Takes an existing GraphQL schema object and adds neo4j-graphql-js specific enhancements, including auto-generated mutations and queries, and ordering and pagination fields. See [this guide](neo4j-graphql-js.mdx) for more information.
 
 > NOTE: Only use `augmentSchema` if you are working with an existing GraphQLSchema object. In most cases you should use [`makeAugmentedSchema`](#makeaugmentedschemaoptions-graphqlschema) which can construct the GraphQLSchema object from type definitions.
 
@@ -191,7 +191,7 @@ Used to generate GraphQL type definitions from an existing Neo4j database by ins
 
 - `driver`: <`Neo4jDriver`>
 - `options`: <`Object`>
-  - `alwaysIncludeRelationships`: `Boolean` - specifies whether relationships should always be included in the type definitions as [relationship types](neo4j-graphql-js.md#relationship-types), even if the relationships do not have properties.
+  - `alwaysIncludeRelationships`: `Boolean` - specifies whether relationships should always be included in the type definitions as [relationship types](neo4j-graphql-js.mdx#relationship-types), even if the relationships do not have properties.
 
 #### Returns
 

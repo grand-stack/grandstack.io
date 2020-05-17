@@ -258,7 +258,7 @@ const gateway = new ApolloGateway({
 All services in this example use `neo4j-graphql-js` and the same Neo4j database as a data source. This is only for demonstration and testing. If you have an existing monolithic GraphQL server, Gateway could compose your schema with another schema that uses `neo4j-graphql-js`, enabling [incremental adoption](https://www.apollographql.com/docs/apollo-server/federation/introduction/#incremental-adoption).
 
 ### Schema Augmentation
-To support using [schema augmentation](graphql-schema-generation-augmentation.md) with Federation, the `isFederated` configuration option can be set to `true`. For now, this does two things.
+To support using [schema augmentation](graphql-schema-generation-augmentation.mdx) with Federation, the `isFederated` configuration option can be set to `true`. For now, this does two things.
 
 * Ensures the return format is a schema module - an object containing `typeDefs` and `resolvers`. A schema module is the expected argument format for `buildFederatedSchema`.
 <br></br>
@@ -299,7 +299,7 @@ type Product @key(fields: "upc") {
 }
 ```
 
-An entity can define [multiple keys](https://www.apollographql.com/docs/apollo-server/federation/entities/#defining-multiple-primary-keys) and its relationship fields can be used as [compound keys](https://www.apollographql.com/docs/apollo-server/federation/entities/#defining-multiple-primary-keys). When a compound key is provided in a representation, `neo4jgraphql` will generate a Cypher translation that selects only entity nodes with relationships to other nodes of the key field type that have property values matching those provided for the compound key. This translation is generated using current support for translating a [relationship field](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/test/helpers/tck/filterTck.md#all-related-nodes-matching-filter) query [filtering](https://grandstack.io/docs/graphql-filtering.html) argument for the exact name of the relationship field used as a compound key.
+An entity can define [multiple keys](https://www.apollographql.com/docs/apollo-server/federation/entities/#defining-multiple-primary-keys) and its relationship fields can be used as [compound keys](https://www.apollographql.com/docs/apollo-server/federation/entities/#defining-multiple-primary-keys). When a compound key is provided in a representation, `neo4jgraphql` will generate a Cypher translation that selects only entity nodes with relationships to other nodes of the key field type that have property values matching those provided for the compound key. This translation is generated using current support for translating a [relationship field](https://github.com/neo4j-graphql/neo4j-graphql-js/blob/master/test/helpers/tck/filterTck.md#all-related-nodes-matching-filter) query [filtering](graphql-filtering.mdx) argument for the exact name of the relationship field used as a compound key.
 
 
 
@@ -328,7 +328,7 @@ type Review @key(fields: "id") {
 Another new directive provided by Federation is the [@external](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#external) field directive. When a service extends an entity from another service, the `fields` of the `@key` directive for the entity must be marked as `@external` so field types can be known during runtime when Gateway builds a query plan.
 
 ### Resolving Entity References
-When the `Review` entity is the root field type of a query, the federated operation begins with the reviews service. If [neo4jgraphql](https://grandstack.io/docs/neo4j-graphql-js-api.html#neo4jgraphqlobject-params-context-resolveinfo-debug-executionresult-https-graphqlorg-graphql-js-execution-execute) is used to resolve the query, it will be translated under normal conditions:
+When the `Review` entity is the root field type of a query, the federated operation begins with the reviews service. If [neo4jgraphql](neo4j-graphql-js-api.mdx#neo4jgraphqlobject-params-context-resolveinfo-debug-executionresult-https-graphqlorg-graphql-js-execution-execute) is used to resolve the query, it will be translated under normal conditions:
 ###### *Reviews query*
 ```graphql
 query {
@@ -408,7 +408,7 @@ query {
   }
 }
 ```
-When deciding how to use `neo4jgraphql` to resolve the `author` field, there are a few possibilities we can consider. We may use a property on the `Review` type in a [@cypher](neo4j-graphql-js.md#cypher-directive) directive on its `author` field to select related `Account` data.
+When deciding how to use `neo4jgraphql` to resolve the `author` field, there are a few possibilities we can consider. We may use a property on the `Review` type in a [@cypher](neo4j-graphql-js.mdx#cypher-directive) directive on its `author` field to select related `Account` data.
 ###### *Reviews schema*
 ```graphql
 type Review @key(fields: "id") {

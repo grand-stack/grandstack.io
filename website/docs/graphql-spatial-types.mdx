@@ -18,7 +18,7 @@ type Business {
 }
 ```
 
-The GraphQL [schema augmentation process](graphql-schema-generation-augmentation.md) will translate the `location` field to a `_Neo4jPoint` type in the augmented schema.
+The GraphQL [schema augmentation process](graphql-schema-generation-augmentation.mdx) will translate the `location` field to a `_Neo4jPoint` type in the augmented schema.
 
 ## Using `Point` In Queries
 
@@ -76,7 +76,7 @@ _GraphQL result_
 
 ### `Point` Query Arguments
 
-As part of the GraphQL [schema augmentation process](graphql-schema-generation-augmentation.md) point input types are added to the schema and can be used as field arguments. For example if I wanted to find businesses with exact values of longitude and latitude:
+As part of the GraphQL [schema augmentation process](graphql-schema-generation-augmentation.mdx) point input types are added to the schema and can be used as field arguments. For example if I wanted to find businesses with exact values of longitude and latitude:
 
 _GraphQL query_
 
@@ -114,7 +114,7 @@ However, with Point data the auto-generated filters are likely to be more useful
 
 ### `Point` Query Filter
 
-When querying using point data, often we want to find things that are close to other things. For example, what businesses are within 1.5km of me? We can accomplish this using the [auto-generated filter argument](graphql-filtering.md). For example:
+When querying using point data, often we want to find things that are close to other things. For example, what businesses are within 1.5km of me? We can accomplish this using the [auto-generated filter argument](graphql-filtering.mdx). For example:
 
 _GraphQL query_
 

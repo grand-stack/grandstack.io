@@ -50,7 +50,7 @@ This approach of an optional relationship type allows for keeping the schema sim
 
 ## Relationship queries
 
-When queries are generated (through [`augmentSchema`](neo4j-graphql-js-api.html#augmentschemaschema-graphqlschema) or [`makeAugmentedSchema`](neo4j-graphql-js-api.md#makeaugmentedschemaoptions-graphqlschema)) fields referencing a relationship type are replaced with a special payload type that contains the relationship properties and the type reference. For example:
+When queries are generated (through [`augmentSchema`](neo4j-graphql-js-api.mdx#augmentschemaschema-graphqlschema) or [`makeAugmentedSchema`](neo4j-graphql-js-api.mdx#makeaugmentedschemaoptions-graphqlschema)) fields referencing a relationship type are replaced with a special payload type that contains the relationship properties and the type reference. For example:
 
 ```graphql
 type _MovieRatings {
@@ -62,4 +62,4 @@ type _MovieRatings {
 
 ## Relationship mutations
 
-See the [generated mutations](graphql-schema-generation-augmentation.md#generated-mutations) section for information on the mutations generated for relationship types.
+See the [generated mutations](graphql-schema-generation-augmentation.mdx#generated-mutations) section for information on the mutations generated for relationship types.
