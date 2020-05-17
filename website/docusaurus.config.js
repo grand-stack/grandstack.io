@@ -1,25 +1,3 @@
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-// See https://docusaurus.io/docs/site-config.html for all the possible
-// site configuration options.
-
-/* List of projects/orgs using your project for the users page */
-const users = [
-  {
-    caption: "User1",
-    // You will need to prepend the image path with your baseUrl
-    // if it is not '/', like: '/test-site/img/docusaurus.svg'.
-    image: "/img/docusaurus.svg",
-    infoLink: "https://www.facebook.com",
-    pinned: true
-  }
-];
-
 module.exports = {
   presets: [
     [
@@ -108,7 +86,7 @@ module.exports = {
       logo: {
         alt: "GRANDstack Logo",
         src: "img/GrandStack-Logo-1Color_White.png",
-        href: "//"
+        href: "//grandstack.io"
       },
       copyright: `Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License.</a>`
     },
