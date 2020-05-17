@@ -168,15 +168,23 @@ function Home() {
                     <li>
                       <i>Chapter 5:</i> Building User Interfaces With React
                     </li>
-                    <li>Chapter 6: Connecting Our React App To Our API</li>
+                    <li>
+                      <i>Chapter 6:</i> Connecting Our React App To Our API
+                    </li>
                   </ul>
                   <li>
                     <strong>Part 3: Fullstack Considerations</strong>
                   </li>
                   <ul>
-                    <li>Chapter 7: Adding Authorization</li>
-                    <li>Chapter 8: Deploying Our Application</li>
-                    <li>Chapter 9: Advanced GraphQL</li>
+                    <li>
+                      <i>Chapter 7:</i> Adding Authorization
+                    </li>
+                    <li>
+                      <i>Chapter 8:</i> Deploying Our Application
+                    </li>
+                    <li>
+                      <i>Chapter 9:</i> Advanced GraphQL
+                    </li>
                   </ul>
                 </ul>
                 <div class="text--center">

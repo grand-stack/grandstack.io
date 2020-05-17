@@ -75,7 +75,7 @@ module.exports = {
           items: [
             {
               label: "Getting Started",
-              to: "docs/getting-started-neo4j-graphql."
+              to: "docs/getting-started-neo4j-graphql"
             },
             {
               label: "neo4j-graphql.js",
