@@ -1,0 +1,9 @@
+.graphiql-container {
+  height: 500px;
+}
+
+.graphiqlcontainer {
+  height: 500px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}

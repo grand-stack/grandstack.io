@@ -4,6 +4,9 @@ title: Complex GraphQL Filtering
 sidebar_label: Filtering With GraphQL
 ---
 
+import GraphiQLSnippet from "../components/GraphiQLSnippet";
+import styles from "./styles.module.css";
+
 A `filter` argument is added to field arguments, as well as input types used to support them.
 
 > Filtering is currently supported for scalar fields, enums, `@relation` fields and types. Filtering on `@cypher` directive fields is not yet supported.
@@ -19,6 +22,13 @@ The auto-generated `filter` argument is used to support complex filtering in que
   }
 }
 ```
+<div className={styles.graphiqlcontainer}>
+  <GraphiQLSnippet query={`{
+  Movie(filter: { year_lt: 1920 }) {
+    title
+  }
+}`} />
+</div>
 
 ## Nested Filter
 
@@ -37,6 +47,20 @@ To filter based on the results of nested fields applied to the root, simply nest
 }
 ```
 
+<div className={styles.graphiqlcontainer}>
+  <GraphiQLSnippet query=
+{`{
+  Movie(
+    filter: {
+      title_starts_with: "River"
+      actors_some: { name_contains: "Brad" }
+    }
+  ) {
+    title
+  }
+}`} />
+</div>
+
 ## Logical Operators: `AND`, `OR`
 
 Filters can be wrapped in logical operations `AND` and `OR`. For example, to find movies that were released before 1920 or have a title that contains "River Runs":
@@ -48,6 +72,15 @@ Filters can be wrapped in logical operations `AND` and `OR`. For example, to fin
   }
 }
 ```
+
+<div className={styles.graphiqlcontainer}>
+  <GraphiQLSnippet query=
+{`{
+  Movie(filter: { OR: [{ year_lt: 1920 }, { title_contains: "River Runs" }] }) {
+    title
+  }
+}`} />
+</div>
 
 These logical operators can be nested as well. For example, find movies that there were released before 1920 or have a title that contains "River" and belong to the genre "Drama":
 
@@ -68,6 +101,24 @@ These logical operators can be nested as well. For example, find movies that the
 }
 ```
 
+<div className={styles.graphiqlcontainer}>
+  <GraphiQLSnippet query=
+{`{
+  Movie(
+    filter: {
+      OR: [
+        { year_lt: 1920 }
+        {
+          AND: [{ title_contains: "River" }, { genres_some: { name: "Drama" } }]
+        }
+      ]
+    }
+  ) {
+    title
+  }
+}`} />
+</div>
+
 ## Filtering In Selections
 
 Filters can be used in not only the root query argument, but also throughout the selection set. For example, search for all movies that contain the string "River", and when returning the genres of the these movies only return genres with the name "Drama":
@@ -82,6 +133,18 @@ Filters can be used in not only the root query argument, but also throughout the
   }
 }
 ```
+
+<div className={styles.graphiqlcontainer}>
+  <GraphiQLSnippet query=
+{`{
+  Movie(filter: { title_contains: "River" }) {
+    title
+    genres(filter: { name: "Drama" }) {
+      name
+    }
+  }
+}`} />
+</div>
 
 ## DateTime Filtering
 

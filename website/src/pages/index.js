@@ -57,6 +57,98 @@ function Feature({ imageUrl, title, description }) {
   );
 }
 
+function BlogFeatures(blogs) {
+  return <div></div>;
+}
+
+function BookPromo() {
+  return (
+    <section
+      className={
+        true
+          ? classnames(styles.features)
+          : classnames(styles.features, styles.shaded)
+      }
+    >
+      <div className="container">
+        <h1 class="text--center">New Book Release!</h1>
+        <div className="row">
+          <div class="col col--5">
+            <a href="https://grandstack.io/book">
+              <img
+                className={classnames(styles.mainItem)}
+                src={useBaseUrl("img/bookcover_med.png")}
+              ></img>
+            </a>
+          </div>
+          <div class="col col--7">
+            <a href="https://grandstack.io/book">
+              <h2 class="text--center">
+                Fullstack GraphQL Applications with GRANDstack
+              </h2>
+            </a>
+            <p>
+              Learn how to build a fullstack GraphQL application using using
+              GraphQL, React, Apollo, and Neo4j Database. The book covers:
+            </p>
+            <ul>
+              <li>
+                <strong>Part 1: Getting Started With Fullstack GraphQL</strong>
+              </li>
+              <ul>
+                <li>
+                  <i>Chapter 1:</i> What's the GRANDstack?
+                </li>
+                <li>
+                  <i>Chapter 2:</i> Graph Thinking With GraphQL
+                </li>
+                <li>
+                  <i>Chapter 3:</i> Graphs In The Database
+                </li>
+                <li>
+                  <i>Chapter 4:</i> A GraphQL API For Our Graph Database
+                </li>
+              </ul>
+              <li>
+                <strong>Part 2: Building The Front End</strong>
+              </li>
+              <ul>
+                <li>
+                  <i>Chapter 5:</i> Building User Interfaces With React
+                </li>
+                <li>
+                  <i>Chapter 6:</i> Connecting Our React App To Our API
+                </li>
+              </ul>
+              <li>
+                <strong>Part 3: Fullstack Considerations</strong>
+              </li>
+              <ul>
+                <li>
+                  <i>Chapter 7:</i> Adding Authorization
+                </li>
+                <li>
+                  <i>Chapter 8:</i> Deploying Our Application
+                </li>
+                <li>
+                  <i>Chapter 9:</i> Advanced GraphQL
+                </li>
+              </ul>
+            </ul>
+            <div class="text--center">
+              <a href="https://grandstack.io/book">
+                <button class="button button-outline button--primary">
+                  Read Now!
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Home() {
   const context = useDocusaurusContext();
 
@@ -113,91 +205,7 @@ function Home() {
           </section>
         )}
 
-        <section
-          className={
-            true
-              ? classnames(styles.features)
-              : classnames(styles.features, styles.shaded)
-          }
-        >
-          <div className="container">
-            <h1 class="text--center">New Book Release!</h1>
-            <div className="row">
-              <div class="col col--5">
-                <a href="https://grandstack.io/book">
-                  <img
-                    className={classnames(styles.mainItem)}
-                    src={useBaseUrl("img/bookcover_med.png")}
-                  ></img>
-                </a>
-              </div>
-              <div class="col col--7">
-                <a href="https://grandstack.io/book">
-                  <h2 class="text--center">
-                    Fullstack GraphQL Applications with GRANDstack
-                  </h2>
-                </a>
-                <p>
-                  Learn how to build a fullstack GraphQL application using using
-                  GraphQL, React, Apollo, and Neo4j Database. The book covers:
-                </p>
-                <ul>
-                  <li>
-                    <strong>
-                      Part 1: Getting Started With Fullstack GraphQL
-                    </strong>
-                  </li>
-                  <ul>
-                    <li>
-                      <i>Chapter 1:</i> What's the GRANDstack?
-                    </li>
-                    <li>
-                      <i>Chapter 2:</i> Graph Thinking With GraphQL
-                    </li>
-                    <li>
-                      <i>Chapter 3:</i> Graphs In The Database
-                    </li>
-                    <li>
-                      <i>Chapter 4:</i> A GraphQL API For Our Graph Database
-                    </li>
-                  </ul>
-                  <li>
-                    <strong>Part 2: Building The Front End</strong>
-                  </li>
-                  <ul>
-                    <li>
-                      <i>Chapter 5:</i> Building User Interfaces With React
-                    </li>
-                    <li>
-                      <i>Chapter 6:</i> Connecting Our React App To Our API
-                    </li>
-                  </ul>
-                  <li>
-                    <strong>Part 3: Fullstack Considerations</strong>
-                  </li>
-                  <ul>
-                    <li>
-                      <i>Chapter 7:</i> Adding Authorization
-                    </li>
-                    <li>
-                      <i>Chapter 8:</i> Deploying Our Application
-                    </li>
-                    <li>
-                      <i>Chapter 9:</i> Advanced GraphQL
-                    </li>
-                  </ul>
-                </ul>
-                <div class="text--center">
-                  <a href="https://grandstack.io/book">
-                    <button class="button button-outline button--primary">
-                      Read Now!
-                    </button>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <BookPromo />
       </main>
     </Layout>
   );
