@@ -1,9 +1,5 @@
-.graphiql-container {
-  height: 500px;
-}
-
 .graphiqlcontainer {
-  height: 500px;
+  height: 350px;
   padding-bottom: 10px;
   padding-top: 10px;
 }
