@@ -60,6 +60,14 @@ module.exports = {
               to: "docs/neo4j-graphql-js"
             },
             {
+              label: "GraphQL Schema Design Guide",
+              to: "docs/guide-graphql-schema-design"
+            },
+            {
+              label: "API Reference",
+              to: "docs/neo4j-graphql-js-api"
+            },
+            {
               label: "Resources",
               to: "/docs/grandstack-resources"
             }
@@ -69,12 +77,21 @@ module.exports = {
           title: "More",
           items: [
             {
-              label: "Blog",
-              to: "https://blog.grandstack.io"
+              label: "GRANDstack Blog",
+              href: "https://blog.grandstack.io"
             },
             {
               label: "GitHub",
               href: "https://github.com/grand-stack"
+            },
+            {
+              label: "#GRANDstack on Twitter",
+              href:
+                "https://twitter.com/search?q=%23GRANDstack&src=typed_query&f=live"
+            },
+            {
+              label: "Feedback Survey",
+              href: "https://grandstack.io/survey"
             },
             {
               label: "Subscribe For Updates",
