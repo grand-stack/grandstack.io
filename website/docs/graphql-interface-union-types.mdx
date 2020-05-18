@@ -16,7 +16,7 @@ GraphQL supports two kinds of abstract types: interfaces and unions. Interfaces 
 
 Interface types are supported in neo4j-graphql.js through the use of multiple labels in Neo4j. For example, consider the following GraphQL type definitions:
 
-```GraphQL
+```graphql
 interface Person {
   id: ID!
   name: String
@@ -78,7 +78,7 @@ Note that the label `Person` (which represents the interface type) is added to e
 
 When an interface type is included in the GraphQL type definitions, the generated create mutations will add the additional label for the interface type to any nodes of an implementing type when creating data. For example consider the following mutations.
 
-```GraphQL
+```graphql
 mutation {
   u1: CreateUser(name: "Bob", screenName: "bobbyTables", id: "u1") {
     id
@@ -122,7 +122,7 @@ This creates the following graph in Neo4j (note the use of multiple labels):
 
 A query field is addd to the generated `Query` type for each interface. For example, querying using our `Person` interface.
 
-```GraphQL
+```graphql
 query {
   Person {
    name
@@ -130,7 +130,7 @@ query {
 }
 ```
 
-```JSON
+```json
 {
   "data": {
     "Person": [
@@ -149,7 +149,7 @@ query {
 
 The `__typename` introspection field can be added to the selection set to determine the concrete type of the object.
 
-```GraphQL
+```graphql
 query {
   Person {
     name
@@ -158,7 +158,7 @@ query {
 }
 ```
 
-```JSON
+```json
 {
   "data": {
     "Person": [
@@ -179,7 +179,7 @@ query {
 
 [Inline fragments](https://graphql.org/learn/queries/#inline-fragments) can be used to access fields of the concrete types in the selection set.
 
-```GraphQL
+```graphql
 query {
   Person {
     name
@@ -197,7 +197,7 @@ query {
 }
 ```
 
-```JSON
+```json
 {
   "data": {
     "Person": [
@@ -224,7 +224,7 @@ query {
 
 The generated filter arguments can be used for interface types. Note however that only fields in the interface definition are included in the generated filter arguments as those apply to all concrete types.
 
-```GraphQL
+```graphql
 query {
   Person(filter: {name_contains:"Brad"}) {
     name
@@ -242,7 +242,7 @@ query {
 }
 ```
 
-```JSON
+```json
 {
   "data": {
     "Person": [
@@ -264,7 +264,7 @@ query {
 
 We can also use interfaces when defining relationship fields. For example:
 
-```GraphQL
+```graphql
   friends: [Person] @relation(name: "FRIEND_OF", direction: OUT)
 
 ```
@@ -277,7 +277,7 @@ Union types are abstract types that do not specify any fields that must be inclu
 
 For example, consider the following GraphQL type definitions:
 
-```GraphQL
+```graphql
 union SearchResult = Blog | Movie
 
 type Blog {
@@ -296,7 +296,7 @@ type Movie {
 
 Using the generated mutations to create the following data:
 
-```GraphQL
+```graphql
 mutation {
   b1: CreateBlog(
     blogId: "b1"
@@ -330,7 +330,7 @@ The above mutations create the following data in Neo4j. Note the use of multiple
 
 A query field is added to the Query type for each union type defined in the schema.
 
-```GraphQL
+```graphql
 {
   SearchResult {
     __typename
@@ -338,7 +338,7 @@ A query field is added to the Query type for each union type defined in the sche
 }
 ```
 
-```JSON
+```json
 {
   "data": {
     "SearchResult": [
@@ -357,7 +357,7 @@ A query field is added to the Query type for each union type defined in the sche
 
 Inline fragments are used in the selection set to access fields of the concrete type.
 
-```GraphQL
+```graphql
 {
   SearchResult {
     __typename
@@ -375,7 +375,7 @@ Inline fragments are used in the selection set to access fields of the concrete 
 }
 ```
 
-```JSON
+```json
 {
   "data": {
     "SearchResult": [
@@ -401,13 +401,13 @@ We can also use unions with `@cypher` directive fields. Unions are often useful 
 
 First, let's create a full text index in Neo4j. This index will include the `:Blog(content)` and `:Movie(title)` properties.
 
-```Cypher
+```cypher
 CALL db.index.fulltext.createNodeIndex("searchIndex", ["Blog","Movie"],["content", "title"])
 ```
 
 Now we can add a `search` field to the Query type that searches the full text index.
 
-```GraphQL
+```graphql
 type Query {
   search(searchString: String!): [SearchResult] @cypher(statement:"CALL db.index.fulltext.queryNodes("searchIndex", $searchString) YIELD node RETURN node")
 }
@@ -415,7 +415,7 @@ type Query {
 
 Now we can query the `search` field, leveraging the full text index.
 
-```GraphQL
+```graphql
 {
   search(searchString: "river") {
     __typename
@@ -432,7 +432,7 @@ Now we can query the `search` field, leveraging the full text index.
 }
 ```
 
-```JSON
+```json
 {
   "data": {
     "search": [

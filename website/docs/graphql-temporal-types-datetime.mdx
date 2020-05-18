@@ -12,7 +12,7 @@ Neo4j supports native temporal types as properties on nodes and relationships. T
 
 neo4j-graphql.js makes available the following temporal types for use in your GraphQL type definitions: `Date`, `DateTime`, and `LocalDateTime`. You can use the temporal types in a field definition in your GraphQL type like this:
 
-```
+```graphql
 type Movie {
   id: ID!
   title: String
@@ -26,7 +26,7 @@ Temporal types expose their date components (such as day, month, year, hour, etc
 
 _GraphQL query_
 
-```
+```graphql
 {
   Movie(title: "River Runs Through It, A") {
     title
@@ -45,7 +45,7 @@ _GraphQL query_
 
 _GraphQL result_
 
-```
+```json
 {
   "data": {
     "Movie": [
@@ -70,7 +70,7 @@ _GraphQL result_
 
 As part of the [schema augmentation process](graphql-schema-generation-augmentation.mdx) temporal input types are added to the schema and can be used as query arguments. For example, given the type definition:
 
-```
+```graphql
 type Movie{
   movieId: ID!
   title: String
@@ -80,7 +80,7 @@ type Movie{
 
 the following query will be generated for the `Movie` type:
 
-```
+```graphql
 Movie (
   movieId: ID!
   title: String
@@ -94,7 +94,7 @@ Movie (
 
 and the type `_Neo4jDateInput` added to the schema:
 
-```
+```graphql
 type _Neo4jDateTimeInput {
   year: Int
   month: Int
@@ -105,7 +105,7 @@ type _Neo4jDateTimeInput {
 
 At query time, either specify the individual components (year, month, day, etc) or the `formatted` field, which is the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) representation. For example, to query for all movies with a release date of October 10th, 1992:
 
-```
+```graphql
 {
   Movie(dateTime: { year: 1992, month: 10, day: 9 }) {
     title
@@ -115,7 +115,7 @@ At query time, either specify the individual components (year, month, day, etc) 
 
 or equivalently:
 
-```
+```graphql
 {
   Movie(dateTime: { formatted: "1992-10-09" }) {
     title
@@ -129,7 +129,7 @@ As part of the [schema augmentation process](#schema-augmentation) temporal inpu
 
 For example, this mutation:
 
-```
+```graphql
 mutation {
   CreateMovie(
     title: "River Runs Through It, A"
@@ -145,7 +145,7 @@ mutation {
 
 is equivalent to this version, using the `formatted` field instead
 
-```
+```graphql
 mutation {
   CreateMovie(
     title: "River Runs Through It, A"

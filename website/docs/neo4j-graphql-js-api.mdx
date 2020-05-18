@@ -40,7 +40,7 @@ Wraps [`makeExecutableSchema`](https://www.apollographql.com/docs/apollo-server/
 
 For example:
 
-```javascript
+```js
 const schema = makeAugmentedSchema({
   typeDefs,
   config: {
@@ -52,7 +52,7 @@ const schema = makeAugmentedSchema({
 
 or
 
-```javascript
+```js
 const schema = makeAugmentedSchema({
   typeDefs,
   config: {
@@ -121,7 +121,7 @@ Takes an existing GraphQL schema object and adds neo4j-graphql-js specific enhan
 
 For example:
 
-```javascript
+```js
 const augmentedSchema = augmentSchema(schema, {
   query: true, //default
   mutation: false
@@ -130,7 +130,7 @@ const augmentedSchema = augmentSchema(schema, {
 
 or
 
-```javascript
+```js
 const augmentedSchema = augmentSchema(schema, {
   query: {
     exclude: ["MyPayloadType"]

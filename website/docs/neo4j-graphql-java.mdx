@@ -125,7 +125,7 @@ post("/graphql","application/json", { req, res ->  run(translate(query(req.body(
 
 Run the example with:
 
-```
+```shell
 groovy docs/Server.groovy
 ```
 
@@ -165,7 +165,7 @@ And can run queries like:
 
 You can also test it with `curl`
 
-```
+```shell
 curl -XPOST http://localhost:4567/graphql -d'{"query":"{person {name}}"}'
 ```
 
@@ -173,7 +173,7 @@ This example doesn't handle introspection queries but the one in the test direct
 
 ## Advanced Queries
 
-```
+```graphql
 {
   person(filter: {name_starts_with: "L"}, orderBy: "born_asc", first: 5, offset: 2) {
     name
@@ -187,7 +187,7 @@ This example doesn't handle introspection queries but the one in the test direct
 
 _Filter, Sorting, Paging support_
 
-```
+```graphql
 {
   person(filter: {name_starts_with: "J", born_gte: 1970}, first:2) {
     name

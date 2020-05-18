@@ -21,7 +21,7 @@ We expose Cypher through GraphQL via the `@cypher` directive. Annotate a field i
 
 We can use the `@cypher` directive to define a custom scalar field, defining a computed field in our schema. Here we add an `averageStars` field to the `Business` type which calculates the average stars of all reviews for the business using the `this` variable.
 
-```GraphQL
+```graphql
 type Business {
     businessId: ID!
     averageStars: Float! @cypher(statement:"MATCH (this)<-[:REVIEWS]-(r:Review) RETURN avg(r.stars)")
@@ -37,7 +37,7 @@ type Business {
 
 Now we can include the `averageStars` field in our GraphQL query:
 
-```GraphQL
+```graphql
 {
   Business {
     name
@@ -48,7 +48,7 @@ Now we can include the `averageStars` field in our GraphQL query:
 
 And we see in the results that the computed value for `averageStars` is now included.
 
-```
+```json
 {
   "data": {
     "Business": [
@@ -75,7 +75,7 @@ The generated Cypher query includes the annotated Cypher query as a sub-query, p
 
 We can also use the `@cypher` schema directive to resolve object and array fields. Let's add a recommended business field to the `Business` type. We'll use a simple Cypher query to find common businesses that other users reviewed. For example, if a user likes "Market on Front", we could recommend other businesses that users who reviewed "Market on Front" also reviewed.
 
-```Cypher
+```cypher
 MATCH (b:Business {name: "Market on Front"})<-[:REVIEWS]-(:Review)<-[:WROTE]-(:User)-[:WROTE]->(:Review)-[:REVIEWS]->(rec:Business)
 WITH rec, COUNT(*) AS score
 RETURN rec ORDER BY score DESC
@@ -83,7 +83,7 @@ RETURN rec ORDER BY score DESC
 
 We can make use of this Cypher query in our GraphQL schema by including it in a `@cypher` directive on the `recommended` field in our `Business` type definition.
 
-```GraphQL
+```graphql
 type Business {
     businessId: ID!
     averageStars: Float! @cypher(statement:"MATCH (this)<-[:REVIEWS]-(r:Review) RETURN avg(r.stars)")
@@ -110,19 +110,19 @@ Another helpful way to use the `@cypher` directive is as a custom query or mutat
 
 In Neo4j we can use full-text search by first creating a full-text index.
 
-```Cypher
+```cypher
 CALL db.index.fulltext.createNodeIndex("businessNameIndex", ["Business"],["name"])
 ```
 
 Then to query the index, in this case we misspell "coffee" but including the `~` character enables fuzzy matching, ensuring we still find what we're looking for.
 
-```Cypher
+```cypher
 CALL db.index.fulltext.queryNodes("businessNameIndex", "cofee~")
 ```
 
 Wouldn't it be nice to include this fuzzy matching full-text search in our GraphQL API? To do that let's create a Query field called `fuzzyBusinessByName` that takes a search string and searches for businesses.
 
-```GraphQL
+```graphql
 type Query {
   fuzzyBusinessByName(searchString: String): [Business] @cypher(statement: """
     CALL db.index.fulltext.queryNodes( 'businessNameIndex', $searchString+'~')
@@ -133,7 +133,7 @@ type Query {
 
 We can now search for business names using this fuzzy matching.
 
-```GraphQL
+```graphql
 {
   fuzzyBusinessByName(searchString: "libary") {
     name
@@ -165,7 +165,7 @@ In our example let's imagine there is an external system that can be used to det
 
 To do this, we first add the field to our schema, adding the `@neo4j_ignore` directive to ensure the field is excluded from the generated Cypher query. This is our way of telling neo4j-graphql.js that a custom resolver will be responsible for resolving this field and we don't expect it to be fetched from the database automatically.
 
-```GraphQL
+```graphql
 type Business {
     businessId: ID!
     waitTime: Int! @neo4j_ignore
@@ -207,7 +207,7 @@ const schema = makeAugmentedSchema({
 
 Now, let's search for restaurants and see what their wait times are by including the `waitTime` field in the selection set.
 
-```GraphQL
+```graphql
 {
   Business(filter: { categories_some: { name: "Restaurant" } }) {
     name
@@ -218,7 +218,7 @@ Now, let's search for restaurants and see what their wait times are by including
 
 In the results we now see a value for the wait time. Your results will of course vary since the value is randomized.
 
-```js
+```json
 {
   "data": {
     "Business": [

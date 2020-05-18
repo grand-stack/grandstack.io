@@ -1,7 +1,7 @@
 ---
 id: graphql-filtering
 title: Complex GraphQL Filtering
-sidebar_label: Filtering
+sidebar_label: Filtering With GraphQL
 ---
 
 A `filter` argument is added to field arguments, as well as input types used to support them.
@@ -12,7 +12,7 @@ A `filter` argument is added to field arguments, as well as input types used to 
 
 The auto-generated `filter` argument is used to support complex filtering in queries. For example, to filter for Movies released before 1920:
 
-```GraphQL
+```graphql
 {
   Movie(filter: { year_lt: 1920 }) {
     title
@@ -24,7 +24,7 @@ The auto-generated `filter` argument is used to support complex filtering in que
 
 To filter based on the results of nested fields applied to the root, simply nest the filters used. For example, to search for movies whose title starts with "River" and has at least one actor whose name starts with "Brad":
 
-```GraphQL
+```graphql
 {
   Movie(
     filter: {
@@ -41,7 +41,7 @@ To filter based on the results of nested fields applied to the root, simply nest
 
 Filters can be wrapped in logical operations `AND` and `OR`. For example, to find movies that were released before 1920 or have a title that contains "River Runs":
 
-```GraphQL
+```graphql
 {
   Movie(filter: { OR: [{ year_lt: 1920 }, { title_contains: "River Runs" }] }) {
     title
@@ -51,7 +51,7 @@ Filters can be wrapped in logical operations `AND` and `OR`. For example, to fin
 
 These logical operators can be nested as well. For example, find movies that there were released before 1920 or have a title that contains "River" and belong to the genre "Drama":
 
-```GraphQL
+```graphql
 {
   Movie(
     filter: {
@@ -72,7 +72,7 @@ These logical operators can be nested as well. For example, find movies that the
 
 Filters can be used in not only the root query argument, but also throughout the selection set. For example, search for all movies that contain the string "River", and when returning the genres of the these movies only return genres with the name "Drama":
 
-```GraphQL
+```graphql
 {
   Movie(filter: { title_contains: "River" }) {
     title
@@ -87,7 +87,7 @@ Filters can be used in not only the root query argument, but also throughout the
 
 Filtering can be applied to GraphQL temporal fields, using the temporal input types described in the [Temporal Types (DateTime) section](graphql-temporal-types-datetime.mdx#using-temporal-fields-in-mutations). For example, filter for reviews created before January 1, 2015:
 
-```GraphQL
+```graphql
 {
   Movie(first: 1) {
     reviews(filter: { createdAt_lt: { year: 2015, month: 1, day:1 } }) {
@@ -106,7 +106,7 @@ When querying using point data, often we want to find things that are close to o
 
 _GraphQL query_
 
-```GraphQL
+```graphql
 {
   Business(
     filter: {
@@ -128,7 +128,7 @@ _GraphQL query_
 
 _GraphQL result_
 
-```JSON
+```json
 {
   "data": {
     "Business": [
@@ -157,7 +157,7 @@ For points using the Geographic coordinate reference system (latitude and longit
 
 The filter criteria available depends on the type of the field and are added to the generated input type prefixed by the name of the field and suffixed with the criteria. For example, given the following type definitions:
 
-```GraphQL
+```graphql
 enum RATING {
   G
   PG

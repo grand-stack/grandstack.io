@@ -56,7 +56,7 @@ In a graph database nodes are the entities in the graph and relationships connec
 
 In GraphQL we define types and the fields available on each type, which may reference other types. For example:
 
-```GraphQL
+```graphql
 type TypeName {
 	fieldName: FieldType
 	referenceField: TypeName
@@ -78,7 +78,7 @@ In GraphQL we use the Schema Definition Language (SDL) to define our types in a 
 
 We use SDL to define object types for our domain and the fields available on each type, which may be scalar types or reference other object types. For example:
 
-```GraphQL
+```graphql
 type Movie {
 	movieId: ID!
 	title: String
@@ -93,7 +93,7 @@ This type definition is defining a node with the label `Movie` and the propertie
 
 Our type definitions can reference other object types as well:
 
-```GraphQL
+```graphql
 type Actor {
 	actorId: ID!
 	name: String
@@ -113,7 +113,7 @@ type Movie {
 
 Fields can include arguments. For example, we may want to limit the number of actors we return for movie:
 
-```GraphQL
+```graphql
 type Actor {
 	actorId: ID!
 	name: String
@@ -139,7 +139,7 @@ Schema directives are GraphQL's built-in extension mechanism. We can use them to
 
 To be able to fully specify the labeled property graph equivalent we make use of the `@relation` GraphQL schema directive to declare the relationship type and direction:
 
-```GraphQL
+```graphql
 type Actor {
 	actorId: ID!
 	name: String
@@ -165,7 +165,7 @@ These type definitions then map to this labeled property graph model in Neo4j:
 
 neo4j-graphql implementations introduce a `@cypher` GraphQL schema directive that can be used to bind a GraphQL field to the results of a Cypher query. For example, let's add a field `similarMovies` to our `Movie` which is bound to a Cypher query to find other movies with an overlap of actors:
 
-```GraphQL
+```graphql
 type Actor {
 	actorId: ID!
 	name: String
@@ -196,7 +196,7 @@ GraphQL field arguments for the `@cypher` directive field are passed to the Cyph
 
 In the case above we model properties on nodes, but not on relationships. To handle the case where we want to model properties on relationships we promote the reference field to an object type and annotate it with the directive `@relation`. For example, let's introduce users and ratings:
 
-```GraphQL
+```graphql
 type Actor {
 	actorId: ID!
 	name: String
@@ -243,7 +243,7 @@ We also don't need to define resolvers - the functions that contain the logic fo
 
 The following `Query` and `Mutation` types would be generated for our type definitions above, defining CRUD operations for all our types:
 
-```GraphQL
+```graphql
 type Query {
   Movie(_id: String, movieId: ID, title: String, year: Int, description: String, first: Int, offset: Int, orderBy: [_MovieOrdering]): [Movie]
   Actor(actorId: ID, name: String, _id: String, first: Int, offset: Int, orderBy: [_ActorOrdering]): [Actor]
@@ -283,7 +283,7 @@ The auto-generated API gives us basic CRUD functionality, but what if we wanted 
 
 To implement a custom `Query` field, simply include a `Query` type in your type definitions and include your custom logic in a `@cypher` directive annotated field. Here we use a fulltext index to perform a fuzzy text match for searching for movies:
 
-```GraphQL
+```graphql
 type Query {
 	moviesByFuzzyMatch(search: String, first: Int = 10, offset: Int = 0): [Movie] @cypher("""
 		CALL db.index.fulltext.queryNodes('movieIndex', $search) YIELD node
@@ -298,7 +298,7 @@ type Query {
 
 Resolvers are functions that define how to actually fetch the data from the data layer. Because neo4j-graphql.js autogenerates CRUD resolvers for queries and mutations, you don't need to implement resolvers yourself, however if you have some custom code beyond which can be defined using an `@cypher` directive, you can implement your own resolvers and pass those along. Here's a simple example defining a field resolver for `fullName`.
 
-````javascript
+````js
 import { makeAugmentedSchema } from "neo4j-graphql-js";
 
 const typeDefs = ```

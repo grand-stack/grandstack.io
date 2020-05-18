@@ -37,7 +37,7 @@ This tool
 3. a Neo4j server,
 4. an hosted GraphiQL for it.
 
-```
+```shell
 npm install -g neo4j-graphql-cli
 neo4j-graphql movies-schema.graphql
 ```
@@ -56,7 +56,7 @@ If your Neo4j Server runs with _authentication enabled_, add the appropriate Bas
 
 .Command to generate the `Authorization` header value.
 
-```
+```shell
 echo "Basic $(echo -n "neo4j:<password>" | base64)"
 ```
 

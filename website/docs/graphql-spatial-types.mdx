@@ -10,7 +10,7 @@ sidebar_label: Spatial Types
 
 neo4j-graphql.js makes available the `Point` type for use in your GraphQL type definitions. You can use it like this:
 
-```GraphQL
+```graphql
 type Business {
   id: ID!
   name: String
@@ -37,7 +37,7 @@ For example:
 
 _GraphQL query_
 
-```GraphQL
+```graphql
 query {
   Business(first: 2) {
     name
@@ -51,7 +51,7 @@ query {
 
 _GraphQL result_
 
-```JSON
+```json
 {
   "data": {
     "Business": [
@@ -80,7 +80,7 @@ As part of the GraphQL [schema augmentation process](graphql-schema-generation-a
 
 _GraphQL query_
 
-```GraphQL
+```graphql
 query {
   Business(location: { latitude: 46.870035, longitude: -113.990976 }) {
     name
@@ -94,7 +94,7 @@ query {
 
 _GraphQL result_
 
-```JSON
+```json
 {
   "data": {
     "Business": [
@@ -118,7 +118,7 @@ When querying using point data, often we want to find things that are close to o
 
 _GraphQL query_
 
-```GraphQL
+```graphql
 {
   Business(
     filter: {
@@ -140,7 +140,7 @@ _GraphQL query_
 
 _GraphQL result_
 
-```JSON
+```json
 {
   "data": {
     "Business": [
@@ -171,7 +171,7 @@ The schema augmentation process adds mutations for creating, updating, and delet
 
 For example, to create a new Business node and set the value of the location field:
 
-```GraphQL
+```graphql
 mutation {
   CreateBusiness(
     name: "University of Montana"

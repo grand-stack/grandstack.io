@@ -18,7 +18,7 @@ To specify the Neo4j database to be used, provide a value in the context object,
 
 For example, with Apollo Server, here we provide the database name `sanmateo`:
 
-```javascript
+```js
 const neo4j = require("neo4j-driver");
 const { ApolloServer } = require("apollo-server");
 
@@ -43,7 +43,7 @@ We can also use a function to define the context object. This allows us to use a
 
 Here we use the value of the request header `x-database` for the Neo4j database:
 
-```javascript
+```js
 const neo4j = require("neo4j-driver");
 const { ApolloServer } = require("apollo-server");
 

@@ -16,7 +16,7 @@ To add these augmentations to the schema use either the [`augmentSchema`](neo4j-
 
 **`makeAugmentedSchema`** - _generate executable schema from GraphQL type definitions only_
 
-```javascript
+```js
 import { makeAugmentedSchema } from "neo4j-graphql-js";
 
 const typeDefs = `
@@ -42,7 +42,7 @@ const schema = makeAugmentedSchema({ typeDefs });
 
 **`augmentSchema`** - _when you already have a GraphQL schema object_
 
-```javascript
+```js
 import { augmentSchema } from "neo4j-graphql-js";
 import { makeExecutableSchema } from "apollo-server";
 import { typeDefs, resolvers } from "./movies-schema";
@@ -369,7 +369,7 @@ By default, both Query and Mutation types are auto-generated from type definitio
 
 Using `makeAugmentedSchema`, disable generating the Mutation type:
 
-```javascript
+```js
 import { makeAugmentedSchema } from "neo4j-graphql-js";
 
 const schema = makeAugmentedSchema({
@@ -383,7 +383,7 @@ const schema = makeAugmentedSchema({
 
 Using `augmentSchema`, disable auto-generating mutations:
 
-```javascript
+```js
 import { augmentSchema } from "neo4j-graphql-js";
 
 const augmentedSchema = augmentSchema(schema, {
@@ -396,7 +396,7 @@ const augmentedSchema = augmentSchema(schema, {
 
 To exclude specific types from being included in the generated Query and Mutation types, pass those type names in to the config object under `exclude`. For example:
 
-```javascript
+```js
 import { makeAugmentedSchema } from "neo4j-graphql-js";
 
 const schema = makeAugmentedSchema({
@@ -430,7 +430,7 @@ extend type Movie {
 }
 ```
 
-```javascript
+```js
 const schema = makeAugmentedSchema({
     resolvers: {
         Movie: {
