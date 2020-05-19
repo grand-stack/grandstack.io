@@ -19,6 +19,7 @@ The auto-generated `filter` argument is used to support complex filtering in que
 {
   Movie(filter: { year_lt: 1920 }) {
     title
+    year
   }
 }
 ```
@@ -26,6 +27,7 @@ The auto-generated `filter` argument is used to support complex filtering in que
   <GraphiQLSnippet query={`{
   Movie(filter: { year_lt: 1920 }) {
     title
+    year
   }
 }`} />
 </div>
@@ -69,6 +71,7 @@ Filters can be wrapped in logical operations `AND` and `OR`. For example, to fin
 {
   Movie(filter: { OR: [{ year_lt: 1920 }, { title_contains: "River Runs" }] }) {
     title
+    year
   }
 }
 ```
@@ -78,6 +81,7 @@ Filters can be wrapped in logical operations `AND` and `OR`. For example, to fin
 {`{
   Movie(filter: { OR: [{ year_lt: 1920 }, { title_contains: "River Runs" }] }) {
     title
+    year
   }
 }`} />
 </div>
@@ -97,6 +101,10 @@ These logical operators can be nested as well. For example, find movies that the
     }
   ) {
     title
+    year
+    genres {
+      name
+    }
   }
 }
 ```
@@ -115,6 +123,10 @@ These logical operators can be nested as well. For example, find movies that the
     }
   ) {
     title
+    year
+    genres {
+      name
+    }
   }
 }`} />
 </div>
