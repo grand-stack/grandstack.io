@@ -152,16 +152,30 @@ Filtering can be applied to GraphQL temporal fields, using the temporal input ty
 
 ```graphql
 {
-  Movie(first: 1) {
-    reviews(filter: { createdAt_lt: { year: 2015, month: 1, day:1 } }) {
+  User(first: 1) {
+    rated(filter: {created_lt: {year: 2015, month: 1, day: 1}}) {
       rating
-      createdAt {
+      created {
         formatted
       }
     }
   }
 }
 ```
+
+<div className={styles.graphiqlcontainer}>
+  <GraphiQLSnippet query=
+{`{
+  User(first: 1) {
+    rated(filter: {created_lt: {year: 2015, month: 1, day: 1}}) {
+      rating
+      created {
+        formatted
+      }
+    }
+  }
+}`} />
+</div>
 
 ## Spatial Filtering
 
