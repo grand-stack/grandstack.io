@@ -7,6 +7,36 @@ import useThemeContext from "@theme/hooks/useThemeContext";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import styles from "./styles.module.css";
 
+const blogs = [
+  {
+    imageUrl: "https://miro.medium.com/max/1400/1*IR_lvEYJ55v0n5R5M_VVGg.png",
+    title: "GraphQL ResolveInfo Deep Dive",
+    description: `Efficient GraphQL resolvers by generating database queries and the internals of a GraphQL integration.`,
+    url: "https://blog.grandstack.io/graphql-resolveinfo-deep-dive-1b3144075866"
+  },
+  {
+    imageUrl: "https://miro.medium.com/max/1000/1*Jxjh_ZCog2m-RXGO9EJmQQ.png",
+    title: "Multi-Tenant GraphQL With Neo4j 4.0",
+    description: `A look at using Neo4j 4.0 multidatabase with neo4j-graphql.js.`,
+    url:
+      "https://blog.grandstack.io/multitenant-graphql-with-neo4j-4-0-4a1b2b4dada4"
+  },
+  {
+    imageUrl: "https://miro.medium.com/max/1400/1*ZhsGSUT-wFHFHRLmLn3pYA.png",
+    title: "Working With Spatial Data In Neo4j GraphQL In The Cloud",
+    description: `Serverless GraphQL, Neo4j Aura, geospatial data, and GRANDstack. `,
+    url:
+      "https://blog.grandstack.io/working-with-spatial-data-in-neo4j-graphql-in-the-cloud-eee2bf1afad"
+  },
+  {
+    imageUrl: "https://miro.medium.com/max/1400/1*D4jGKxQRLxDyAEbV2DuHeA.png",
+    title: "Complex GraphQL Filtering With neo4j-graphql.js",
+    description: `Use filtering in your GraphQL queries without writing any resolvers.`,
+    url:
+      "https://blog.grandstack.io/complex-graphql-filtering-with-neo4j-graphql-js-aef19ad06c3e"
+  }
+];
+
 const features = [
   {
     title: <>GraphQL</>,
@@ -42,6 +72,33 @@ const features = [
   }
 ];
 
+function Blog({ imageUrl, title, description, url }) {
+  const imgUrl = imageUrl; //useBaseUrl(imageUrl);
+
+  return (
+    <div className={classnames("col col--3")}>
+      <a href={url} target="_blank" className={classnames(styles.blogText)}>
+        <div className={classnames(styles.blogCard, "card", "text--center")}>
+          <div class="card__image">
+            <img
+              className={(styles.featureImage, styles.blogImage)}
+              src={imgUrl}
+              alt={title}
+            />
+          </div>
+          <div class="card_body">
+            <h4 className={classnames(styles.blogText)}>{title}</h4>
+            <small className={classnames(styles.blogText)}>{description}</small>
+          </div>
+          <div class="card__footer">
+            <button class="button button--primary">Read Now</button>
+          </div>
+        </div>
+      </a>
+    </div>
+  );
+}
+
 function Feature({ imageUrl, title, description }) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
@@ -57,8 +114,19 @@ function Feature({ imageUrl, title, description }) {
   );
 }
 
-function BlogFeatures(blogs) {
-  return <div></div>;
+function BlogFeatures() {
+  return (
+    <section>
+      <div className={classnames("container")}>
+        <h1 className="text--center">From The Blog</h1>
+        <div className={classnames(styles.cardContainer, "row")}>
+          {blogs.map((props, idx) => (
+            <Blog key={idx} {...props} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }
 
 function BookPromo() {
@@ -74,7 +142,7 @@ function BookPromo() {
         <h1 class="text--center">New Book Release!</h1>
         <div className="row">
           <div class="col col--5">
-            <a href="https://grandstack.io/book">
+            <a href="https://grandstack.io/book" target="_blank">
               <img
                 className={classnames(styles.mainItem)}
                 src={useBaseUrl("img/bookcover_med.png")}
@@ -82,7 +150,7 @@ function BookPromo() {
             </a>
           </div>
           <div class="col col--7">
-            <a href="https://grandstack.io/book">
+            <a href="https://grandstack.io/book" target="_blank">
               <h2 class="text--center">
                 Fullstack GraphQL Applications with GRANDstack
               </h2>
@@ -136,7 +204,7 @@ function BookPromo() {
               </ul>
             </ul>
             <div class="text--center">
-              <a href="https://grandstack.io/book">
+              <a href="https://grandstack.io/book" target="_blank">
                 <button class="button button-outline button--primary">
                   Read Now!
                 </button>
@@ -206,6 +274,7 @@ function Home() {
         )}
 
         <BookPromo />
+        <BlogFeatures />
       </main>
     </Layout>
   );

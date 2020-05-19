@@ -129,6 +129,30 @@
   max-height: 400px;
 }
 
+.blogCard {
+  align-items: center;
+  height: 400px;
+  max-width: 500px !important;
+  margin: 0 auto;
+  padding: 15px;
+  margin: 5px auto;
+}
+
+.blogImage {
+  object-fit: cover;
+  height: 150px;
+}
+
+.blogText {
+  color: var(--ifm-font-color-base);
+  text-decoration: none !important;
+}
+
+.cardContainer {
+  margin: 20px 0;
+  padding: 10px;
+}
+
 @media only screen and (max-width: 966px) {
   .hero {
     padding-left: 20px;
