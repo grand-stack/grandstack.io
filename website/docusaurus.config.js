@@ -23,9 +23,9 @@ module.exports = {
     gtag: {
       trackingID: "UA-43032717-4"
     },
-    googleAnalytics: {
-      trackingID: "UA-43032717-4"
-    },
+    // googleAnalytics: {
+    //   trackingID: "UA-43032717-4"
+    // },
     algolia: {
       apiKey: "cc5871df6979b737c77b6c2670ac2392",
       indexName: "grandstack"
