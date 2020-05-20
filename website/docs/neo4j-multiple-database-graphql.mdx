@@ -4,6 +4,8 @@ title: Using Multiple Neo4j Databases
 sidebar_label: Multiple Databases
 ---
 
+import FeedbackWidget from "../components/FeedbackWidget";
+
 > This section describes how to use multiple Neo4j databases with neo4j-graphql.js. Multiple active databases is a feature available in Neo4j v4.x
 
 Neo4j supports multiple active databases. This feature is often used to support multi-tenancy use cases. Multiple databases can be used with neo4j-graphql.js by specifying a value in the GraphQL resolver context. If no value is specified for `context.neo4jDatabase` then the default database is used (as specified in `neo4j.conf`)
@@ -67,3 +69,5 @@ server.listen(3004, "0.0.0.0").then(({ url }) => {
 ## Resources
 
 - [Multi-Tenant GraphQL With Neo4j 4.0](https://blog.grandstack.io/multitenant-graphql-with-neo4j-4-0-4a1b2b4dada4) A Look At Using Neo4j 4.0 Multidatabase With neo4j-graphql.js
+
+<FeedbackWidget />

@@ -4,6 +4,8 @@ title: GraphQL Schema Directives
 sidebar_label: GraphQL Schema Directives
 ---
 
+import FeedbackWidget from "../components/FeedbackWidget";
+
 This page provides an overview of the various GraphQL schema directives made available in neo4j-graphql.js. See the links in the table below for full documentation of each directive.
 
 ## What Are GraphQL Schema Directives
@@ -29,3 +31,6 @@ The following GraphQL schema directives are declared during the schema augmentat
 | `@isAuthenticated`  |                     | Protects fields and types by requiring a valid signed JWT                                                                                    | See [GraphQL Authorization](neo4j-graphql-js-middleware-authorization.mdx#isauthenticated)  |
 | `@hasRole`          | `roles`             | Protects fields and types by limiting access to only requests with valid roles                                                               | See [GraphQL Authorization](neo4j-graphql-js-middleware-authorization.mdx#hasrole)          |
 | `@hasScope`         | `scopes`            | Protects fields and types by limiting access to only requests with valid scopes                                                              | See [GraphQL Authorization](neo4j-graphql-js-middleware-authorization.mdx#hasscope)         |
+
+
+<FeedbackWidget />
