@@ -204,7 +204,7 @@ class FeedbackWidget extends Component {
           {formState === 3 && (
             <div class="card__body">
               <p>
-                Thanks for your feedback! It's helps us to improve the
+                Thanks for your feedback! It helps us to improve the
                 documentation.
               </p>
             </div>
