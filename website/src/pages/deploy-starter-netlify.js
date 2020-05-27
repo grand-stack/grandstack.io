@@ -2,6 +2,8 @@ import React from "react";
 import Layout from "@theme/Layout";
 
 function NetlifyRedirect() {
+  // set window global object for SSR
+  global.window = {};
   window.location.href =
     "https://app.netlify.com/start/deploy?repository=https://github.com/grand-stack/grand-stack-starter";
 

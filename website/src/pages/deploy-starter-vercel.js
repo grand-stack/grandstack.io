@@ -2,6 +2,8 @@ import React from "react";
 import Layout from "@theme/Layout";
 
 function VercelRedirect() {
+  // set window global object for SSR
+  global.window = {};
   window.location.href =
     "https://vercel.com/import/project?template=https://github.com/grand-stack/grand-stack-starter";
 
