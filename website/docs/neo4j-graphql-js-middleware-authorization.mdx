@@ -156,7 +156,7 @@ const schema = makeAugmentedSchema({
 #### Attaching Custom Authorization Schema Directives
 
 In some use cases, different authentication and authorization logic is required to that provided by `graphql-auth-directives`. For example, you may use middleware to validate bearer tokens and insert scopes into the context obect. It is possible to leverage the schema augmentation functionality afforded by the `config.auth` options whilst providing your own directives to attach. First create your own directive (the default [`graphql-auth-directives` repository](https://github.com/grand-stack/graphql-auth-directives) offers a working template) and then include them in the config object passed to `makeAugmentedSchema` or `augmentSchema`. For example, to override the `@hasScope` directive:
-
+[//]: <> It would be great to have a list of scopes here i.e. read, write, edit, delete and what they would look like  in your JWT. Right now this assumes that the reader will know what those scopes are. I know it may be kind of basic but a full example of this and how it works would be very helpful. 
 ```js
 import { makeAugmentedSchema } from "neo4j-graphql-js";
 import { MyHasScopeDirective } from "./my-directives";
