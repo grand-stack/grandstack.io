@@ -226,7 +226,7 @@ function Home() {
   return (
     <Layout
       title={siteConfig.title}
-      description="Build fullstack graph applications with ease"
+      description="Build Fullstack Graph Applications With Ease"
     >
       <main>
         <div className={styles.hero}>
