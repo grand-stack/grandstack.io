@@ -111,7 +111,7 @@ module.exports = {
     sidebarCollapsible: true
   },
   title: "GRANDstack" /* title for your website */,
-  tagline: "Build full stack graph applications with ease.",
+  tagline: "Build Fullstack GraphQL Applications With Ease.",
   url: "https://grandstack.io" /* your website url */,
   baseUrl: "/" /* base url for your project */,
   // For github.io type URLs, you would set the url and baseUrl like:
