@@ -225,8 +225,8 @@ function Home() {
   const { siteConfig = {} } = context;
   return (
     <Layout
-      title={siteConfig.title}
-      description="Build fullstack graph applications with ease"
+      title="Build Fullstack GraphQL Applications With Ease"
+      description="Build Fullstack GraphQL Applications With Ease"
     >
       <main>
         <div className={styles.hero}>
@@ -237,10 +237,10 @@ function Home() {
                 className={styles.heroLogo}
                 src={useBaseUrl("img/GrandStack-Logo-Vert_Alt.png")}
               />
-              Build fullstack{" "}
-              <span className={styles.heroProjectKeywords}>graph</span>{" "}
-              applications with{" "}
-              <span className={styles.heroProjectKeywords}>ease</span>
+              Build Fullstack{" "}
+              <span className={styles.heroProjectKeywords}>GraphQL</span>{" "}
+              Applications With{" "}
+              <span className={styles.heroProjectKeywords}>Ease</span>
             </h1>
             <div className={styles.indexCtas}>
               <Link

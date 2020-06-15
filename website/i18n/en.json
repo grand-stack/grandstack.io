@@ -3,7 +3,7 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "Build full stack graph applications with ease.",
+    "tagline": "Build Fullstack GraphQL Applications With Ease.",
     "docs": {
       "apollo-federation-gateway-with-neo4j": {
         "title": "Using Apollo Federation and Gateway With Neo4j",
