@@ -338,6 +338,25 @@ server.applyMiddleware({ app, path: "/" });
 app.listen(3000, "0.0.0.0");
 ```
 
+## Passing A Neo4j Driver Bookmark
+
+To support [causal consistency chaining](https://neo4j.com/docs/operations-manual/4.1/clustering/introduction/) for Neo4j clusters where a system other than neo4j-graphql.js has been sending writes to the database cluster, optionally a neo4j driver bookmark may be added to the context object in the `neo4jBooksmarks` key. 
+
+For example, to set the context.neo4jBookmarks value from a request header (in this case headers.neo4jbookmarks) using Apollo Server:
+
+```js
+const server = new ApolloServer({
+  schema,
+  context: ({ req }) => {
+    return {
+      driver,
+      neo4jBookmarks: req.headers['neo4jbookmark']
+    };
+  }
+})
+```
+
+
 ## Resources
 
 - Blog post: [Authorization In GraphQL Using Custom Schema Directives](https://blog.grandstack.io/authorization-in-graphql-using-custom-schema-directives-eafa6f5b4658) - With Apollo’s graphql-tools, Auth0 JWTs, and neo4j-graphql.js
