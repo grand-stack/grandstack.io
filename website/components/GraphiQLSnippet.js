@@ -1,11 +1,11 @@
 import React from "react";
 import GraphiQL from "graphiql";
 
-const GraphiQLSnippet = ({ query }) => {
+const GraphiQLSnippet = ({ query, endpoint }) => {
   return (
     <GraphiQL
       fetcher={graphQLParams =>
-        fetch("https://movies.grandstack.io", {
+        fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(graphQLParams)
