@@ -27,6 +27,11 @@ module.exports = {
       "neo4j-graphql-java",
       "neo4j-graphql-database-plugin"
     ],
+    "GraphQL Architect": [
+      "graphql-architect-overview",
+      "graphql-architect-install",
+      "graphql-architect-usage"
+    ],
     Resources: ["grandstack-resources"]
   }
 };

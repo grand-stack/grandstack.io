@@ -1,0 +1,95 @@
+---
+id: graphql-architect-usage
+title: Low Code GraphQL API Development With GraphQL Architect
+sidebar_label: Usage
+---
+
+import FeedbackWidget from "../components/FeedbackWidget";
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+## Using With An Existing Database
+
+One of the most powerful features of GraphQL Architect is the ability to infer a GraphQL schema from an existing Neo4j Database. This means you can run a GraphQL API with full Create, Read, Update, Delete (CRUD) operations with just the click of a button!
+When starting GraphQL Architect with an existing Neo4j database a GraphQL schema will be generated from the database. This schema includes entry points into the GraphQL API (the Query and Mutation types), mapping each node label to a type in the GraphQL API. The generated API also includes arguments for ordering, pagination, and filtering.
+To start a local GraphQL server using this generated schema click the “Start GraphQL Server” button. You can then use the embedded GraphiQL tool to query the GraphQL API.
+For example, here we use the generated GraphQL API to query the sample movies Neo4j database for movies released before 2000 starring Emil Eifrem using GraphiQL in GraphQL Architect.
+
+<img alt="GraphQL Architect screenshot" src={useBaseUrl('assets/img/architect5.png')} />
+
+You can learn more about the GraphQL schema generation in the [neo4j-graphql.js documentation.](graphql-schema-generation-augmentation.mdx)
+
+
+## Using With A New Database
+Above we showed the generated type definitions in the case of connecting to an existing database. What if we are starting a new project and are starting with an empty database? We can use GraphQL type definitions to define the property graph model we want to create in Neo4j.
+Here, we define two types in GraphQL, a Person and Company. Each has an id and name field, and the Person has a relationship field connecting it to a Company.
+
+```graphql
+type Person {
+  personId: ID!
+  name: String!
+  works_at: Company @relation(direction: OUT, name: "WORKS_AT")
+}
+type Company {
+  companyId: ID!
+  name: String!
+}
+```
+
+When we start the GraphQL server by clicking “Start GraphQL Server”, our generated GraphQL API includes CRUD operations for each type and relationship field defined in our schema, including mutations for creating data.
+
+<img alt="GraphQL Architect screenshot" src={useBaseUrl('assets/img/architect6.png')} />
+
+We can then use these generated mutations to add data to our Neo4j database. For example, here we create a Person node, a Company node, and a relationship connecting them using the GraphiQL tool embedded in GraphQL Architect:
+
+<img alt="GraphQL Architect screenshot" src={useBaseUrl('assets/img/architect7.png')} />
+
+In Neo4j, we’ve now created a graph that looks like this:
+
+<img alt="GraphQL Architect screenshot" src={useBaseUrl('assets/img/architect8.png')} />
+
+You can learn more about designing a property graph model using GraphQL in the GraphQL Schema Design guide.
+
+## Schema Editor
+
+In GraphQL Architect, the GraphQL schema editor is where you can update your GraphQL schema and add custom logic using Cypher. Powered by Monaco GraphQL (part of the GraphiQL project) the schema editor gives you schema-aware linting and auto-complete suggestions, as well as all the functionality from the Monaco editor (part of the VSCode Project) such as code formatting and different color schemes such as dark mode.
+
+### Schema Aware Autocomplete And Linting
+
+While editing your GraphQL type definitions in GraphQL Architect you’ll have access to smart schema-aware autocomplete suggestions, taking into account the types and shape of your schema. Just use ctrl-space to trigger the autocomplete suggestions, powered by the GraphQL Language Services library and Monaco GraphQL.
+
+<img alt="GraphQL Architect screenshot" src={useBaseUrl('assets/img/architect9.png')} />
+
+As you use the editor, your type definitions are continuously parsed, offering linting and syntax checking, helping to find errors in your schema as you edit.
+
+### Adding Custom Logic With Cypher
+
+So far we've seen how to use the generated CRUD operations provided by GraphQL Architect, but what if we want to add custom logic to our API? Custom logic can be defined using the @cypher GraphQL schema directive. By annotating fields in our GraphQL type definitions using the @cypher schema directive we can map custom Cypher queries to fields in the GraphQL schema.
+Here we add a float scalar field average which computes the average rating across all movies that an actor has acted in:
+
+<img alt="GraphQL Architect screenshot" src={useBaseUrl('assets/img/architect10.png')} />
+
+We can also use @cypher schema directives to define object fields. Here we compute similar movies by looking at common actors, a simple graph recommendation query:
+
+<img alt="GraphQL Architect screenshot" src={useBaseUrl('assets/img/architect11.png')} />
+
+You can learn more about adding custom logic with the @cyher GraphQL schema directive in the neo4j-graphql.js documentation.
+
+## Run Local GraphQL Server
+
+Running a local GraphQL server is powered by Apollo Server and the neo4j-graphql.js library. However, the specifics of running a Node.js GraphQL server are abstracted away with GraphQL Architect, allowing you to focus on the design of your API and your application.
+Once you’ve designed your GraphQL type definitions, click the "Start GraphQL Server" button in the sidebar menu in GraphQL Architect. This will start a local API that you can query using the built-in GraphiQL window in GraphQL Architect. Or build an application against the endpoint using Apollo Client or other GraphQL client tooling.
+
+## Use With Cloud Database
+
+Of course, sometimes we’ll want to be able to develop and test our GraphQL API with a Neo4j instance hosted in the cloud, either on Neo4j Sandbox, Neo4j Aura, or running somewhere else.
+To do this, create a remote database in Neo4j Desktop, by clicking on the “Add Database” button and selecting “Connect To Remote DBMS”. Then you’ll be able to input your connection credentials and connect it to Neo4j Desktop. Once activated in Neo4j Desktop, GraphQL Architect will connect and you’ll be able to use all of the features of GraphQL Architect that you could with a local database.
+
+## Export And Deploy
+
+GraphQL Architect is great for developing and querying your GraphQL API locally. When you’re ready to export and deploy your API, just click the Deploy button.
+
+Currently, you can export your API application as a new project (including the Node.js code required to run the application) or update a project created with the create-grandstack-app CLI. We’ve just started to scratch the surface of deployment options for GraphQL Architect. If there’s a service you’d like to see added as a deployment target please let us know!
+
+
+
+<FeedbackWidget />
