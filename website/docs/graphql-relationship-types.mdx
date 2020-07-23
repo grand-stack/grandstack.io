@@ -5,6 +5,8 @@ sidebar_label: Relationship Types
 ---
 
 import FeedbackWidget from "../components/FeedbackWidget";
+import GraphiQLSnippet from "../components/GraphiQLSnippet";
+import styles from "./styles.module.css"
 
 ## Defining relationships in SDL
 
@@ -14,7 +16,7 @@ GraphQL types can reference other types. When defining your schema, use the `@re
 type Movie {
   title: String
   year: Int
-  genres: [Attribute] @relation(name: "IN_GENRE", direction: "OUT")
+  genres: [Genre] @relation(name: "IN_GENRE", direction: "OUT")
 }
 
 type Genre {
@@ -22,6 +24,26 @@ type Genre {
   movies: [Movie] @relation(name: "IN_GENRE", direction: "IN")
 }
 ```
+
+### Querying Relationship Fields
+
+Relationship fields can be queried as object fields in GraphQL by including the fields in the selection set. For example, here we query genres connected to a movie node:
+
+<div className={styles.graphiqlcontainer}>
+  <GraphiQLSnippet
+    endpoint="https://movies.grandstack.io"
+    query={`{
+  Movie(first: 1) {
+    title
+    genres {
+      name
+    }
+  }
+}`} />
+</div>
+
+
+
 
 ## Relationships with properties
 
@@ -44,23 +66,44 @@ type Rated @relation(name: "RATED") {
   from: User
   to: Movie
   rating: Float
-  timestamp: Int
+  created: DateTime
 }
 ```
 
 This approach of an optional relationship type allows for keeping the schema simple when we don't need relationship properties, but having the flexibility of handling relationship properties when we want to model them.
 
-## Relationship queries
+### Querying Relationship Types
 
 When queries are generated (through [`augmentSchema`](neo4j-graphql-js-api.mdx#augmentschemaschema-graphqlschema) or [`makeAugmentedSchema`](neo4j-graphql-js-api.mdx#makeaugmentedschemaoptions-graphqlschema)) fields referencing a relationship type are replaced with a special payload type that contains the relationship properties and the type reference. For example:
 
 ```graphql
 type _MovieRatings {
-  timestamp: Int
+  created: _Neo4jDateTime
   rating: Float
   User: User
 }
 ```
+
+Here we query for a user and their movie ratings, selecting the `rating` and `created` fields from the relationship type, as well as the movie node connected to the relationship.
+
+<div className={styles.graphiqlcontainer}>
+  <GraphiQLSnippet
+    endpoint="https://movies.grandstack.io"
+    query={`{
+  User(first: 1) {
+    name
+    rated {
+      Movie {
+        title
+      }
+      rating
+      created {
+        formatted
+      }
+    }
+  }
+}`} />
+</div>
 
 ## Relationship mutations
 
