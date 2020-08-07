@@ -118,7 +118,7 @@ export AUTH_DIRECTIVES_ROLE_KEY=https://grandstack.io/roles
 
 By default the auth directives are disabled and must be explicitly enabled in the config object passed to `makeAugmentedSchema` or `augmenteSchema`.
 
-If enabled, authorization directives re declared and can be used in the schema. If `@hasScope` is enabled it is automatically added to all generated query and mutation fields. To enable authorization schema directives (`@isAuthenticated`, `@hasRole`, `@hasScope`), pass values for the `auth` key in the `config` object. For example:
+If enabled, authorization directives are declared and can be used in the schema. If `@hasScope` is enabled it is automatically added to all generated query and mutation fields. To enable authorization schema directives (`@isAuthenticated`, `@hasRole`, `@hasScope`), pass values for the `auth` key in the `config` object. For example:
 
 ```js
 import { makeAugmentedSchema } from "neo4j-graphql-js";
