@@ -220,7 +220,7 @@ const server = new ApolloServer({
 });
 ```
 
-Then in our resolver, we check for the existence of our user object. If `req.user` is not present then we return an error as the request is not authenticated, if `req.user` is present then we know the request is authenicated and resolve the data with a call to `neo4jgraphql`:
+Then in our resolver, we check for the existence of our user object. If `req.user` is not present then we return an error as the request is not authenticated, if `req.user` is present then we know the request is authenticated and resolve the data with a call to `neo4jgraphql`:
 
 ```js
 const resolvers = {
