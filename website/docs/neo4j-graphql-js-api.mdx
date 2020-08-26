@@ -74,6 +74,35 @@ const schema = makeAugmentedSchema({
 
 <hr></hr>
 
+### `assertSchema(options)`:`null`
+
+This function uses the `@id`, `@unique`, and `@index` schema directives present in the GraphQL type definitions to add any database constraints and indexes.
+
+#### Parameters 
+
+- `options`: <`Object`>
+  - `schema`: <`GraphQLSchema`>
+  - `driver`: <`Neo4jDriver`>
+  - `debug`: <`Bool`> = false
+  - `dropExisting`: <`Bool`> = true
+  
+#### Example
+
+```js
+import {
+  makeAugmentedSchema,
+  assertSchema
+} from 'neo4j-graphql-js';
+
+const driver = neo4j.driver(...);
+
+const schema = makeAugmentedSchema(...);
+
+assertSchema({ schema, driver, debug: true });
+```
+
+<hr></hr>
+
 ### `neo4jgraphql(object, params, context, resolveInfo, debug)`: <`ExecutionResult`>
 
 This function's signature matches that of [GraphQL resolver functions](https://graphql.org/learn/execution/#root-fields-resolvers). and thus the parameters match the parameters passed into `resolve` by GraphQL implementations like graphql-js.
