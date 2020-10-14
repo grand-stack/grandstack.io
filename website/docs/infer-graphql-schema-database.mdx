@@ -27,7 +27,7 @@ const driver = neo4j.driver('bolt://localhost:7687',
   neo4j.auth.basic('neo4j', 'letmein'));
 inferSchema(driver).then( result => {
   console.log(result.typeDefs);
-}
+})
 ```
 
 Running this on [the movies dataset](https://neo4j.com/sandbox?usecase=recommendations) would produce the following GraphQL type definitions:
