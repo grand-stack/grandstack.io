@@ -107,8 +107,7 @@ Here we query for a user and their movie ratings, selecting the `rating` and `cr
 
 ## Field names for related nodes
 
-There are two valid ways to express which fields of a `@relation` type refer to its [source and target node](https://neo4j.com/docs/getting-started/current/graphdb-concepts/#graphdb-relationship-types) types. The `Rated` relationship type above defines `from` and `to` fields..<br>
-Once semantically clear names have been decided for source and target node fields, then those field names can be provided to the `from` and `to` arguments of the `@relation` type directive.
+There are two valid ways to express which fields of a `@relation` type refer to its [source and target node](https://neo4j.com/docs/getting-started/current/graphdb-concepts/#graphdb-relationship-types) types. The `Rated` relationship type above defines `from` and `to` fields. More semantic names can be provided for the source and target node fields to the `from` and `to` arguments of the `@relation` type directive.
 
 ```graphql
 type Rated @relation(name: "RATED", from: "user", to: "movie") {
