@@ -286,7 +286,7 @@ To implement a custom `Query` field, simply include a `Query` type in your type 
 
 ```graphql
 type Query {
-	moviesByFuzzyMatch(search: String, first: Int = 10, offset: Int = 0): [Movie] @cypher("""
+	moviesByFuzzyMatch(search: String, first: Int = 10, offset: Int = 0): [Movie] @cypher(statement: """
 		CALL db.index.fulltext.queryNodes('movieIndex', $search) YIELD node
 		RETURN node SKIP $offset LIMIT $first
 	""")
