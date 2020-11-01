@@ -202,6 +202,110 @@ UpdateUserRated(
 
 > See [the relationship types](#relationship-types) section for more information, including how to declare these types in the schema and the relationship type query API.
 
+### Experimental API
+When the `config.experimental` boolean flag is set to true, the API generated is based on the mutation schema design specified by [OpenCRUD](https://www.opencrud.org/#sec-Mutations):
+```js
+config: {
+  experimental: true
+}
+```
+
+For the following variant of the above schema, using the `@id`, `@unique`, and `@index` directives on the `Movie` type:
+```graphql
+  type Movie {
+    movieId: ID! @id
+    title: String @unique
+    year: Int @index
+    imdbRating: Float
+    genres: [Genre] @relation(name: "IN_GENRE", direction: "OUT")
+    similar: [Movie] @cypher(statement: """
+      MATCH (this)<-[:RATED]-(:User)-[:RATED]->(s:Movie) 
+      WITH s, COUNT(*) AS score 
+      RETURN s ORDER BY score DESC LIMIT {first}
+    """)
+  }
+
+  type Genre {
+    name: String @id
+    movies: [Movie] @relation(name: "IN_GENRE", direction: "IN")
+  }
+```
+
+This alternative API would be generated for the `Movie` type:
+```graphql
+  type Mutation {
+    # Node mutations
+    CreateMovie(data: _MovieData!): Movie
+    UpdateMovie(where: _MovieWhere!, data: _MovieData!): Movie
+    DeleteMovie(where: _MovieWhere!): Movie
+    # Relationship mutations
+    AddMovieGenres(from: _MovieWhere!, to: _GenreWhere!): _AddMovieGenresPayload
+    RemoveMovieGenres(from: _MovieWhere!, to: _GenreWhere!): _RemoveMovieGenresPayload
+    MergeMovieGenres(from: _MovieWhere!, to: _GenreWhere!): _MergeMovieGenresPayload
+  }
+```
+
+For a node type such as `Movie`, this API design generates an input object for a node selection `where` argument and an input object for a `data` node property input argument. Complex [filtering arguments](https://grandstack.io/docs/graphql-filtering), similar to those used for the `filter` argument in the query API, are generated for each key field (`@id`, `@unique`, and `@index`) on the `Movie` type:
+#### Property Selection
+```graphql
+  input _MovieWhere {
+    AND: [_MovieWhere!]
+    OR: [_MovieWhere!]
+    movieId: ID
+    movieId_not: ID
+    movieId_in: [ID!]
+    movieId_not_in: [ID!]
+    movieId_contains: ID
+    movieId_not_contains: ID
+    movieId_starts_with: ID
+    movieId_not_starts_with: ID
+    movieId_ends_with: ID
+    movieId_not_ends_with: ID
+    title: String
+    title_not: String
+    title_in: [String!]
+    title_not_in: [String!]
+    title_contains: String
+    title_not_contains: String
+    title_starts_with: String
+    title_not_starts_with: String
+    title_ends_with: String
+    title_not_ends_with: String
+    year: Int
+    year_not: Int
+    year_in: [Int!]
+    year_not_in: [Int!]
+    year_lt: Int
+    year_lte: Int
+    year_gt: Int
+    year_gte: Int
+  }
+```
+#### Property Input
+```graphql
+  input _MovieData {
+    movieId: ID
+    title: String
+    year: Int
+    imdbRating: Float
+  }
+```
+
+Because the Cypher `MERGE` clause cannot be combined with `WHERE`, node merge operations can use multiple key fields for node selection, but do not have complex filtering options:
+```graphql
+  type Mutation {
+    MergeMovie(where: _MovieKeys!, data: _MovieData!): Movie
+  }
+```
+```
+  input _MovieKeys {
+    movieId: ID
+    title: String
+    year: Int
+  }
+```
+
+
 ## Ordering
 
 `neo4j-graphql-js` supports ordering results through the use of an `orderBy` parameter. The augment schema process will add `orderBy` to fields as well as appropriate ordering enum types (where values are a combination of each field and `_asc` for ascending order and `_desc` for descending order). For example:
