@@ -303,13 +303,22 @@ mutation {
   }
 }
 ```
+```js
+{
+  "data": {
+    "CreateMovie": {
+      "movieId": "1a2afaa0-5c74-436f-90be-57c4cbb791b0"
+    }
+  }
+}
+```
 #### Update
 This mutation API allows for updating key field values:
 ```graphql
 mutation {
   UpdateMovie(
     where: {
-      year: 2021
+      year: 2020
     }
     data: {
       year: 2021
