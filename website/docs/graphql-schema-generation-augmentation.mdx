@@ -382,7 +382,7 @@ mutation {
   }
 }
 ```
-In the above `MergeMovie` mutation, a value is provided for the `movieId` argument, which is an `@id` key field on the `Movie` type. Similar to node creation, the `apoc.create.uuid` procedure is used to generate a value for an `@id` field when none is provided. When merging a node, this will only happen when it is first created (using the Cypher `ON CREATE` clause of `MERGE`).
+In the above `MergeMovie` mutation, a value is provided for the `movieId` argument, which is an `@id` key field on the `Movie` type. Similar to node creation, the `apoc.create.uuid` procedure is used to generate a value for an `@id` key, but only when first creating a node (using the Cypher `ON CREATE` clause of `MERGE`) and if no value is provided in both the `where` and `data` arguments:
 ```graphql
 mutation {
   MergeMovie(
