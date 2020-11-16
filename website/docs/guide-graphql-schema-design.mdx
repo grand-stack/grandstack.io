@@ -293,7 +293,218 @@ type Query {
 }
 ```
 
-> This approach can be used to define custom logic for Mutation fields as well.
+### Custom Nested Mutations
+Given our example schema:
+```graphql
+type Movie {
+  movieId: ID!
+  title: String
+  description: String
+  year: Int
+  actors(limit: Int = 10): [Actor] @relation(name: "ACTED_IN", direction: IN)
+}
+
+type Actor {
+  actorId: ID!
+  name: String
+  movies: [Movie] @relation(name: "ACTED_IN", direction: OUT)
+}
+```
+We can add a custom input object for providing field argument values for the `Actor` type:
+```graphql
+input ActorInput {
+  actorId: ID!
+  name: String
+  # movies: ActorMoviesMutation...
+}
+```
+#### Input Fields With @cypher
+Now we can define another input object, with a `@cypher` directive field that can use an `ActorInput` Cypher variable in its `statement`:
+```graphql
+input MovieActorsMutation {
+  merge: [ActorInput] @cypher(statement: """
+    MERGE (actor: Actor {
+      actorId: ActorInput.actorId
+    })-[:ACTED_IN]->(movie)
+    SET actor += ActorInput
+    WITH actor
+  """)
+}
+```
+###### Cypher Variables
+  * The `movie` Cypher variable is provided from the root mutation for type `Movie`.
+  * The `ActorInput` data input Cypher variable is provided by a generated `UNWIND`
+  statement, matching the type name of the `@cypher` field.
+  * The `actor` variable is optionally persisted by the user, for use in nested `@cypher` input fields in `ActorInput`.
+
+Finally, we define a `@cypher` mutation with an `actors` field argument of the `MovieActorsMutation` type:
+```graphql
+type Mutation {
+  CustomMergeMovie(
+    movieId: ID!
+    title: String
+    description: String
+    year: Int
+    # Input object with @cypher field
+    actors: MovieActorsMutation
+  ): Movie @cypher(statement: """
+    MERGE (movie: Movie {
+      movieId: $movieId,
+      title: $title,
+      description: $description,
+      year: $year
+    })
+    RETURN movie
+  """)
+}
+```
+#### Example
+```graphql
+mutation {
+  CustomMergeMovie(
+    movieId: "movieId-1"
+    description: "..."
+    title: "title-1"
+    year: 2020
+    actors: {
+      merge: [
+        {
+          actorId: "actorId-1"
+          name: "name-1"
+        }
+        {
+          actorId: "actorId-2"
+          name: "name-2"
+        }
+      ]
+    }
+  ) {
+    movieId
+    title
+    description
+    year
+    actors {
+      actorId
+      name
+    }
+  }
+}
+```
+#### Translation
+```js
+CALL apoc.cypher.doIt("
+  MERGE (movie: Movie {
+    movieId: $movieId,
+    title: $title,
+    description: $description,
+    year: $year
+  })
+  RETURN movie", 
+  {
+    movieId:$movieId, 
+    title:$title, 
+    description:$description, 
+    year:$year, 
+    actors:$actors, 
+    first:$first, 
+    offset:$offset
+  }
+)
+YIELD value
+WITH apoc.map.values(value, [keys(value)[0]])[0] AS `movie`
+CALL {
+  WITH *
+  UNWIND $actors.merge AS ActorInput
+  MERGE (actor: Actor {
+    actorId: ActorInput.actorId
+  })-[:ACTED_IN]->(movie)
+  SET actor += ActorInput
+  WITH actor
+  RETURN COUNT(*) AS _actors_merge_
+}
+RETURN `movie` {
+  .movieId,
+  .title,
+  .description,
+  .year,
+  actors: [(`movie`)<-[:`ACTED_IN`]-(`movie_actors`:`Actor`) | `movie_actors` {
+    .actorId,
+    .name
+  }]
+} AS `movie`
+```
+##### Explanation
+The translation begins with the normally generated Cypher statement for a `@cypher` mutation, using `apoc.cypher.doIt` and returning a `movie` variable, corresponding to the `Movie` output type name of the `CustomMergeMovie` mutation:
+```js
+CALL apoc.cypher.doIt("
+  MERGE (movie: Movie {
+    movieId: $movieId,
+    title: $title,
+    description: $description,
+    year: $year
+  })
+  RETURN movie", 
+  {
+    movieId:$movieId, 
+    title:$title, 
+    description:$description, 
+    year:$year, 
+    actors:$actors, 
+    first:$first, 
+    offset:$offset
+  }
+)
+YIELD value
+WITH apoc.map.values(value, [keys(value)[0]])[0] AS `movie`
+```
+With a value provided for the `merge` argument at the path `CustomMergeMovie.actors.merge`, and with its type being the `ActorInput` input object, a Cypher [subquery](https://neo4j.com/docs/cypher-manual/current/clauses/call-subquery/) is generated to provide a scope for executing its `@cypher` directive statement. All accessible Cypher variables are imported into the subquery using `WITH *`.
+
+The path to argument data is recursively generated for discovered sibling and nested `@cypher` fields. A Cypher variable of a name matching the `@cypher` field type, `ActorInput` in this case, is then provided by a generated [UNWIND](https://neo4j.com/docs/cypher-manual/current/clauses/unwind/) clause, after which the `@cypher` field `statement` is executed:
+```js
+CALL {
+  WITH *
+  UNWIND $actors.merge AS ActorInput
+```
+The Cypher `statement` of the `merge` input field at the path `MergeActor.movies.merge` is then executed for each provided `ActorInput` value:
+```js
+  MERGE (actor: Actor {
+    actorId: ActorInput.actorId
+  })-[:ACTED_IN]->(movie)
+  SET actor += ActorInput
+  WITH actor
+```
+To close the iterative scope of the `UNWIND` clause, and because a subquery requires a `RETURN` clause, the following is generated at the end of the subquery:
+```js
+  RETURN COUNT(*) AS _actors_merge_
+}
+```
+Finally, the normal translation of the selection set follows:
+```js
+RETURN `movie` {
+  .movieId,
+  .title,
+  .description,
+  .year,
+  actors: [(`movie`)<-[:`ACTED_IN`]-(`movie_actors`:`Actor`) | `movie_actors` {
+    .actorId,
+    .name
+  }]
+} AS `movie`
+```
+##### Generated Mutations
+When overwriting generated `Create`, `Merge`, `Update`, or `Delete` node mutation fields, input object arguments with nested `@cypher` fields can be used to provide Cypher statements that will execute after the generated translation of the mutation:
+```graphql 
+type Mutation {
+  MergeMovie(
+    movieId: ID!
+    title: String
+    description: String
+    year: Int
+    # Input object with @cypher field
+    actors: MovieActorsMutation
+  ): Movie
+}
+```
 
 ### Implementing Custom Resolvers
 
