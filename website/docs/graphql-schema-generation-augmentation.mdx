@@ -24,7 +24,7 @@ import { makeAugmentedSchema } from "neo4j-graphql-js";
 const typeDefs = `
 type Movie {
     movieId: ID!
-    title: String
+    title: String @search
     year: Int
     imdbRating: Float
     genres: [Genre] @relation(name: "IN_GENRE", direction: "OUT")
@@ -432,6 +432,38 @@ enum _MovieOrdering {
 ## Filtering
 
 The auto-generated `filter` argument is used to support complex field level filtering in queries.
+
+## Full-text Search
+
+The auto-generated `search` argument is used to support using [full-text search](https://neo4j.com/docs/cypher-manual/current/administration/indexes-for-full-text-search/#administration-indexes-fulltext-search-introduction) indexes set using [searchSchema](https://grandstack.io/docs/neo4j-graphql-js-api#searchschemaoptionsnull) with [@search directive](https://grandstack.io/docs/neo4j-graphql-js-api) fields. 
+
+In our example schema, no value is provided to the `index` argument of the `@search` directive on the `title` field of the `Movie` node type. So a default name of `MovieSearch` is used.
+
+The below example would query the `MovieSearch` search index for the value `river` (case-insensitive) on the `title` property of `Movie` type nodes. Only matching nodes with a score at or above the `threshold` argument would be returned.
+
+```graphql
+query {
+  Movie(
+    search: {
+      MovieSearch: "river"
+      threshold: 97.5
+    }
+  ) {
+    title
+  }
+}
+```
+
+When the `search` argument is used, the query selects from the results of calling the [db.index.fulltext.queryNodes](https://neo4j.com/docs/cypher-manual/current/administration/indexes-for-full-text-search/#administration-indexes-fulltext-search-query) procedure:
+
+```js
+CALL db.index.fulltext.queryNodes("MovieSearch", "river")
+YIELD node AS \`movie\`, score  WHERE score >= 97.5
+```
+
+The remaining translation of the query is then applied to the yielded nodes. If a value for the `Float` type `threshold` argument is provided, only matching nodes with a resulting `score` at or above it will be selected from. 
+
+The `search` argument is not yet available on relationship fields and using multiple named search index arguments at once is not supported.
 
 See [the Complex GraphQL Filtering section](graphql-filtering.mdx) for details.
 
