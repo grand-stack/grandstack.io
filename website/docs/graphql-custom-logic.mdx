@@ -351,9 +351,7 @@ input CAMutation {
 ```
 With no variable naming conflicts, the successful execution of the `MergeA` mutation results in merging and relating an `A` node with a `B` node, the `B` node with a `C` node, and the `C` node with the initially merged `A` node, resulting in the below graph:
 
-<div style="text-align: center;">
-  <img alt="MergeA Graph Data" src={useBaseUrl('assets/img/MergeAGraphData.png')} />
-</div>
+<img alt="MergeA Graph Data" src={useBaseUrl('assets/img/MergeAGraphData.png')} />
 
 <details>
   <summary>Cypher Translation</summary>
@@ -498,9 +496,7 @@ mutation {
 }
 ```
 
-<div style="text-align: center;">
-  <img alt="MergeA Graph Data" src={useBaseUrl('assets/img/MergeAGraphData.png')} />
-</div>
+<img alt="MergeA Graph Data" src={useBaseUrl('assets/img/MergeAGraphData.png')} />
 
 #### Custom Batch Mutations
 If a custom mutation uses an [UNWIND](https://neo4j.com/docs/cypher-manual/current/clauses/unwind/) clause on a list argument of input objects, then the Cypher variable must match the type name of the argument for its nested `@cypher` fields to process in the same iterative scope. List arguments of input objects are otherwise handled by generated `UNWIND` clauses, processing independently. In the below example, the `data` list argument of type `AInput` is unwound to a variable named `AInput`, following the naming convention of the variable set by generated `UNWIND` clauses:
@@ -586,9 +582,7 @@ mutation {
 }
 ```
 
-<div style="text-align: center;">
-  <img alt="BatchMergeA Graph Data" src={useBaseUrl('assets/img/BatchMergeAGraphData.png')} />
-</div>
+<img alt="BatchMergeA Graph Data" src={useBaseUrl('assets/img/BatchMergeAGraphData.png')} />
 
 <details>
   <summary>Data</summary>
