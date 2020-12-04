@@ -435,7 +435,7 @@ The auto-generated `filter` argument is used to support complex field level filt
 
 ## Full-text Search
 
-The auto-generated `search` argument is used to support using [full-text search](https://neo4j.com/docs/cypher-manual/current/administration/indexes-for-full-text-search/#administration-indexes-fulltext-search-introduction) indexes set using [searchSchema](https://grandstack.io/docs/neo4j-graphql-js-api#searchschemaoptionsnull) with [@search directive](https://grandstack.io/docs/neo4j-graphql-js-api) fields. 
+The auto-generated `search` argument is used to support using [full-text search](https://neo4j.com/docs/cypher-manual/current/administration/indexes-for-full-text-search/#administration-indexes-fulltext-search-introduction) indexes set using [searchSchema](https://grandstack.io/docs/neo4j-graphql-js-api#searchschemaoptionsnull) with [@search directive](https://grandstack.io/docs/graphql-schema-directives) fields. 
 
 In our example schema, no value is provided to the `index` argument of the `@search` directive on the `title` field of the `Movie` node type. So a default name of `MovieSearch` is used.
 
