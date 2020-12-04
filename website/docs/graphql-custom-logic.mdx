@@ -449,7 +449,7 @@ RETURN `a` {
 
 ### Custom Mutations
 
-Similar to overwriting generated node mutations and adding custom arguments, nested input objects with `@cypher` fields can be used to provide additional operations to execute after the `@cypher` statement of a custom mutations:
+Similar to overwriting generated node mutations and adding custom arguments, nested input objects with `@cypher` fields can be used to provide additional operations to execute after the `@cypher` statement of a custom mutation:
 
 ```graphql
 CustomMergeA(data: AInput!): A! @cypher(statement: """
