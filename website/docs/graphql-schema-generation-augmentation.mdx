@@ -433,6 +433,8 @@ enum _MovieOrdering {
 
 The auto-generated `filter` argument is used to support complex field level filtering in queries.
 
+See [the Complex GraphQL Filtering section](graphql-filtering.mdx) for details.
+
 ## Full-text Search
 
 The auto-generated `search` argument is used to support using [full-text search](https://neo4j.com/docs/cypher-manual/current/administration/indexes-for-full-text-search/#administration-indexes-fulltext-search-introduction) indexes set using [searchSchema](https://grandstack.io/docs/neo4j-graphql-js-api#searchschemaoptionsnull) with [@search directive](https://grandstack.io/docs/graphql-schema-directives) fields. 
@@ -461,11 +463,9 @@ CALL db.index.fulltext.queryNodes("MovieSearch", "river")
 YIELD node AS movie, score  WHERE score >= 97.5
 ```
 
-The remaining translation of the query is then applied to the yielded nodes. If a value for the `Float` type `threshold` argument is provided, only matching nodes with a resulting `score` at or above it will be selected from. 
+The remaining translation of the query is then applied to the yielded nodes. If a value for the `Float` type `threshold` argument is provided, only matching nodes with a resulting `score` at or above it will be returned. 
 
 The `search` argument is not yet available on relationship fields and using multiple named search index arguments at once is not supported.
-
-See [the Complex GraphQL Filtering section](graphql-filtering.mdx) for details.
 
 ## Type Extensions
 
