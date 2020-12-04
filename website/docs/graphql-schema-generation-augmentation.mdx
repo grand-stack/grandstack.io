@@ -458,7 +458,7 @@ When the `search` argument is used, the query selects from the results of callin
 
 ```js
 CALL db.index.fulltext.queryNodes("MovieSearch", "river")
-YIELD node AS \`movie\`, score  WHERE score >= 97.5
+YIELD node AS movie, score  WHERE score >= 97.5
 ```
 
 The remaining translation of the query is then applied to the yielded nodes. If a value for the `Float` type `threshold` argument is provided, only matching nodes with a resulting `score` at or above it will be selected from. 
