@@ -27,7 +27,7 @@ type Movie {
     title: String
     year: Int
     imdbRating: Float
-    genres: [Genre] @relation(name: "IN_GENRE", direction: "OUT")
+    genres: [Genre] @relation(name: "IN_GENRE", direction: OUT)
     similar: [Movie] @cypher(
         statement: """MATCH (this)<-[:RATED]-(:User)-[:RATED]->(s:Movie) 
                       WITH s, COUNT(*) AS score 
@@ -36,7 +36,7 @@ type Movie {
 
 type Genre {
     name: String
-    movies: [Movie] @relation(name: "IN_GENRE", direction: "IN")
+    movies: [Movie] @relation(name: "IN_GENRE", direction: IN)
 }`;
 
 const schema = makeAugmentedSchema({ typeDefs });
@@ -217,7 +217,7 @@ type Movie {
   title: String @unique
   year: Int @index
   imdbRating: Float
-  genres: [Genre] @relation(name: "IN_GENRE", direction: "OUT")
+  genres: [Genre] @relation(name: "IN_GENRE", direction: OUT)
   similar: [Movie] @cypher(statement: """
     MATCH (this)<-[:RATED]-(:User)-[:RATED]->(s:Movie) 
     WITH s, COUNT(*) AS score 
@@ -227,7 +227,7 @@ type Movie {
 
 type Genre {
   name: String @id
-  movies: [Movie] @relation(name: "IN_GENRE", direction: "IN")
+  movies: [Movie] @relation(name: "IN_GENRE", direction: IN)
 }
 ```
 
@@ -438,7 +438,7 @@ type Movie {
 }
 
 extend type Movie {
-  genres: [Genre] @relation(name: "IN_GENRE", direction: "OUT")
+  genres: [Genre] @relation(name: "IN_GENRE", direction: OUT)
   similar: [Movie]
     @cypher(
       statement: """

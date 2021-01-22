@@ -16,12 +16,12 @@ GraphQL types can reference other types. When defining your schema, use the `@re
 type Movie {
   title: String
   year: Int
-  genres: [Genre] @relation(name: "IN_GENRE", direction: "OUT")
+  genres: [Genre] @relation(name: "IN_GENRE", direction: OUT)
 }
 
 type Genre {
   name: String
-  movies: [Movie] @relation(name: "IN_GENRE", direction: "IN")
+  movies: [Movie] @relation(name: "IN_GENRE", direction: IN)
 }
 ```
 
