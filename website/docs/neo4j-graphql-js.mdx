@@ -42,7 +42,7 @@ type Movie {
   imdbRating: Float
   similar(first: Int = 3, offset: Int = 0): [Movie] @cypher(statement: "MATCH (this)-[:IN_GENRE]->(:Genre)<-[:IN_GENRE]-(o:Movie) RETURN o")
   degree: Int @cypher(statement: "RETURN SIZE((this)-->())")
-  actors(first: Int = 3, offset: Int = 0): [Actor] @relation(name: "ACTED_IN", direction:"IN")
+  actors(first: Int = 3, offset: Int = 0): [Actor] @relation(name: "ACTED_IN", direction:IN)
 }
 
 type Actor {

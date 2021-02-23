@@ -33,8 +33,8 @@ type Business {
     state: String!
     address: String!
     location: Point!
-    reviews: [Review] @relation(name: "REVIEWS", direction: "IN")
-    categories: [Category] @relation(name: "IN_CATEGORY", direction: "OUT")
+    reviews: [Review] @relation(name: "REVIEWS", direction: IN)
+    categories: [Category] @relation(name: "IN_CATEGORY", direction: OUT)
 }
 ```
 
@@ -100,8 +100,8 @@ type Business {
     state: String!
     address: String!
     location: Point!
-    reviews: [Review] @relation(name: "REVIEWS", direction: "IN")
-    categories: [Category] @relation(name: "IN_CATEGORY", direction: "OUT")
+    reviews: [Review] @relation(name: "REVIEWS", direction: IN)
+    categories: [Category] @relation(name: "IN_CATEGORY", direction: OUT)
 }
 ```
 
@@ -657,8 +657,8 @@ type Business {
     state: String!
     address: String!
     location: Point!
-    reviews: [Review] @relation(name: "REVIEWS", direction: "IN")
-    categories: [Category] @relation(name: "IN_CATEGORY", direction: "OUT")
+    reviews: [Review] @relation(name: "REVIEWS", direction: IN)
+    categories: [Category] @relation(name: "IN_CATEGORY", direction: OUT)
   }
 ```
 
