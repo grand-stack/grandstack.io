@@ -151,7 +151,7 @@ For example, to find movies where the `title` property has the value `river` (ca
 ```graphql
 {
   Movie(filter: {
-    title_regexp: "(?i)river"
+    title_regexp: "(?i)river.*"
   }) {
     title
     year
@@ -164,7 +164,7 @@ For example, to find movies where the `title` property has the value `river` (ca
     endpoint="https://movies.grandstack.io"
     query={`{
   Movie(filter: {
-    title_regexp: "(?i)river"
+    title_regexp: "(?i)river.*"
   }) {
     title
     year
