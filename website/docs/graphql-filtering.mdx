@@ -142,6 +142,37 @@ These logical operators can be nested as well. For example, find movies that the
   />
 </div>
 
+## Regular Expressions: `regexp`
+
+The Cypher [regular expression](https://neo4j.com/docs/cypher-manual/current/clauses/where/#query-where-regex) filter is generated for `ID` and `String` type fields. The value provided should follow the [Java syntax](https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html) for regular expressions.
+
+For example, to find movies where the `title` property has the value `river` (case-insensitive):
+
+```graphql
+{
+  Movie(filter: {
+    title_regexp: "(?i)river.*"
+  }) {
+    title
+    year
+  }
+}
+```
+
+<div className={styles.graphiqlcontainer}>
+  <GraphiQLSnippet
+    endpoint="https://movies.grandstack.io"
+    query={`{
+  Movie(filter: {
+    title_regexp: "(?i)river.*"
+  }) {
+    title
+    year
+  }
+}`}
+  />
+</div>
+
 ## Filtering In Selections
 
 Filters can be used in not only the root query argument, but also throughout the selection set. For example, search for all movies that contain the string "River", and when returning the genres of the these movies only return genres with the name "Drama":
@@ -292,11 +323,13 @@ _This table shows the fields available on the generated `filter` input type, and
 |                         | `movieId_not`           | `ID`                        | Matches nodes when value is not an exact match                                                                                                                          |
 |                         | `movieId_in`            | `[ID!]`                     | Matches nodes based on equality of at least one value in list of values                                                                                                 |
 |                         | `movieId_not_in`        | `[ID!]`                     | Matches nodes based on inequality of all values in list of values                                                                                                       |
+|                         | `movieId_regexp`        | `String`                    | Matches nodes given provided [regular expression](https://neo4j.com/docs/cypher-manual/current/clauses/where/#query-where-regex)                                                                                                       |
 | **String fields**       |                         |                             |                                                                                                                                                                         |
 |                         | `title`                 | `String`                    | Matches nodes based on equality of value                                                                                                                                |
 |                         | `title_not`             | `String`                    | Matches nodes based on inequality of value                                                                                                                              |
 |                         | `title_in`              | `[String!]`                 | Matches nodes based on equality of at least one value in list                                                                                                           |
 |                         | `title_not_in`          | `[String!]`                 | Matches nodes based on inequality of all values in list                                                                                                                 |
+|                         | `title_regexp`          | `String`                    | Matches nodes given provided [regular expression](https://neo4j.com/docs/cypher-manual/current/clauses/where/#query-where-regex)                                                                                                                       |
 |                         | `title_contains`        | `String`                    | Matches nodes when value contains given substring                                                                                                                       |
 |                         | `title_not_contains`    | `String`                    | Matches nodes when value does not contain given substring                                                                                                               |
 |                         | `title_starts_with`     | `String`                    | Matches nodes when value starts with given substring                                                                                                                    |

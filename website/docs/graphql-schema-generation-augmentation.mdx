@@ -24,7 +24,7 @@ import { makeAugmentedSchema } from "neo4j-graphql-js";
 const typeDefs = `
 type Movie {
     movieId: ID!
-    title: String
+    title: String @search
     year: Int
     imdbRating: Float
     genres: [Genre] @relation(name: "IN_GENRE", direction: "OUT")
@@ -214,9 +214,9 @@ For the following variant of the above schema, using the `@id`, `@unique`, and `
 ```graphql
 type Movie {
   movieId: ID! @id
-  title: String @unique
+  title: String! @unique
   year: Int @index
-  imdbRating: Float
+  imdbRating: Float!
   genres: [Genre] @relation(name: "IN_GENRE", direction: "OUT")
   similar: [Movie] @cypher(statement: """
     MATCH (this)<-[:RATED]-(:User)-[:RATED]->(s:Movie) 
@@ -235,8 +235,8 @@ This alternative API would be generated for the `Movie` type:
 ```graphql
 type Mutation {
   # Node mutations
-  CreateMovie(data: _MovieData!): Movie
-  UpdateMovie(where: _MovieWhere!, data: _MovieData!): Movie
+  CreateMovie(data: _MovieCreate!): Movie
+  UpdateMovie(where: _MovieWhere!, data: _MovieUpdate!): Movie
   DeleteMovie(where: _MovieWhere!): Movie
   # Relationship mutations
   AddMovieGenres(from: _MovieWhere!, to: _GenreWhere!): _AddMovieGenresPayload
@@ -281,21 +281,23 @@ input _MovieWhere {
   year_gte: Int
 }
 ```
-#### Property Input
+#### Property Creation
 ```graphql
-input _MovieData {
+input _MovieCreate {
   movieId: ID
-  title: String
+  title: String!
   year: Int
-  imdbRating: Float
+  imdbRating: Float!
 }
 ```
 #### Create
-Similar to non-experimental API, when no value is provided for the `@id` field of a created node type, that field recieves an auto-generated value using [apoc.create.uuid()](https://neo4j.com/labs/apoc/4.1/graph-updates/uuid/#manual-uuids).
+Similar to non-experimental API, when no value is provided for the `@id` field of a created node type, that field recieves an auto-generated value using [apoc.create.uuid()](https://neo4j.com/labs/apoc/4.1/graph-updates/uuid/#manual-uuids):
 ```graphql
 mutation {
   CreateMovie(
     data: {
+      title: "abc"
+      imdbRating: 10
       year: 2020
     }
   ) {
@@ -312,12 +314,22 @@ mutation {
   }
 }
 ```
+#### Property Update
+```graphql
+input _MovieUpdate {
+  movieId: ID
+  title: String
+  year: Int
+  imdbRating: Float
+}
+```
 #### Update
 This mutation API allows for updating key field values:
 ```graphql
 mutation {
   UpdateMovie(
     where: {
+      title: "abc"
       year: 2020
     }
     data: {
@@ -344,7 +356,7 @@ mutation {
 Because the Cypher `MERGE` clause cannot be combined with `WHERE`, node merge operations can use multiple key fields for node selection, but do not have complex filtering options:
 ```graphql
 type Mutation {
-  MergeMovie(where: _MovieKeys!, data: _MovieData!): Movie
+  MergeMovie(where: _MovieKeys!, data: _MovieCreate!): Movie
 }
 ```
 ```graphql
@@ -358,13 +370,40 @@ input _MovieKeys {
 mutation {
   MergeMovie(
     where: {
-      year: 2021
+      movieId: "123"
     }
     data: {
+      title: "abc"
+      imdbRating: 10
       year: 2021
     }
   ) {
     movieId
+  }
+}
+```
+In the above `MergeMovie` mutation, a value is provided for the `movieId` argument, which is an `@id` key field on the `Movie` type. Similar to node creation, the `apoc.create.uuid` procedure is used to generate a value for an `@id` key, but only when first creating a node (using the Cypher `ON CREATE` clause of `MERGE`) and if no value is provided in both the `where` and `data` arguments:
+```graphql
+mutation {
+  MergeMovie(
+    where: {
+      year: 2021
+    }
+    data: {
+      imdbRating: 10
+      title: "abc"
+    }
+  ) {
+    movieId
+  }
+}
+```
+```js
+{
+  "data": {
+    "MergeMovie": {
+      "movieId": "fd44cd00-1ba1-4da8-894d-d38ba8e5513b"
+    }
   }
 }
 ```
@@ -395,6 +434,38 @@ enum _MovieOrdering {
 The auto-generated `filter` argument is used to support complex field level filtering in queries.
 
 See [the Complex GraphQL Filtering section](graphql-filtering.mdx) for details.
+
+## Full-text Search
+
+The auto-generated `search` argument is used to support using [full-text search](https://neo4j.com/docs/cypher-manual/current/administration/indexes-for-full-text-search/#administration-indexes-fulltext-search-introduction) indexes set using [searchSchema](https://grandstack.io/docs/neo4j-graphql-js-api#searchschemaoptionsnull) with [@search directive](https://grandstack.io/docs/graphql-schema-directives) fields. 
+
+In our example schema, no value is provided to the `index` argument of the `@search` directive on the `title` field of the `Movie` node type. So a default name of `MovieSearch` is used.
+
+The below example would query the `MovieSearch` search index for the value `river` (case-insensitive) on the `title` property of `Movie` type nodes. Only matching nodes with a score at or above the `threshold` argument would be returned.
+
+```graphql
+query {
+  Movie(
+    search: {
+      MovieSearch: "river"
+      threshold: 97.5
+    }
+  ) {
+    title
+  }
+}
+```
+
+When the `search` argument is used, the query selects from the results of calling the [db.index.fulltext.queryNodes](https://neo4j.com/docs/cypher-manual/current/administration/indexes-for-full-text-search/#administration-indexes-fulltext-search-query) procedure:
+
+```js
+CALL db.index.fulltext.queryNodes("MovieSearch", "river")
+YIELD node AS movie, score  WHERE score >= 97.5
+```
+
+The remaining translation of the query is then applied to the yielded nodes. If a value for the `Float` type `threshold` argument is provided, only matching nodes with a resulting `score` at or above it will be returned. 
+
+The `search` argument is not yet available on relationship fields and using multiple named search index arguments at once is not supported.
 
 ## Type Extensions
 
