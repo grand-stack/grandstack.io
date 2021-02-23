@@ -76,7 +76,7 @@ const schema = makeAugmentedSchema({
 
 ### `assertSchema(options)`:`null`
 
-This function uses the `@id`, `@unique`, and `@index` schema directives present in the GraphQL type definitions to add any database constraints and indexes.
+This function uses the `@id`, `@unique`, and `@index` schema directives present in the GraphQL type definitions, along with [apoc.schema.assert()](https://neo4j.com/labs/apoc/4.0/overview/apoc.schema/apoc.schema.assert/), to add any database constraints and indexes.
 
 #### Parameters 
 
@@ -99,6 +99,34 @@ const driver = neo4j.driver(...);
 const schema = makeAugmentedSchema(...);
 
 assertSchema({ schema, driver, debug: true });
+```
+
+<hr></hr>
+
+### `searchSchema(options)`:`null`
+
+This function uses the `@search` schema directive present in the GraphQL type definitions to add any [full-text search indexes](https://neo4j.com/docs/cypher-manual/current/administration/indexes-for-full-text-search/).
+
+#### Parameters 
+
+- `options`: <`Object`>
+  - `schema`: <`GraphQLSchema`>
+  - `driver`: <`Neo4jDriver`>
+  - `debug`: <`Bool`> = false
+  
+#### Example
+
+```js
+import {
+  makeAugmentedSchema,
+  searchSchema
+} from 'neo4j-graphql-js';
+
+const driver = neo4j.driver(...);
+
+const schema = makeAugmentedSchema(...);
+
+searchSchema({ schema, driver, debug: true });
 ```
 
 <hr></hr>
