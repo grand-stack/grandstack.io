@@ -15,11 +15,11 @@ const blogs = [
     url: "https://blog.grandstack.io/graphql-resolveinfo-deep-dive-1b3144075866"
   },
   {
-    imageUrl: "https://miro.medium.com/max/1000/1*Jxjh_ZCog2m-RXGO9EJmQQ.png",
-    title: "Multi-Tenant GraphQL With Neo4j 4.0",
-    description: `A look at using Neo4j 4.0 multidatabase with neo4j-graphql.js.`,
+    imageUrl: "https://miro.medium.com/max/700/1*RrGNTbh5oIJEYUS36BDNzg.png",
+    title: "Awwws! Serverless, GraphQL and Neo4j",
+    description: `Deploying a Real-Time Routing Serverless GraphQL API Using GRANDstack And Serverless Framework`,
     url:
-      "https://blog.grandstack.io/multitenant-graphql-with-neo4j-4-0-4a1b2b4dada4"
+      "https://blog.grandstack.io/awwws-serverless-graphql-and-neo4j-d5536a32f1a0"
   },
   {
     imageUrl: "https://miro.medium.com/max/1400/1*ZhsGSUT-wFHFHRLmLn3pYA.png",
@@ -29,11 +29,11 @@ const blogs = [
       "https://blog.grandstack.io/working-with-spatial-data-in-neo4j-graphql-in-the-cloud-eee2bf1afad"
   },
   {
-    imageUrl: "https://miro.medium.com/max/1400/1*D4jGKxQRLxDyAEbV2DuHeA.png",
-    title: "Complex GraphQL Filtering With neo4j-graphql.js",
-    description: `Use filtering in your GraphQL queries without writing any resolvers.`,
+    imageUrl: "https://cdn-images-1.medium.com/max/1024/0*Ip7Zbt3WhnSg9qpY",
+    title: "Announcing The Neo4j GraphQL Library Beta",
+    description: `Today, we’re excited to announce the Beta release of the Neo4j GraphQL Library!`,
     url:
-      "https://blog.grandstack.io/complex-graphql-filtering-with-neo4j-graphql-js-aef19ad06c3e"
+      "https://neo4j.com/developer-blog/announcing-the-neo4j-graphql-library-beta/"
   }
 ];
 
@@ -118,7 +118,7 @@ function BlogFeatures() {
   return (
     <section>
       <div className={classnames("container")}>
-        <h1 className="text--center">From The Blog</h1>
+        <h1 className="text--center">From The Blogs</h1>
         <div className={classnames(styles.cardContainer, "row")}>
           {blogs.map((props, idx) => (
             <Blog key={idx} {...props} />

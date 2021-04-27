@@ -58,6 +58,10 @@ module.exports = {
             {
               label: "Resources",
               to: "/docs/grandstack-resources"
+            },
+            {
+              label: "The Neo4j GraphQL Library",
+              to: "https://neo4j.com/docs/graphql-manual/current/"
             }
           ]
         },

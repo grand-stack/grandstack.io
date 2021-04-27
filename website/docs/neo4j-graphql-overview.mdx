@@ -1,47 +1,42 @@
 ---
 id: neo4j-graphql-overview
-title: Neo4j GraphQL
-sidebar_label: Neo4j GraphQL Overview
+title: The Neo4j GraphQL Library
+sidebar_label: The Neo4j GraphQL Library
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl'; 
 import FeedbackWidget from "../components/FeedbackWidget";
 
-Neo4j-GraphQL is an integration that translates GraphQL to Cypher and allows for inclusion of Cypher in GraphQL through the use of `@cypher` GraphQL schema directives. There are two versions of the integration available depending on the architecture of your application.
+The Neo4j GraphQL Library enables developers to build GraphQL APIs backed by Neo4j. It translates GraphQL to Cypher and allows for inclusion of Cypher in GraphQL through the use of the [`@cypher` GraphQL schema directive](https://neo4j.com/docs/graphql-manual/current/type-definitions/cypher/).
 
-<img alt="Neo4j GraphQL logo" src={useBaseUrl('assets/img/neo4j-graphql-logo.png')} />
+<img alt="The Neo4j GraphQL Library" src={useBaseUrl('assets/img/graphql-diagram.svg')} />
+
 
 ## Overview
 
-The primary goal of the Neo4j-GraphQL integrations are to make it easy to build powerful GraphQL APIs that leverage the Neo4j graph database.
+The primary goal of the Neo4j GraphQL Library is to make it as easy as possible to build powerful GraphQL APIs that leverage the Neo4j graph database.
 
 ### Goals
 
-- Improve developer productivity for building GraphQL APIs
-- "Auto-generate" resolvers by translating GraphQL to Cypher
-- Exposing Cypher through GraphQL to enhance the functionality of GraphQL
+- Improve developer productivity for building GraphQL APIs by generating a full GraphQL API from type definitions.
+- Auto-generated resolvers by translating GraphQL to Cypher means developers don't need to write data fetching logic or GraphQL resolver functions.
+- Exposing Cypher through GraphQL for adding custom logic with the power of Cypher.
+- Define complex authorization rules using GraphQL schema directives.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/YC0HIaby_zA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+Read more about the official Neo4j GraphQL Library in [the documentation.](https://neo4j.com/docs/graphql-manual/current/)
 
-There are two versions of the Neo4j-GraphQL integrations: [`neo4j-graphql-js`](neo4j-graphql-js.mdx) and the [Neo4j-GraphQL database plugin](neo4j-graphql-database-plugin.mdx):
+## Other Neo4j GraphQL Integrations
 
-## `neo4j-graphql.js`
+The following Neo4j GraphQL integrations are not officially supported but are included here for reference:
 
-`neo4j-graphql.js` is a JavaScript library available on NPM that is designed to work with any of the JavaScript GraphQL server implementations (such as Apollo Server, GraphQL Yoga, etc).
+* [neo4j-graphql-java](https://github.com/neo4j-graphql/neo4j-graphql-java) - Similar feature set as the official Neo4j GraphQL Library, but for Java / JVM GraphQL implementations
+* [Neo4j GraphQL Database Plugin (*no longer maintained*)](https://github.com/neo4j-graphql/neo4j-graphql) - a plugin for Neo4j that serves a GraphQL endpoint
+* [neo4j-graphql.js (*no longer maintained*)](https://github.com/neo4j-graphql/neo4j-graphql-js) - An initial Neo4j GraphQL integration for Node.js GraphQL implementations from [Neo4j Labs](https://neo4j.com/labs/). This project has been graduated into the official Neo4j GraphQL Library and is no longer maintained.
 
-It works by inspecting the `resolveInfo` object passed to each GraphQL resolver to translate GraphQL to Cypher and handle the database call through a `neo4j-javascript-driver` instance that is injected into the context.
-
-## Neo4j GraphQL Database Plugin
-
-The Neo4j GraphQL database plugin is a plugin that extends Neo4j by serving a GraphQL endpoint directly from Neo4j.
-
-Using the Neo4j GraphQL database plugin makes sense if you don't have other data sources for your GraphQL API, if you don't need to implement custom resolvers (beyond the custom logic of a `@cypher` schema directive), and if your clients querying the database directly is acceptable for your architecture.
 
 ## Resources
 
-- [Five Common GraphQL problems and how Neo4j-GraphQL aims to solve them.](https://blog.grandstack.io/five-common-graphql-problems-and-how-neo4j-graphql-aims-to-solve-them-e9a8999c8d43) [Blog post].
-- [Neo4j GraphQL Developer page.](https://neo4j.com/developer/graphql/)
-- [Query Graphs with GraphQL Youtube video](https://www.youtube.com/watch?v=0EmZjheYv-U) (Neo4j online meetup recording)
-
+- **[Neo4j GraphQL Library Documentation](https://neo4j.com/docs/graphql-manual/current/)** - Documentation for the official Neo4j GraphQL Library
+- **[Graph Academy: Building GraphQL APIs Using The Neo4j GraphQL Library](https://neo4j.com/graphacademy/training-graphql-apis/enrollment/)** - This online course introduces you to the Neo4j GraphQL library and how to build Node.js GraphQL APIs backed by Neo4j.
 
 <FeedbackWidget />
