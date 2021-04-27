@@ -14,9 +14,9 @@ module.exports = {
   ],
   themeConfig: {
     announcementBar: {
-      id: "ebook1", // Any value that will identify this message
+      id: "podcast1", // Any value that will identify this message
       content:
-        '<div style="display: flex; justify-content: center; align-items: center;"><a target="_blank" rel="noopener noreferrer" href="https://grandstack.io/ebook"><img src="/img/bookcover_small.png" style="max-height: 75px;"></img></a><span>Download the free ebook <a target="_blank" rel="noopener noreferrer" href="https://grandstack.io/ebook">Fullstack GraphQL Applications with GRANDstack</a></span></div>',
+        '<div style="display: flex; justify-content: center; align-items: center;"><span>Check out the new <a target="_blank" rel="noopener noreferrer" href="https://graphstuff.fm">GraphStuff.FM podcast</a></span></div>',
       backgroundColor: "#fafbfc", // Defaults to `#fff`
       textColor: "#091E42" // Defaults to `#000`
     },
@@ -56,18 +56,6 @@ module.exports = {
               to: "docs/getting-started-neo4j-graphql"
             },
             {
-              label: "neo4j-graphql.js",
-              to: "docs/neo4j-graphql-js"
-            },
-            {
-              label: "GraphQL Schema Design Guide",
-              to: "docs/guide-graphql-schema-design"
-            },
-            {
-              label: "API Reference",
-              to: "docs/neo4j-graphql-js-api"
-            },
-            {
               label: "Resources",
               to: "/docs/grandstack-resources"
             }
@@ -83,19 +71,6 @@ module.exports = {
             {
               label: "GitHub",
               href: "https://github.com/grand-stack"
-            },
-            {
-              label: "#GRANDstack on Twitter",
-              href:
-                "https://twitter.com/search?q=%23GRANDstack&src=typed_query&f=live"
-            },
-            {
-              label: "Feedback Survey",
-              href: "https://grandstack.io/survey"
-            },
-            {
-              label: "Subscribe For Updates",
-              href: "http://eepurl.com/c8JGuf"
             }
           ]
         }
