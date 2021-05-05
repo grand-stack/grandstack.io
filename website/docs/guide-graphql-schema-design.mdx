@@ -35,7 +35,7 @@ Since GraphQL type definitions are used to define the database schema, the Neo4j
 
 Since GraphQL is an API query language and not a database query language it lacks semantics for operations such as aggregations, projections, and more complex graph traversals. We can extend the power of GraphQL through the use of [`@cypher` GraphQL schema directives](https://neo4j.com/docs/graphql-manual/current/type-definitions/cypher/) to bind the results of a Cypher query to a GraphQL field. This allows for the expression of complex logic using Cypher and can be used on Query and Mutation fields to define custom data fetching or mutation logic.
 
-> For more on how neo4j-graphql aims to solve some of the common problems that come up when building GraphQL APIs [see this post.](https://blog.grandstack.io/five-common-graphql-problems-and-how-neo4j-graphql-aims-to-solve-them-e9a8999c8d43)
+> For more on how the Neo4j GraphQL Library aims to solve some of the common problems that come up when building GraphQL APIs [see this post.](https://blog.grandstack.io/five-common-graphql-problems-and-how-neo4j-graphql-aims-to-solve-them-e9a8999c8d43)
 
 ## What is a GraphQL schema?
 
@@ -194,7 +194,7 @@ GraphQL field arguments for the `@cypher` directive field are passed to the Cyph
 
 In typical GraphQL server implementations we would now define a `Query` and `Mutation` object type, the fields of each becoming the entry points for our API. With the Neo4j GraphQL Library we don't need to define a `Query` or `Mutation` type as queries and mutations with full CRUD operations will be generated for us from our type defintions.
 
-We also don't need to define resolvers - the functions that contain the logic for resolving the actual data from the data layer. Since neo4j-graphql handles database query generation and data fetching our resolvers are generated for us. You can read more about the API generation process in the [Schema section of the documentation](https://neo4j.com/docs/graphql-manual/current/schema/).
+We also don't need to define resolvers - the functions that contain the logic for resolving the actual data from the data layer. Since the Neo4j GraphQL Library handles database query generation and data fetching our resolvers are generated for us. You can read more about the API generation process in the [Schema section of the documentation](https://neo4j.com/docs/graphql-manual/current/schema/).
 
 ## Custom Queries And Mutations
 
