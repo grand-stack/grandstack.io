@@ -172,8 +172,13 @@
     display: block;
     float: none;
     margin: 0 auto;
+    padding: 0 0 1.5rem 0;
   }
 
+  iframe {
+    width:100%;
+  }
+  
   .indexCtas {
     justify-content: center;
   }
